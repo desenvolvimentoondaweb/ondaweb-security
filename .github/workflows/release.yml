@@ -1,0 +1,76 @@
+# Publica automaticamente uma nova versão do plugin.
+# Basta alterar o número da versão em ondaweb-update-manager.php (cabeçalho "Version:" e OWUM_VERSION)
+# e enviar para a branch main: se ainda não existir release com esse número, ela é criada.
+# Os sites com o plugin instalado recebem a atualização pela tela de Plugins do WordPress.
+name: Publicar versão
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ler número da versão
+        id: v
+        run: |
+          HEADER=$(grep -m1 -E '^\s*\*\s*Version:' ondaweb-update-manager.php | sed -E 's/.*Version:\s*//' | tr -d '[:space:]')
+          CONST=$(grep -m1 "OWUM_VERSION'" ondaweb-update-manager.php | sed -E "s/.*'([0-9][^']*)'.*/\1/")
+          echo "cabeçalho=$HEADER constante=$CONST"
+          if [ "$HEADER" != "$CONST" ]; then
+            echo "::error::Versão diferente no cabeçalho ($HEADER) e em OWUM_VERSION ($CONST)."
+            exit 1
+          fi
+          echo "version=$HEADER" >> "$GITHUB_OUTPUT"
+
+      - name: Verificar se a versão já foi publicada
+        id: exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "v${{ steps.v.outputs.version }}" >/dev/null 2>&1; then
+            echo "Versão ${{ steps.v.outputs.version }} já publicada — nada a fazer."
+            echo "skip=1" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Conferir sintaxe PHP
+        if: steps.exists.outputs.skip != '1'
+        run: find . -name '*.php' -not -path './.git/*' -print0 | xargs -0 -n1 php -l
+
+      - name: Montar o .zip
+        if: steps.exists.outputs.skip != '1'
+        run: |
+          mkdir -p build
+          # Arquivos marcados com export-ignore no .gitattributes ficam fora do pacote.
+          git archive --format=zip --prefix=ondaweb-update-manager/ -o build/ondaweb-update-manager.zip HEAD
+          unzip -l build/ondaweb-update-manager.zip
+
+      - name: Notas da versão (CHANGELOG.md)
+        if: steps.exists.outputs.skip != '1'
+        run: |
+          awk -v v="${{ steps.v.outputs.version }}" '
+            $0 ~ "^## "v"([^0-9.]|$)" {on=1; next}
+            on && /^## / {exit}
+            on {print}
+          ' CHANGELOG.md > notes.md
+          [ -s notes.md ] || echo "Versão ${{ steps.v.outputs.version }}." > notes.md
+          cat notes.md
+
+      - name: Publicar
+        if: steps.exists.outputs.skip != '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "v${{ steps.v.outputs.version }}" build/ondaweb-update-manager.zip \
+            --target "$GITHUB_SHA" --title "Versão ${{ steps.v.outputs.version }}" --notes-file notes.md --latest

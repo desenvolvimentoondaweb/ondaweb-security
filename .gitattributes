@@ -1,0 +1,5 @@
+# Fora do .zip publicado
+/.github        export-ignore
+/.gitattributes export-ignore
+/.gitignore     export-ignore
+/README.md      export-ignore
