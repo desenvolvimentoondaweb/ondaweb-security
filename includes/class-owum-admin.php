@@ -5,13 +5,14 @@ class OWUM_Admin {
 
 	public static function init() {
 		add_action( is_multisite() ? 'network_admin_menu' : 'admin_menu', array( __CLASS__, 'menu' ) );
-		foreach ( array( 'owum_save_meta', 'owum_refresh', 'owum_report', 'owum_save_settings', 'owum_send_now', 'owum_rc_test' ) as $action ) {
+		foreach ( array( 'owum_save_meta', 'owum_refresh', 'owum_report', 'owum_save_settings', 'owum_send_now', 'owum_rc_test', 'owum_err_clear', 'owum_err_export', 'owum_err_test' ) as $action ) {
 			add_action( 'admin_post_' . $action, array( __CLASS__, $action ) );
 		}
 		$base = plugin_basename( OWUM_FILE );
 		add_filter( 'network_admin_plugin_action_links_' . $base, array( __CLASS__, 'action_links' ) );
 		add_filter( 'plugin_action_links_' . $base, array( __CLASS__, 'action_links' ) );
 		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue' ) );
+		add_action( 'admin_footer', array( __CLASS__, 'progress_ui' ) );
 	}
 
 	private static function page_url( $page = 'owum', $args = array() ) {
@@ -38,7 +39,9 @@ class OWUM_Admin {
 		add_submenu_page( 'owum', 'Atualizações', 'Atualizações', $cap, 'owum', array( __CLASS__, 'page_dashboard' ) );
 		add_submenu_page( 'owum', 'Segurança', 'Segurança', $cap, 'owum-security', array( 'OWSU_Admin', 'page' ) );
 		add_submenu_page( 'owum', 'Histórico de atualizações', 'Histórico', $cap, 'owum-history', array( __CLASS__, 'page_history' ) );
-		add_submenu_page( 'owum', 'Configurações do relatório', 'Configurações', $cap, 'owum-settings', array( __CLASS__, 'page_settings' ) );
+		$errs = OWUM_ErrorLog::unseen();
+		add_submenu_page( 'owum', 'Registro de erros', 'Registro de erros' . ( $errs ? ' <span class="awaiting-mod"><span class="pending-count">' . (int) $errs . '</span></span>' : '' ), $cap, 'owum-errors', array( __CLASS__, 'page_errors' ) );
+		add_submenu_page( 'owum', 'Configurações', 'Configurações', $cap, 'owum-settings', array( __CLASS__, 'page_settings' ) );
 	}
 
 	public static function enqueue( $hook ) {
@@ -61,6 +64,104 @@ class OWUM_Admin {
 				<?php if ( 'ondaweb' === $which && ! $id ) : ?><span class="description" style="margin-left:8px">Usando o logo padrão incluído no plugin.</span><?php endif; ?>
 				<p class="description"><?php echo esc_html( $help ); ?></p>
 			</td></tr>
+		<?php
+	}
+
+	/**
+	 * Janela de progresso / carregamento usada em todas as telas do plugin:
+	 * - verificação de segurança item a item (com barra de progresso);
+	 * - indicador "trabalhando…" para ações demoradas (aplicar correção, enviar relatório etc.).
+	 */
+	public static function progress_ui() {
+		$page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : ''; // phpcs:ignore
+		if ( 0 !== strpos( $page, 'owum' ) ) {
+			return;
+		}
+		$cfg = array(
+			'ajax'  => admin_url( 'admin-ajax.php' ),
+			'nonce' => wp_create_nonce( 'owsu_scan_step' ),
+		);
+		?>
+		<style>
+			#owum-modal{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:100000;display:none;align-items:center;justify-content:center;padding:16px}
+			#owum-modal.on{display:flex}
+			#owum-modal .box{background:#fff;border-radius:8px;box-shadow:0 10px 40px rgba(0,0,0,.25);width:100%;max-width:560px;padding:22px 24px;max-height:90vh;display:flex;flex-direction:column}
+			#owum-modal h2{margin:0 0 4px;font-size:18px}
+			#owum-modal .sub{color:#646970;margin:0 0 14px}
+			#owum-modal .bar{height:10px;background:#f0f0f1;border-radius:6px;overflow:hidden}
+			#owum-modal .bar span{display:block;height:100%;width:0;background:#2271b1;transition:width .3s}
+			#owum-modal.busy .bar span{width:35%;animation:owumind 1.2s ease-in-out infinite}
+			@keyframes owumind{0%{margin-left:-35%}100%{margin-left:100%}}
+			#owum-modal .row{display:flex;justify-content:space-between;align-items:baseline;margin:8px 0 2px;gap:12px}
+			#owum-modal .cur{font-weight:600}
+			#owum-modal .grp{color:#646970;font-size:12px}
+			#owum-modal .pct{font-variant-numeric:tabular-nums;color:#1d2327;font-weight:600}
+			#owum-modal ul{list-style:none;margin:12px 0 0;padding:0;overflow:auto;border-top:1px solid #f0f0f1;flex:1;min-height:0}
+			#owum-modal li{display:flex;gap:8px;align-items:baseline;padding:5px 0;border-bottom:1px solid #f6f7f7;font-size:12px}
+			#owum-modal li b{flex:0 0 78px}
+			#owum-modal .owsu-badge{display:inline-block;padding:1px 7px;border-radius:9px;font-size:10px;font-weight:600}
+			#owum-modal .owsu-badge.crit{background:#fee2e2;color:#991b1b}#owum-modal .owsu-badge.warn{background:#ffedd5;color:#9a3412}
+			#owum-modal .owsu-badge.ok{background:#dcfce7;color:#166534}#owum-modal .owsu-badge.info{background:#e0e7ff;color:#3730a3}
+			#owum-modal .foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+			#owum-modal .spin{display:inline-block;width:14px;height:14px;border:2px solid #c3c4c7;border-top-color:#2271b1;border-radius:50%;animation:owumspin .8s linear infinite;vertical-align:-2px;margin-right:6px}
+			@keyframes owumspin{to{transform:rotate(360deg)}}
+		</style>
+		<div id="owum-modal" role="dialog" aria-modal="true" aria-live="polite">
+			<div class="box">
+				<h2 class="ttl">Trabalhando…</h2>
+				<p class="sub">Não feche esta página.</p>
+				<div class="bar"><span></span></div>
+				<div class="row"><span class="cur"><span class="spin"></span><span class="txt">Preparando…</span></span><span class="pct"></span></div>
+				<div class="grp"></div>
+				<ul></ul>
+				<div class="foot"><span class="grp tm"></span><button type="button" class="button cancel" style="display:none">Cancelar</button></div>
+			</div>
+		</div>
+		<script>
+		(function(){
+			var C=<?php echo wp_json_encode( $cfg ); ?>;
+			var M=document.getElementById('owum-modal');if(!M)return;
+			var q=function(s){return M.querySelector(s);};
+			function open(title,sub,busy){q('.ttl').textContent=title;q('.sub').textContent=sub||'Não feche esta página.';M.classList.toggle('busy',!!busy);q('.bar span').style.width=busy?'':'0';q('ul').innerHTML='';q('.pct').textContent='';q('.grp').textContent='';q('.tm').textContent='';q('.cancel').style.display='none';M.classList.add('on');}
+			window.owumBusy=function(msg){open('Aguarde',msg||'Processando…',true);q('.txt').textContent=msg||'Processando…';q('.sub').textContent='Isso pode levar alguns segundos. Não feche esta página.';};
+			// Ações demoradas: links e formulários marcados.
+			document.addEventListener('click',function(e){var a=e.target.closest('a[data-owum-busy]');if(!a||e.ctrlKey||e.metaKey||a.target==='_blank')return;if(a.dataset.owumConfirm&&!confirm(a.dataset.owumConfirm)){e.preventDefault();return;}owumBusy(a.dataset.owumBusy);});
+			document.addEventListener('submit',function(e){var f=e.target;if(!f.matches('form[data-owum-confirm],form[data-owum-busy]'))return;if(f.dataset.owumConfirm&&!confirm(f.dataset.owumConfirm)){e.preventDefault();return;}if(f.dataset.owumBusy)owumBusy(f.dataset.owumBusy);});
+			window.addEventListener('pageshow',function(ev){if(ev.persisted)M.classList.remove('on');});
+
+			// Verificação de segurança item a item.
+			function post(data,timeout){var fd=new FormData();fd.append('action','owsu_scan_step');fd.append('nonce',C.nonce);for(var k in data)fd.append(k,data[k]);
+				var ctl=window.AbortController?new AbortController():null,t=ctl?setTimeout(function(){ctl.abort();},timeout||90000):0;
+				return fetch(C.ajax,{method:'POST',body:fd,credentials:'same-origin',signal:ctl?ctl.signal:undefined}).then(function(r){clearTimeout(t);return r.text().then(function(x){var j=null;try{j=JSON.parse(x);}catch(err){}if(!r.ok||!j||!j.success){var m=(j&&j.data&&j.data.msg)?j.data.msg:('HTTP '+r.status+(r.status>=500?' – erro no servidor':''));throw new Error(m);}return j.data;});},function(err){clearTimeout(t);throw new Error(err&&err.name==='AbortError'?'tempo esgotado':'sem resposta do servidor');});}
+			function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+			var stop=false;
+			function runScan(vuln){
+				stop=false;open('Verificando a segurança do site','Cada item é testado em sequência. Não feche esta página.');
+				q('.cancel').style.display='';var t0=Date.now();
+				post({op:'start',vuln:vuln?1:0}).then(function(d){
+					var steps=d.steps,i=0,n=steps.length,ul=q('ul');
+					function next(){
+						if(stop){q('.txt').textContent='Cancelado.';setTimeout(function(){location.reload();},600);return;}
+						if(i>=n){q('.txt').textContent='Calculando a nota…';q('.cancel').style.display='none';
+							return post({op:'finish'}).then(function(r){q('.bar span').style.width='100%';q('.pct').textContent='100%';location.href=r.redirect;},fatal);}
+						var s=steps[i];q('.txt').textContent=s.label;q('.grp').textContent=s.group;
+						var p=Math.round(i/n*100);q('.bar span').style.width=p+'%';q('.pct').textContent=p+'%';
+						var el=(Date.now()-t0)/1000;q('.tm').textContent=i?('≈ '+Math.max(1,Math.round(el/i*(n-i)))+' s restantes'):'';
+						post({op:'step',id:s.id},s.slow?300000:90000).then(function(r){
+							ul.insertAdjacentHTML('afterbegin','<li><b><span class="owsu-badge '+esc(r.status)+'">'+esc(r.label)+'</span></b><span>'+esc(s.label)+'</span></li>');i++;next();
+						},function(err){
+							ul.insertAdjacentHTML('afterbegin','<li><b><span class="owsu-badge info">Sem resposta</span></b><span>'+esc(s.label)+' — '+esc(err.message)+'</span></li>');
+							post({op:'fail',id:s.id,why:err.message}).catch(function(){});i++;next();
+						});
+					}
+					next();
+				},fatal);
+			}
+			function fatal(err){q('.spin').style.display='none';q('.txt').textContent='Não foi possível continuar: '+err.message;q('.cancel').textContent='Fechar';q('.cancel').style.display='';stop=true;}
+			q('.cancel').addEventListener('click',function(){if(q('.cancel').textContent==='Fechar'){location.reload();return;}stop=true;q('.cancel').disabled=true;});
+			document.addEventListener('click',function(e){var a=e.target.closest('a[data-owsu-scan]');if(!a||!window.fetch)return;e.preventDefault();runScan(a.dataset.owsuScan==='1');});
+		})();
+		</script>
 		<?php
 	}
 
@@ -128,7 +229,7 @@ class OWUM_Admin {
 			'checked'  => 'Verificação de atualizações concluída.',
 			'settings' => 'Configurações salvas.',
 			'sent'     => 'Relatório enviado por e-mail.',
-			'notsent'  => 'Não foi possível enviar o e-mail. Verifique os destinatários e o envio de e-mails do servidor (SMTP).',
+			'notsent'  => 'Não foi possível enviar o e-mail. O motivo aparece abaixo, em "Último envio", e no Registro de erros.',
 		);
 		$key  = sanitize_key( $_GET['owum_msg'] ); // phpcs:ignore
 		if ( isset( $msgs[ $key ] ) ) {
@@ -154,7 +255,7 @@ class OWUM_Admin {
 		?>
 		<div class="wrap">
 			<h1 class="wp-heading-inline">Atualizações</h1>
-			<a class="page-title-action" href="<?php echo esc_url( self::action_url( 'owum_refresh' ) ); ?>">Verificar atualizações agora</a>
+			<a class="page-title-action" data-owum-busy="Consultando atualizações no WordPress.org, no GitHub e nos plugins pagos…" href="<?php echo esc_url( self::action_url( 'owum_refresh' ) ); ?>">Verificar atualizações agora</a>
 			<a class="page-title-action" target="_blank" href="<?php echo esc_url( self::action_url( 'owum_report', array( 'month' => current_time( 'Y-m' ) ) ) ); ?>">Relatório / PDF</a>
 			<hr class="wp-header-end">
 			<?php self::notice(); ?>
@@ -362,6 +463,7 @@ class OWUM_Admin {
 
 	public static function owum_refresh() {
 		self::guard( 'owum_refresh' );
+		@set_time_limit( 180 ); // phpcs:ignore
 		OWUM_Collector::force_check();
 		OWUM_Logger::detect();
 		wp_safe_redirect( self::page_url( 'owum', array( 'owum_msg' => 'checked' ) ) );
@@ -516,7 +618,7 @@ class OWUM_Admin {
 		<div class="wrap">
 			<h1>Configurações</h1>
 			<?php self::notice(); ?>
-			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" data-owum-busy="Salvando configurações…">
 				<input type="hidden" name="action" value="owum_save_settings">
 				<?php wp_nonce_field( 'owum_save_settings' ); ?>
 				<h2>Relatório</h2>
@@ -546,6 +648,18 @@ class OWUM_Admin {
 						<p class="description">Gratuita. Gere em <a href="https://www.wordfence.com/threat-intel/vulnerabilities/" target="_blank" rel="noopener">wordfence.com</a> (conta Wordfence → Wordfence Intelligence → API key). Usada para verificar vulnerabilidades conhecidas uma vez por dia.</p></td></tr>
 				</table>
 
+				<h2 id="owum-errors-cfg">Alertas de erro</h2>
+				<table class="form-table" role="presentation">
+					<tr><th scope="row"><label for="owum-erremail">E-mail do desenvolvedor</label></th>
+						<td><input id="owum-erremail" type="text" class="large-text" name="err_email" value="<?php echo esc_attr( $s['err_email'] ); ?>">
+						<p class="description">Recebe os alertas de erro. Separe vários e-mails por vírgula.</p></td></tr>
+					<tr><th scope="row">Alertas</th>
+						<td><label><input type="checkbox" name="err_mail" value="1" <?php checked( $s['err_mail'], 1 ); ?>> Enviar e-mail na hora quando ocorrer um erro fatal ou uma falha do plugin</label>
+						<p class="description">O mesmo erro gera no máximo um e-mail a cada 6 horas (e no máximo 10 e-mails por hora no total).</p>
+						<label style="display:block;margin-top:8px"><input type="checkbox" name="err_site" value="1" <?php checked( $s['err_site'], 1 ); ?>> Registrar também erros fatais de outros plugins, do tema e do WordPress</label>
+						<p class="description">Desmarcado, registra apenas erros deste plugin.</p></td></tr>
+				</table>
+
 				<?php self::login_section( $s ); ?>
 				<?php submit_button( 'Salvar configurações' ); ?>
 			</form>
@@ -569,11 +683,11 @@ class OWUM_Admin {
 
 			<h2>Enviar agora</h2>
 			<p>
-				<a class="button" href="<?php echo esc_url( self::action_url( 'owum_send_now', array( 'month' => $prev ) ) ); ?>">Enviar relatório de <?php echo esc_html( OWUM_Report::month_label( $prev ) ); ?></a>
-				<a class="button" href="<?php echo esc_url( self::action_url( 'owum_send_now', array( 'month' => current_time( 'Y-m' ) ) ) ); ?>">Enviar relatório do mês atual (parcial)</a>
+				<a class="button" data-owum-busy="Montando e enviando o relatório…" href="<?php echo esc_url( self::action_url( 'owum_send_now', array( 'month' => $prev ) ) ); ?>">Enviar relatório de <?php echo esc_html( OWUM_Report::month_label( $prev ) ); ?></a>
+				<a class="button" data-owum-busy="Montando e enviando o relatório…" href="<?php echo esc_url( self::action_url( 'owum_send_now', array( 'month' => current_time( 'Y-m' ) ) ) ); ?>">Enviar relatório do mês atual (parcial)</a>
 			</p>
 			<?php if ( is_array( $last ) ) : ?>
-				<p class="description">Último envio: <?php echo esc_html( mysql2date( 'd/m/Y H:i', $last['when'] ) ); ?> — <?php echo esc_html( OWUM_Report::month_label( $last['month'] ) ); ?> para <?php echo esc_html( $last['to'] ); ?> — <?php echo $last['ok'] ? 'enviado' : '<strong style="color:#b32d2e">falhou</strong>'; ?>.</p>
+				<p class="description">Último envio: <?php echo esc_html( mysql2date( 'd/m/Y H:i', $last['when'] ) ); ?> — <?php echo esc_html( OWUM_Report::month_label( $last['month'] ) ); ?> para <?php echo esc_html( $last['to'] ); ?> — <?php echo $last['ok'] ? 'enviado' : '<strong style="color:#b32d2e">falhou</strong>' . ( ! empty( $last['error'] ) ? ' — ' . esc_html( $last['error'] ) : '' ); ?>.</p>
 			<?php endif; ?>
 		</div>
 		<?php
@@ -707,6 +821,124 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // desliga o reCAPTCHA</pre>
 		exit;
 	}
 
+	/* ------------------------------------------------------------------ */
+	/* Registro de erros                                                   */
+	/* ------------------------------------------------------------------ */
+
+	public static function page_errors() {
+		$log   = OWUM_ErrorLog::all();
+		$level = isset( $_GET['level'] ) ? sanitize_key( $_GET['level'] ) : ''; // phpcs:ignore
+		$seen  = (string) get_site_option( 'owum_errors_seen', '' );
+		OWUM_ErrorLog::mark_seen();
+		$counts = array( 'fatal' => 0, 'error' => 0, 'warning' => 0, 'notice' => 0 );
+		foreach ( $log as $e ) {
+			if ( isset( $counts[ $e['level'] ] ) ) {
+				$counts[ $e['level'] ]++;
+			}
+		}
+		$rows = $level ? array_filter( $log, function ( $e ) use ( $level ) { return $e['level'] === $level; } ) : $log;
+		$s    = owum_settings();
+		self::styles();
+		?>
+		<style>
+			.owum-lv{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;white-space:nowrap}
+			.owum-lv.fatal{background:#fee2e2;color:#991b1b}.owum-lv.error{background:#ffedd5;color:#9a3412}
+			.owum-lv.warning{background:#fef9c3;color:#854d0e}.owum-lv.notice{background:#e0e7ff;color:#3730a3}
+			.owum-err td{vertical-align:top}
+			.owum-err .msg{font-family:Menlo,Consolas,monospace;font-size:12px;word-break:break-word}
+			.owum-err .meta{color:#646970;font-size:12px;margin-top:4px}
+			.owum-err tr.is-new td:first-child{box-shadow:inset 3px 0 0 #d63638}
+			.owum-err pre{white-space:pre-wrap;font-size:11px;background:#f6f7f7;border:1px solid #dcdcde;padding:8px;max-height:260px;overflow:auto}
+		</style>
+		<div class="wrap">
+			<h1 class="wp-heading-inline">Registro de erros</h1>
+			<a class="page-title-action" href="<?php echo esc_url( self::action_url( 'owum_err_export' ) ); ?>">Baixar (.txt)</a>
+			<a class="page-title-action" data-owum-busy="Enviando e-mail de teste…" href="<?php echo esc_url( self::action_url( 'owum_err_test' ) ); ?>">Enviar e-mail de teste</a>
+			<?php if ( $log ) : ?>
+				<a class="page-title-action" href="<?php echo esc_url( self::action_url( 'owum_err_clear' ) ); ?>" onclick="return confirm('Apagar todo o registro de erros?');">Limpar registro</a>
+			<?php endif; ?>
+			<hr class="wp-header-end">
+			<?php self::notice(); ?>
+			<p class="description">Erros fatais do site<?php echo empty( $s['err_site'] ) ? ' (somente deste plugin)' : ''; ?>, avisos do PHP gerados por este plugin e falhas das operações (correções, e-mails, base de vulnerabilidades, verificações). Erros iguais são agrupados.
+			Alertas por e-mail: <?php echo ! empty( $s['err_mail'] ) && $s['err_email'] ? '<strong>' . esc_html( $s['err_email'] ) . '</strong>' : '<strong>desativados</strong>'; ?> — <a href="<?php echo esc_url( self::page_url( 'owum-settings' ) . '#owum-errors-cfg' ); ?>">alterar</a>.</p>
+			<div class="owum-filter" style="margin:10px 0">
+				<?php
+				$links = array( '' => 'Todos (' . count( $log ) . ')' );
+				foreach ( $counts as $k => $n ) {
+					$links[ $k ] = OWUM_ErrorLog::level_label( $k ) . ' (' . $n . ')';
+				}
+				foreach ( $links as $k => $label ) {
+					echo '<a style="margin-right:12px;text-decoration:none;' . ( $k === $level ? 'font-weight:600;color:#000' : '' ) . '" href="' . esc_url( self::page_url( 'owum-errors', $k ? array( 'level' => $k ) : array() ) ) . '">' . esc_html( $label ) . '</a>';
+				}
+				?>
+			</div>
+			<table class="widefat striped owum-err">
+				<thead><tr><th style="width:110px">Nível</th><th>Mensagem</th><th style="width:220px">Origem</th><th style="width:150px">Última vez</th><th style="width:70px">Vezes</th></tr></thead>
+				<tbody>
+				<?php if ( ! $rows ) : ?>
+					<tr><td colspan="5">Nenhum erro registrado.</td></tr>
+				<?php endif; ?>
+				<?php foreach ( $rows as $e ) : ?>
+					<tr class="<?php echo $e['last'] > $seen && in_array( $e['level'], array( 'fatal', 'error' ), true ) ? 'is-new' : ''; ?>">
+						<td><span class="owum-lv <?php echo esc_attr( $e['level'] ); ?>"><?php echo esc_html( OWUM_ErrorLog::level_label( $e['level'] ) ); ?></span></td>
+						<td>
+							<div class="msg"><?php echo esc_html( $e['message'] ); ?></div>
+							<div class="meta">
+								<?php echo $e['file'] ? esc_html( $e['file'] . ( $e['line'] ? ':' . $e['line'] : '' ) ) . '<br>' : ''; ?>
+								<?php echo esc_html( $e['url'] ); ?><?php echo $e['user'] ? ' · ' . esc_html( $e['user'] ) : ''; ?>
+								<?php echo $e['extra'] ? '<br>' . esc_html( $e['extra'] ) : ''; ?>
+								<?php echo $e['mailed'] ? '<br>Alerta enviado em ' . esc_html( mysql2date( 'd/m/Y H:i', $e['mailed'] ) ) : ''; ?>
+							</div>
+							<?php if ( $e['trace'] ) : ?>
+								<details><summary style="cursor:pointer;color:#2271b1;font-size:12px;margin-top:4px">Rastreamento</summary><pre><?php echo esc_html( $e['trace'] ); ?></pre></details>
+							<?php endif; ?>
+						</td>
+						<td><?php echo esc_html( $e['source'] ); ?></td>
+						<td><?php echo esc_html( mysql2date( 'd/m/Y H:i:s', $e['last'] ) ); ?><?php echo $e['count'] > 1 ? '<br><span class="description">desde ' . esc_html( mysql2date( 'd/m/Y H:i', $e['first'] ) ) . '</span>' : ''; ?></td>
+						<td><?php echo (int) $e['count']; ?></td>
+					</tr>
+				<?php endforeach; ?>
+				</tbody>
+			</table>
+			<p class="description">Guarda os <?php echo (int) OWUM_ErrorLog::MAX; ?> erros mais recentes.</p>
+		</div>
+		<?php
+	}
+
+	public static function owum_err_clear() {
+		self::guard( 'owum_err_clear' );
+		OWUM_ErrorLog::clear();
+		wp_safe_redirect( self::page_url( 'owum-errors', array( 'owum_ok' => rawurlencode( 'Registro de erros apagado.' ) ) ) );
+		exit;
+	}
+
+	public static function owum_err_export() {
+		self::guard( 'owum_err_export' );
+		$out = array( 'Registro de erros — ' . network_home_url( '/' ) . ' — gerado em ' . current_time( 'd/m/Y H:i:s' ), str_repeat( '=', 70 ), '' );
+		foreach ( OWUM_ErrorLog::all() as $e ) {
+			$out[] = OWUM_ErrorLog::mail_body( $e );
+			$out[] = str_repeat( '-', 70 );
+		}
+		nocache_headers();
+		header( 'Content-Type: text/plain; charset=utf-8' );
+		header( 'Content-Disposition: attachment; filename="erros-' . sanitize_title( wp_parse_url( network_home_url(), PHP_URL_HOST ) ) . '-' . current_time( 'Y-m-d' ) . '.txt"' );
+		echo implode( "\n", $out ); // phpcs:ignore
+		exit;
+	}
+
+	public static function owum_err_test() {
+		self::guard( 'owum_err_test' );
+		$s  = owum_settings();
+		$to = array_values( array_filter( array_map( 'trim', explode( ',', (string) $s['err_email'] ) ), 'is_email' ) );
+		if ( ! $to ) {
+			wp_safe_redirect( self::page_url( 'owum-errors', array( 'owum_err' => rawurlencode( 'Nenhum e-mail de desenvolvedor configurado.' ) ) ) );
+			exit;
+		}
+		$ok = wp_mail( $to, '[' . ( is_multisite() ? get_network()->site_name : get_bloginfo( 'name' ) ) . '] Teste dos alertas de erro', "Este é um teste dos alertas de erro do Ondaweb Security Updater.\n\nSite: " . network_home_url( '/' ) . "\nRegistro: " . OWUM_ErrorLog::page_url() );
+		wp_safe_redirect( self::page_url( 'owum-errors', $ok ? array( 'owum_ok' => rawurlencode( 'E-mail de teste enviado para ' . implode( ', ', $to ) . '.' ) ) : array( 'owum_err' => rawurlencode( 'Não foi possível enviar o e-mail de teste. Veja o registro abaixo.' ) ) ) );
+		exit;
+	}
+
 	public static function owum_save_settings() {
 		self::guard( 'owum_save_settings' );
 		$emails = isset( $_POST['emails'] ) ? sanitize_text_field( wp_unslash( $_POST['emails'] ) ) : '';
@@ -726,6 +958,9 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // desliga o reCAPTCHA</pre>
 				'rc_site'     => isset( $_POST['rc_site'] ) ? preg_replace( '/[^A-Za-z0-9_\-]/', '', wp_unslash( $_POST['rc_site'] ) ) : '',
 				'rc_secret'   => isset( $_POST['rc_secret'] ) ? preg_replace( '/[^A-Za-z0-9_\-]/', '', wp_unslash( $_POST['rc_secret'] ) ) : '',
 				'rc_score'    => isset( $_POST['rc_score'] ) ? max( 0.1, min( 0.9, (float) $_POST['rc_score'] ) ) : 0.5,
+				'err_email'   => isset( $_POST['err_email'] ) ? implode( ', ', array_filter( array_map( 'trim', explode( ',', sanitize_text_field( wp_unslash( $_POST['err_email'] ) ) ) ), 'is_email' ) ) : $old['err_email'],
+				'err_mail'    => empty( $_POST['err_mail'] ) ? 0 : 1,
+				'err_site'    => empty( $_POST['err_site'] ) ? 0 : 1,
 			)
 		);
 		$errors = array();
@@ -778,6 +1013,7 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // desliga o reCAPTCHA</pre>
 
 	public static function owum_send_now() {
 		self::guard( 'owum_send_now' );
+		@set_time_limit( 180 ); // phpcs:ignore
 		$ym = isset( $_GET['month'] ) && preg_match( '/^\d{4}-\d{2}$/', $_GET['month'] ) ? $_GET['month'] : OWUM_Mailer::previous_month(); // phpcs:ignore
 		$ok = OWUM_Mailer::send( $ym );
 		wp_safe_redirect( self::page_url( 'owum-settings', array( 'owum_msg' => $ok ? 'sent' : 'notsent' ) ) );

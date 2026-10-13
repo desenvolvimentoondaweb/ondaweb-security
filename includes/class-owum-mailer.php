@@ -45,22 +45,28 @@ class OWUM_Mailer {
 		if ( ! $to ) {
 			return false;
 		}
-		$s       = owum_settings();
-		$subject = sprintf( '[%s] Relatório de atualizações e segurança – %s', $s['client_name'], OWUM_Report::month_label( $ym ) );
-		$body    = '<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:24px;background:#ffffff;">' . OWUM_Report::html( $ym, 'email' ) . '</body></html>';
+		$sent  = false;
+		$error = '';
+		try {
+			$s       = owum_settings();
+			$subject = sprintf( '[%s] Relatório de atualizações e segurança – %s', $s['client_name'], OWUM_Report::month_label( $ym ) );
+			// Logos por endereço (funcionam com qualquer plugin de envio/SMTP).
+			$body = '<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:24px;background:#ffffff;">' . OWUM_Report::html( $ym, 'print' ) . '</body></html>';
 
-		// Logos embutidos no e-mail (aparecem mesmo com imagens externas bloqueadas).
-		$embed = function ( $phpmailer ) {
-			foreach ( array( 'client', 'ondaweb' ) as $which ) {
-				$l = owum_logo( $which );
-				if ( $l && $l['path'] && file_exists( $l['path'] ) ) {
-					$phpmailer->addEmbeddedImage( $l['path'], 'owum-logo-' . $which, basename( $l['path'] ), 'base64', $l['mime'] );
-				}
-			}
-		};
-		add_action( 'phpmailer_init', $embed );
-		$sent = wp_mail( $to, $subject, $body, array( 'Content-Type: text/html; charset=UTF-8' ) );
-		remove_action( 'phpmailer_init', $embed );
+			$embed = array( __CLASS__, 'embed_logos' );
+			add_action( 'phpmailer_init', $embed );
+			$fail = function ( $e ) use ( &$error ) {
+				$error = is_wp_error( $e ) ? $e->get_error_message() : '';
+			};
+			add_action( 'wp_mail_failed', $fail );
+			$sent = wp_mail( $to, $subject, $body, array( 'Content-Type: text/html; charset=UTF-8' ) );
+			remove_action( 'phpmailer_init', $embed );
+			remove_action( 'wp_mail_failed', $fail );
+		} catch ( \Throwable $e ) {
+			$sent  = false;
+			$error = $e->getMessage() . ' (' . basename( $e->getFile() ) . ':' . $e->getLine() . ')';
+			OWUM_ErrorLog::add( 'error', 'Relatório por e-mail: ' . $e->getMessage(), array( 'file' => $e->getFile(), 'line' => $e->getLine(), 'trace' => $e->getTraceAsString(), 'source' => 'Ondaweb Security Updater' ) );
+		}
 		update_site_option(
 			'owum_last_mail',
 			array(
@@ -68,8 +74,34 @@ class OWUM_Mailer {
 				'month' => $ym,
 				'ok'    => (bool) $sent,
 				'to'    => implode( ', ', $to ),
+				'error' => $error,
 			)
 		);
-		return $sent;
+		return (bool) $sent;
+	}
+
+	/**
+	 * Quando o envio usa o PHPMailer do WordPress, embute os logos na mensagem
+	 * (aparecem mesmo com imagens externas bloqueadas). Com outros plugins de
+	 * envio, os logos continuam pelo endereço da imagem.
+	 */
+	public static function embed_logos( $phpmailer ) {
+		if ( ! is_object( $phpmailer ) || ! method_exists( $phpmailer, 'addEmbeddedImage' ) || ! property_exists( $phpmailer, 'Body' ) ) {
+			return;
+		}
+		foreach ( array( 'client', 'ondaweb' ) as $which ) {
+			try {
+				$l = owum_logo( $which );
+				if ( ! $l || empty( $l['path'] ) || ! is_readable( $l['path'] ) ) {
+					continue;
+				}
+				$cid = 'owum-logo-' . $which;
+				if ( $phpmailer->addEmbeddedImage( $l['path'], $cid, basename( $l['path'] ), 'base64', $l['mime'] ) ) {
+					$phpmailer->Body = str_replace( 'src="' . esc_attr( $l['url'] ) . '"', 'src="cid:' . $cid . '"', $phpmailer->Body );
+				}
+			} catch ( \Throwable $e ) {
+				OWUM_ErrorLog::add( 'warning', 'Não foi possível embutir o logo no e-mail: ' . $e->getMessage(), array( 'source' => 'Ondaweb Security Updater' ), false );
+			}
+		}
 	}
 }

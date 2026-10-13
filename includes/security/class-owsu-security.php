@@ -425,11 +425,7 @@ class OWSU_Security {
 		$results = array();
 		foreach ( self::definitions() as $id => $def ) {
 			$m = 'check_' . $id;
-			try {
-				$results[ $id ] = self::$m();
-			} catch ( \Throwable $e ) {
-				$results[ $id ] = self::r( 'info', 'Não foi possível verificar: ' . $e->getMessage() );
-			}
+			$results[ $id ] = self::run_check( $id );
 		}
 		$scan = array(
 			'time'    => current_time( 'mysql' ),
@@ -440,6 +436,22 @@ class OWSU_Security {
 		return $scan;
 	}
 
+	/** Executa uma verificação isolada; falhas viram resultado "Informativo" e vão para o registro de erros. */
+	public static function run_check( $id ) {
+		$m = 'check_' . $id;
+		try {
+			return self::$m();
+		} catch ( \Throwable $e ) {
+			OWUM_ErrorLog::add( 'warning', 'Verificação "' . $id . '" não concluída: ' . $e->getMessage(), array( 'file' => $e->getFile(), 'line' => $e->getLine(), 'trace' => $e->getTraceAsString() ), false );
+			return self::r( 'info', 'Não foi possível verificar: ' . $e->getMessage() );
+		}
+	}
+
+	public static function reset_http() {
+		self::$http = array();
+		self::$nc   = null;
+	}
+
 	/** Reexecuta uma verificação só (após aplicar/desfazer). */
 	public static function run_one( $id ) {
 		self::$http = array();
@@ -448,8 +460,7 @@ class OWSU_Security {
 		if ( ! $scan ) {
 			return self::run_all();
 		}
-		$m                       = 'check_' . $id;
-		$scan['results'][ $id ]  = self::$m();
+		$scan['results'][ $id ]  = self::run_check( $id );
 		$scan['score']           = self::score( $scan['results'] );
 		update_site_option( 'owsu_scan', $scan );
 		return $scan;
@@ -503,7 +514,7 @@ class OWSU_Security {
 		$args = wp_parse_args(
 			$args,
 			array(
-				'timeout'     => 15,
+				'timeout'     => 10,
 				'sslverify'   => false,
 				'redirection' => 3,
 				'user-agent'  => 'Ondaweb Security Check',
@@ -763,7 +774,7 @@ class OWSU_Security {
 		}
 		$it = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $u['dir'], FilesystemIterator::SKIP_DOTS ), RecursiveIteratorIterator::LEAVES_ONLY, RecursiveIteratorIterator::CATCH_GET_CHILD );
 		foreach ( $it as $f ) {
-			if ( ++$n > 200000 || microtime( true ) - $start > 20 ) {
+			if ( ++$n > 200000 || microtime( true ) - $start > 12 ) {
 				$items[] = '(varredura interrompida por limite de tempo/quantidade)';
 				break;
 			}
@@ -831,7 +842,7 @@ class OWSU_Security {
 		$start = microtime( true );
 		$it    = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $root, FilesystemIterator::SKIP_DOTS ), RecursiveIteratorIterator::SELF_FIRST, RecursiveIteratorIterator::CATCH_GET_CHILD );
 		foreach ( $it as $f ) {
-			if ( ++$n > 200000 || microtime( true ) - $start > 20 ) {
+			if ( ++$n > 200000 || microtime( true ) - $start > 12 ) {
 				break;
 			}
 			if ( $f->isLink() ) {

@@ -1,5 +1,13 @@
 # Histórico de versões
 
+## 1.4.0
+- **Verificação com barra de progresso:** a verificação de segurança mostra o andamento item a item, o tempo restante e o resultado de cada teste. Cada item roda separado, sem risco de estourar o tempo limite do servidor.
+- Indicador "aguarde" nas ações demoradas (aplicar/desfazer correção, verificar atualizações, enviar relatório, salvar configurações).
+- **Registro de erros:** nova tela que guarda erros fatais do site (de qualquer plugin, tema ou do WordPress), avisos deste plugin e falhas das operações, com origem, arquivo, endereço, usuário e rastreamento. Exportação em .txt.
+- **Alertas por e-mail** ao desenvolvedor para erros fatais e falhas do plugin (no máximo 1 e-mail por erro a cada 6 horas).
+- **Correção:** o envio do relatório por e-mail causava "erro crítico" em sites com plugins de SMTP que substituem o envio padrão do WordPress. Os logos agora são embutidos só quando possível, e qualquer falha de envio aparece como aviso.
+- **Correção:** aplicar correções e verificar atualizações podiam exceder o tempo limite do servidor em sites grandes; tempos ajustados.
+
 ## 1.3.0
 - **Atualizações automáticas pelo GitHub:** o plugin passa a receber novas versões pela tela de Plugins do WordPress, como qualquer outro plugin (com opção de atualização automática).
 - Ícone da Ondaweb na lista de atualizações.

@@ -10,6 +10,7 @@ class OWSU_Admin {
 		foreach ( array( 'owsu_scan', 'owsu_vuln_update', 'owsu_apply', 'owsu_undo', 'owsu_tech_report' ) as $a ) {
 			add_action( 'admin_post_' . $a, array( __CLASS__, $a ) );
 		}
+		add_action( 'wp_ajax_owsu_scan_step', array( __CLASS__, 'ajax_step' ) );
 	}
 
 	private static function url( $args = array() ) {
@@ -50,14 +51,23 @@ class OWSU_Admin {
 		if ( ! isset( OWSU_Security::definitions()[ $id ] ) ) {
 			self::back( 'Erro: verificação desconhecida.' );
 		}
-		$r = OWSU_Security::apply( $id );
+		@set_time_limit( 180 ); // phpcs:ignore
+		$title = OWSU_Security::definitions()[ $id ]['title'];
+		try {
+			$r = OWSU_Security::apply( $id );
+		} catch ( \Throwable $e ) {
+			OWUM_ErrorLog::add( 'error', 'Aplicar correção "' . $title . '": ' . $e->getMessage(), array( 'file' => $e->getFile(), 'line' => $e->getLine(), 'trace' => $e->getTraceAsString() ) );
+			self::back( 'Erro inesperado ao aplicar a correção. O detalhe foi salvo no Registro de erros.', array( 'focus' => $id ) );
+		}
 		if ( is_wp_error( $r ) ) {
+			OWUM_ErrorLog::op( 'Aplicar correção "' . $title . '"', $r->get_error_message() );
 			self::back( 'Erro: ' . $r->get_error_message(), array( 'focus' => $id ) );
 		}
-		// Recarrega o PHP desta requisição não reflete a correção ainda; a nova verificação roda via HTTP.
-		OWSU_Security::run_one( $id );
-		$res = OWSU_Security::last_scan()['results'][ $id ];
-		$msg = 'Correção aplicada: ' . OWSU_Security::definitions()[ $id ]['title'] . '.';
+		// A nova verificação roda via HTTP para refletir a correção recém-aplicada.
+		self::safe_run_one( $id );
+		$scan = OWSU_Security::last_scan();
+		$res  = isset( $scan['results'][ $id ] ) ? $scan['results'][ $id ] : array( 'status' => 'info' );
+		$msg  = 'Correção aplicada: ' . $title . '.';
 		if ( in_array( $res['status'], array( 'crit', 'warn' ), true ) ) {
 			$msg .= ' A verificação ainda aponta problema — veja os detalhes do item.';
 		}
@@ -70,9 +80,110 @@ class OWSU_Admin {
 		if ( ! isset( OWSU_Security::definitions()[ $id ] ) ) {
 			self::back( 'Erro: verificação desconhecida.' );
 		}
-		OWSU_Security::undo( $id );
-		OWSU_Security::run_one( $id );
+		@set_time_limit( 180 ); // phpcs:ignore
+		try {
+			OWSU_Security::undo( $id );
+		} catch ( \Throwable $e ) {
+			OWUM_ErrorLog::add( 'error', 'Desfazer correção "' . OWSU_Security::definitions()[ $id ]['title'] . '": ' . $e->getMessage(), array( 'file' => $e->getFile(), 'line' => $e->getLine(), 'trace' => $e->getTraceAsString() ) );
+			self::back( 'Erro inesperado ao desfazer. O detalhe foi salvo no Registro de erros.', array( 'focus' => $id ) );
+		}
+		self::safe_run_one( $id );
 		self::back( 'Correção desfeita: ' . OWSU_Security::definitions()[ $id ]['title'] . '.', array( 'focus' => $id ) );
+	}
+
+	/* Verificação passo a passo (barra de progresso) ------------------------ */
+
+	private static function tmp_key() {
+		return 'owsu_scan_tmp_' . get_current_user_id();
+	}
+
+	public static function ajax_step() {
+		if ( ! current_user_can( owum_cap() ) || ! check_ajax_referer( 'owsu_scan_step', 'nonce', false ) ) {
+			wp_send_json_error( array( 'msg' => 'Sessão expirada. Recarregue a página.' ), 403 );
+		}
+		@set_time_limit( 120 ); // phpcs:ignore
+		$op = isset( $_POST['op'] ) ? sanitize_key( $_POST['op'] ) : ''; // phpcs:ignore
+
+		if ( 'start' === $op ) {
+			$steps = array();
+			if ( ! empty( $_POST['vuln'] ) && OWSU_Vulns::key() ) { // phpcs:ignore
+				$steps[] = array( 'id' => '__vuln', 'label' => 'Baixando a base de vulnerabilidades da Wordfence', 'group' => 'Pode levar até 1 minuto', 'slow' => 1 );
+			}
+			$groups = OWSU_Security::groups();
+			foreach ( OWSU_Security::definitions() as $id => $d ) {
+				$steps[] = array( 'id' => $id, 'label' => $d['title'], 'group' => $groups[ $d['group'] ] );
+			}
+			set_site_transient( self::tmp_key(), array( 'started' => current_time( 'mysql' ), 'results' => array(), 'notes' => array() ), HOUR_IN_SECONDS );
+			wp_send_json_success( array( 'steps' => $steps ) );
+		}
+
+		$tmp = get_site_transient( self::tmp_key() );
+		if ( ! is_array( $tmp ) ) {
+			wp_send_json_error( array( 'msg' => 'A verificação expirou. Comece novamente.' ), 409 );
+		}
+
+		if ( 'step' === $op ) {
+			$id = isset( $_POST['id'] ) ? sanitize_key( wp_unslash( $_POST['id'] ) ) : ''; // phpcs:ignore
+			if ( '__vuln' === $id ) {
+				$r = OWSU_Vulns::update();
+				$v = OWSU_Vulns::get();
+				if ( is_wp_error( $r ) ) {
+					$tmp['notes'][] = 'Base de vulnerabilidades: ' . $r->get_error_message();
+					set_site_transient( self::tmp_key(), $tmp, HOUR_IN_SECONDS );
+					wp_send_json_success( array( 'status' => 'warn', 'label' => 'Falhou', 'detail' => $r->get_error_message() ) );
+				}
+				wp_send_json_success( array( 'status' => 'ok', 'label' => 'OK', 'detail' => number_format_i18n( (int) $v['records'] ) . ' registros analisados' ) );
+			}
+			if ( ! isset( OWSU_Security::definitions()[ $id ] ) ) {
+				wp_send_json_error( array( 'msg' => 'Verificação desconhecida.' ), 400 );
+			}
+			OWSU_Security::reset_http();
+			$res                    = OWSU_Security::run_check( $id );
+			$tmp['results'][ $id ]  = $res;
+			set_site_transient( self::tmp_key(), $tmp, HOUR_IN_SECONDS );
+			wp_send_json_success( array( 'status' => $res['status'], 'label' => OWSU_Security::status_label( $res['status'] ), 'detail' => $res['detail'] ) );
+		}
+
+		if ( 'fail' === $op ) {
+			// O navegador não recebeu resposta de uma etapa (erro 500, tempo esgotado etc.).
+			$id   = isset( $_POST['id'] ) ? sanitize_key( wp_unslash( $_POST['id'] ) ) : ''; // phpcs:ignore
+			$why  = isset( $_POST['why'] ) ? sanitize_text_field( wp_unslash( $_POST['why'] ) ) : ''; // phpcs:ignore
+			$defs = OWSU_Security::definitions();
+			OWUM_ErrorLog::add( 'error', 'Verificação "' . ( isset( $defs[ $id ] ) ? $defs[ $id ]['title'] : $id ) . '" não respondeu: ' . $why, array( 'source' => 'Ondaweb Security Updater', 'extra' => 'Etapa da verificação com barra de progresso.' ) );
+			if ( isset( $defs[ $id ] ) ) {
+				$tmp['results'][ $id ] = array( 'status' => 'info', 'detail' => 'Não foi possível verificar (' . $why . '). Detalhes no Registro de erros.', 'items' => array() );
+				set_site_transient( self::tmp_key(), $tmp, HOUR_IN_SECONDS );
+			}
+			wp_send_json_success();
+		}
+
+		if ( 'finish' === $op ) {
+			$results = array();
+			foreach ( OWSU_Security::definitions() as $id => $d ) {
+				$results[ $id ] = isset( $tmp['results'][ $id ] ) ? $tmp['results'][ $id ] : array( 'status' => 'info', 'detail' => 'Não verificado.', 'items' => array() );
+			}
+			$scan = array(
+				'time'    => current_time( 'mysql' ),
+				'results' => $results,
+				'score'   => OWSU_Security::score( $results ),
+			);
+			update_site_option( 'owsu_scan', $scan );
+			delete_site_transient( self::tmp_key() );
+			$msg = 'Verificação concluída: nota ' . $scan['score']['grade'] . ' (' . $scan['score']['score'] . '/100).';
+			if ( $tmp['notes'] ) {
+				$msg = 'Erro: ' . implode( ' ', $tmp['notes'] ) . ' — ' . $msg;
+			}
+			wp_send_json_success( array( 'redirect' => self::url( array( 'owsu_msg' => rawurlencode( $msg ) ) ) ) );
+		}
+		wp_send_json_error( array( 'msg' => 'Operação inválida.' ), 400 );
+	}
+
+	private static function safe_run_one( $id ) {
+		try {
+			OWSU_Security::run_one( $id );
+		} catch ( \Throwable $e ) {
+			OWUM_ErrorLog::add( 'warning', 'Nova verificação de "' . $id . '" falhou: ' . $e->getMessage(), array( 'file' => $e->getFile(), 'line' => $e->getLine() ), false );
+		}
 	}
 
 	/* Página -------------------------------------------------------------- */
@@ -82,7 +193,8 @@ class OWSU_Admin {
 	}
 
 	private static function action_form( $action, $id, $label, $class, $confirm ) {
-		return '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" style="display:inline" onsubmit="return confirm(' . esc_attr( wp_json_encode( $confirm ) ) . ');">'
+		$busy = 'owsu_undo' === $action ? 'Desfazendo a correção e testando o site…' : 'Aplicando a correção e testando o site…';
+		return '<form method="post" action="' . esc_url( admin_url( 'admin-post.php' ) ) . '" style="display:inline" data-owum-confirm="' . esc_attr( $confirm ) . '" data-owum-busy="' . esc_attr( $busy ) . '">'
 			. '<input type="hidden" name="action" value="' . esc_attr( $action ) . '"><input type="hidden" name="check" value="' . esc_attr( $id ) . '">'
 			. wp_nonce_field( $action, '_wpnonce', true, false )
 			. '<button type="submit" class="button ' . esc_attr( $class ) . '">' . esc_html( $label ) . '</button></form>';
@@ -128,9 +240,9 @@ class OWSU_Admin {
 		<div class="wrap">
 			<h1 class="wp-heading-inline">Segurança</h1>
 			<?php
-			echo self::link( 'owsu_scan', 'Executar verificação' ); // phpcs:ignore
+			echo str_replace( '<a ', '<a data-owsu-scan="0" ', self::link( 'owsu_scan', 'Executar verificação' ) ); // phpcs:ignore
 			if ( OWSU_Vulns::key() ) {
-				echo self::link( 'owsu_vuln_update', 'Atualizar base de vulnerabilidades' ); // phpcs:ignore
+				echo str_replace( '<a ', '<a data-owsu-scan="1" ', self::link( 'owsu_vuln_update', 'Atualizar base de vulnerabilidades' ) ); // phpcs:ignore
 			}
 			if ( $scan ) {
 				echo self::link( 'owsu_tech_report', 'Relatório técnico (interno)', 'page-title-action', '_blank' ); // phpcs:ignore

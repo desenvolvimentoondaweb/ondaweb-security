@@ -158,6 +158,7 @@ class OWSU_Captcha {
 		if ( is_wp_error( $res ) || 200 !== (int) wp_remote_retrieve_response_code( $res ) ) {
 			$msg = is_wp_error( $res ) ? $res->get_error_message() : 'HTTP ' . wp_remote_retrieve_response_code( $res );
 			update_site_option( 'owsu_rc_error', array( 'time' => current_time( 'mysql' ), 'msg' => $msg ) );
+			OWUM_ErrorLog::add( 'warning', 'reCAPTCHA: o Google não respondeu (' . $msg . '). Login liberado sem verificação.', array( 'source' => 'Ondaweb Security Updater' ), false );
 			if ( $strict ) {
 				return new WP_Error( 'owsu_captcha', 'Não foi possível contatar o Google para validar (' . $msg . ').' );
 			}

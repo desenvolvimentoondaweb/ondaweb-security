@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Ondaweb Security Updater
  * Description:       Inventário de versões (WordPress, plugins e temas) da rede multisite, histórico automático de atualizações, verificações e correções de segurança, vulnerabilidades conhecidas (Wordfence Intelligence) e relatório mensal por e-mail e PDF.
- * Version:           1.3.0
+ * Version:           1.4.0
  * Plugin URI:        https://github.com/desenvolvimentoondaweb/ondaweb-security
  * Update URI:        https://github.com/desenvolvimentoondaweb/ondaweb-security
  * Author:            Ondaweb
@@ -15,10 +15,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'OWUM_VERSION', '1.3.0' );
+define( 'OWUM_VERSION', '1.4.0' );
 define( 'OWUM_FILE', __FILE__ );
 define( 'OWUM_DIR', plugin_dir_path( __FILE__ ) );
 
+require_once OWUM_DIR . 'includes/class-owum-errorlog.php';
+OWUM_ErrorLog::boot();
 require_once OWUM_DIR . 'includes/class-owum-installer.php';
 require_once OWUM_DIR . 'includes/class-owum-collector.php';
 require_once OWUM_DIR . 'includes/class-owum-logger.php';
@@ -82,6 +84,9 @@ function owum_settings() {
 		'rc_secret'   => '',
 		'rc_score'    => 0.5,
 		'rc_verified' => '',
+		'err_email'   => 'desenvolvimento.ondaweb@gmail.com',
+		'err_mail'    => 1,
+		'err_site'    => 1,
 	);
 	return wp_parse_args( (array) get_site_option( 'owum_settings', array() ), $defaults );
 }

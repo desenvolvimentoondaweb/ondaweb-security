@@ -91,11 +91,13 @@ class OWSU_Vulns {
 			@unlink( $tmp ); // phpcs:ignore
 			$prev['error'] = $msg;
 			update_site_option( 'owsu_vulns', $prev );
+			OWUM_ErrorLog::op( 'Base de vulnerabilidades', $msg );
 			return new WP_Error( 'owsu', $msg );
 		}
 		$result = self::scan_file( $tmp, self::targets() );
 		@unlink( $tmp ); // phpcs:ignore
 		if ( is_wp_error( $result ) ) {
+			OWUM_ErrorLog::op( 'Base de vulnerabilidades', $result->get_error_message() );
 			$prev['error'] = $result->get_error_message();
 			update_site_option( 'owsu_vulns', $prev );
 			return $result;
