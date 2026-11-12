@@ -1,9 +1,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Ondaweb Security Updater 1.4.0\n"
+"Project-Id-Version: Ondaweb Security Updater 1.5.0\n"
 "Report-Msgid-Bugs-To: https://github.com/desenvolvimentoondaweb/ondaweb-security/issues\n"
-"POT-Creation-Date: 2026-11-12T12:31:49+00:00\n"
+"POT-Creation-Date: 2026-11-12T12:37:30+00:00\n"
 "PO-Revision-Date: 2026-11-12 12:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Português do Brasil\n"
