@@ -1,5 +1,11 @@
 # Histórico de versões
 
+## 1.5.0
+- **Versão internacional:** o plugin agora é escrito em inglês e traduzido para português do Brasil (arquivos em `/languages`). Sites em português continuam vendo tudo em português; sites em outros idiomas veem em inglês. Datas seguem o formato do idioma do site.
+- **Marca da agência configurável (white label):** nova seção "Sua agência (suporte)" em Configurações, com nome, site e logo de quem presta o suporte. Sem nome preenchido, o relatório usa "a equipe de suporte".
+- Instalações existentes mantêm automaticamente a marca Ondaweb (nome, logo, Elementor Pro como licença da agência e os mesmos e-mails). Instalações novas começam neutras, com os e-mails do administrador do site.
+- O aviso de erro do painel de Segurança não depende mais do idioma da mensagem.
+
 ## 1.4.0
 - **Verificação com barra de progresso:** a verificação de segurança mostra o andamento item a item, o tempo restante e o resultado de cada teste. Cada item roda separado, sem risco de estourar o tempo limite do servidor.
 - Indicador "aguarde" nas ações demoradas (aplicar/desfazer correção, verificar atualizações, enviar relatório, salvar configurações).
