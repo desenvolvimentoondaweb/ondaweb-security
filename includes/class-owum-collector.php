@@ -2,7 +2,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Lê versões instaladas, atualizações disponíveis e em quais sites cada item está ativo.
+ * Reads installed versions, available updates and on which sites each item is active.
  */
 class OWUM_Collector {
 
@@ -12,14 +12,14 @@ class OWUM_Collector {
 		require_once ABSPATH . 'wp-includes/update.php';
 	}
 
-	/** Versão real do core lida do arquivo (o global $wp_version fica desatualizado logo após um upgrade). */
+	/** Real core version read from disk (the global $wp_version is stale right after an upgrade). */
 	public static function core_version() {
 		$wp_version = '';
 		include ABSPATH . WPINC . '/version.php';
 		return $wp_version;
 	}
 
-	/** Foto atual das versões instaladas. */
+	/** Current snapshot of installed versions. */
 	public static function snapshot() {
 		self::load_includes();
 		wp_clean_plugins_cache( false );
@@ -43,14 +43,14 @@ class OWUM_Collector {
 			$snap['theme'][ $slug ] = array(
 				'name'    => $theme->get( 'Name' ),
 				'version' => $theme->get( 'Version' ),
-				'core'    => 'the WordPress team' === $theme->get( 'Author' ), // temas padrão "Twenty"
+				'core'    => 'the WordPress team' === $theme->get( 'Author' ), // default "Twenty" themes
 				'child'   => (bool) $theme->parent(),
 			);
 		}
 		return $snap;
 	}
 
-	/** Força nova consulta de atualizações em wordpress.org e nos plugins pagos. */
+	/** Forces a new update check on wordpress.org and on paid plugins. */
 	public static function force_check() {
 		self::load_includes();
 		delete_site_transient( 'update_plugins' );
@@ -63,7 +63,7 @@ class OWUM_Collector {
 		update_site_option( 'owum_last_check', current_time( 'mysql' ) );
 	}
 
-	/** Lista de sites da rede: id => [nome, url]. */
+	/** Network sites: id => [name, url]. */
 	public static function sites() {
 		$out = array();
 		if ( ! is_multisite() ) {
@@ -82,7 +82,7 @@ class OWUM_Collector {
 		return $out;
 	}
 
-	/** Informações do core. */
+	/** Core information. */
 	public static function core() {
 		self::load_includes();
 		$installed = self::core_version();
@@ -105,7 +105,7 @@ class OWUM_Collector {
 	}
 
 	/**
-	 * Inventário completo.
+	 * Full inventory.
 	 *
 	 * @return array{core:array,plugins:array,themes:array,sites:array}
 	 */
@@ -117,7 +117,7 @@ class OWUM_Collector {
 		$up_p  = get_site_transient( 'update_plugins' );
 		$up_t  = get_site_transient( 'update_themes' );
 
-		// Mapa de ativação por site.
+		// Activation map per site.
 		$network_active = is_multisite() ? array_keys( (array) get_site_option( 'active_sitewide_plugins', array() ) ) : array();
 		$plugin_sites   = array();
 		$theme_sites    = array();
@@ -132,7 +132,7 @@ class OWUM_Collector {
 				$theme_sites[ $ss ][] = $id;
 			}
 			if ( $tp && $tp !== $ss ) {
-				$theme_sites[ $tp ][] = $id; // tema pai em uso por um tema filho
+				$theme_sites[ $tp ][] = $id; // parent theme used by a child theme
 			}
 		}
 
@@ -189,7 +189,7 @@ class OWUM_Collector {
 		if ( ! empty( $m['tipo'] ) ) {
 			$tipo = $m['tipo'];
 		} elseif ( ! empty( $item['child'] ) ) {
-			$tipo = 'personalizado'; // tema filho: feito para o site, não recebe atualizações
+			$tipo = 'personalizado'; // child theme: built for the site, never receives updates
 		} elseif ( $wporg || $own ) {
 			$tipo = 'gratuito';
 		} elseif ( in_array( $key, self::ondaweb_defaults(), true ) ) {
@@ -200,7 +200,7 @@ class OWUM_Collector {
 		$known   = isset( $m['ultima_conhecida'] ) ? trim( $m['ultima_conhecida'] ) : '';
 		$manual  = false;
 
-		// Plugin pago sem aviso automático: usa a "última versão conhecida" informada manualmente.
+		// Paid plugin without automatic notice: uses the manually entered "latest known version".
 		if ( '' === $new && '' !== $known && version_compare( $known, $item['version'], '>' ) ) {
 			$new    = $known;
 			$manual = true;
@@ -234,34 +234,38 @@ class OWUM_Collector {
 		);
 	}
 
-	/** Plugins pagos cuja licença é fornecida pela Ondaweb (classificação inicial). */
+	/** Paid plugins whose license is provided by the agency (initial classification; set per install). */
 	public static function ondaweb_defaults() {
-		return apply_filters( 'owum_ondaweb_licensed', array( 'plugin:elementor-pro/elementor-pro.php' ) );
+		$s = owum_settings();
+		return apply_filters( 'owum_ondaweb_licensed', (array) $s['agency_licensed'] );
 	}
 
 	public static function tipo_label( $tipo ) {
+		$brand  = owum_brand();
 		$labels = array(
-			'gratuito' => 'Gratuito',
-			'ondaweb'  => 'Licença Ondaweb',
-			'pago'          => 'Pago (cliente)',
-			'personalizado' => 'Personalizado',
+			'gratuito'      => __( 'Free', 'ondaweb-security' ),
+			/* translators: %s: agency / support provider name */
+			'ondaweb'       => $brand ? sprintf( __( '%s license', 'ondaweb-security' ), $brand ) : __( 'Agency license', 'ondaweb-security' ),
+			'pago'          => __( 'Paid (client)', 'ondaweb-security' ),
+			'personalizado' => __( 'Custom', 'ondaweb-security' ),
 		);
 		return isset( $labels[ $tipo ] ) ? $labels[ $tipo ] : $tipo;
 	}
 
-	/** Texto curto sobre onde o item está ativo. */
+	/** Short text describing where the item is active. */
 	public static function where_label( $row, $sites ) {
 		if ( $row['network_active'] ) {
-			return 'Rede (todos os sites)';
+			return __( 'Network (all sites)', 'ondaweb-security' );
 		}
 		$n = count( $row['site_ids'] );
 		if ( 0 === $n ) {
-			return 'Inativo';
+			return __( 'Inactive', 'ondaweb-security' );
 		}
 		if ( ! is_multisite() ) {
-			return 'Ativo';
+			return __( 'Active', 'ondaweb-security' );
 		}
-		return 1 === $n ? '1 site' : $n . ' sites';
+		/* translators: %d: number of sites */
+		return sprintf( _n( '%d site', '%d sites', $n, 'ondaweb-security' ), $n );
 	}
 
 	public static function where_list( $row, $sites ) {
@@ -276,9 +280,9 @@ class OWUM_Collector {
 
 	public static function status_label( $status ) {
 		$labels = array(
-			'ok'   => 'Atualizado',
-			'free' => 'Atualização disponível',
-			'paid' => 'Solicitar ao cliente',
+			'ok'   => __( 'Up to date', 'ondaweb-security' ),
+			'free' => __( 'Update available', 'ondaweb-security' ),
+			'paid' => __( 'Ask the client', 'ondaweb-security' ),
 		);
 		return isset( $labels[ $status ] ) ? $labels[ $status ] : $status;
 	}

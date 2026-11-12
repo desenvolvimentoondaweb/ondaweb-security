@@ -2,13 +2,13 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Google reCAPTCHA v2 (caixa "Não sou um robô") ou v3 (invisível) no login,
- * senha perdida e cadastro.
+ * Google reCAPTCHA v2 ("I'm not a robot" checkbox) or v3 (invisible) on login,
+ * lost password and registration.
  *
- * Só passa a valer depois de um teste bem-sucedido na tela de Configurações,
- * para que chaves erradas nunca bloqueiem o acesso ao painel.
+ * It only starts applying after a successful test on the Settings screen,
+ * so wrong keys can never lock anyone out of the dashboard.
  *
- * Recuperação de acesso: adicione no wp-config.php
+ * Access recovery: add to wp-config.php
  *     define( 'OWSU_RECAPTCHA_OFF', true );
  */
 class OWSU_Captcha {
@@ -50,7 +50,13 @@ class OWSU_Captcha {
 
 	public static function label() {
 		$c = self::cfg();
-		return 'v3' === $c['v'] ? 'reCAPTCHA v3 (invisível)' : 'reCAPTCHA v2 (caixa "Não sou um robô")';
+		return 'v3' === $c['v'] ? __( 'reCAPTCHA v3 (invisible)', 'ondaweb-security' ) : __( 'reCAPTCHA v2 ("I\'m not a robot" checkbox)', 'ondaweb-security' );
+	}
+
+	/** Language of the reCAPTCHA widget (pt-BR, en, es...). */
+	public static function hl() {
+		$l = function_exists( 'determine_locale' ) ? determine_locale() : get_locale();
+		return in_array( $l, array( 'pt_BR', 'pt_PT', 'zh_CN', 'zh_TW', 'en_GB', 'es_419', 'fr_CA' ), true ) ? str_replace( '_', '-', $l ) : substr( $l, 0, 2 );
 	}
 
 	/* Login ----------------------------------------------------------------- */
@@ -74,11 +80,11 @@ class OWSU_Captcha {
 			wp_enqueue_script( 'owsu-recaptcha', 'https://www.google.com/recaptcha/api.js?render=' . rawurlencode( $c['site'] ), array(), null, true ); // phpcs:ignore
 			wp_add_inline_script( 'owsu-recaptcha', self::v3_js( $c['site'] ) );
 		} else {
-			wp_enqueue_script( 'owsu-recaptcha', 'https://www.google.com/recaptcha/api.js?hl=pt-BR', array(), null, true ); // phpcs:ignore
+			wp_enqueue_script( 'owsu-recaptcha', 'https://www.google.com/recaptcha/api.js?hl=' . rawurlencode( self::hl() ), array(), null, true ); // phpcs:ignore
 		}
 	}
 
-	/** Script v3: obtém o token no momento do envio (tokens expiram em 2 minutos). */
+	/** v3 script: gets the token at submit time (tokens expire after 2 minutes). */
 	public static function v3_js( $site ) {
 		return "(function(){var K=" . wp_json_encode( $site ) . ";var A={loginform:'login',lostpasswordform:'lostpassword',registerform:'register',owsurctest:'settings_test'};"
 			. "document.addEventListener('submit',function(e){var f=e.target,i=f.querySelector('.owsu-rc3');if(!i||f.getAttribute('data-owsu-ok'))return;e.preventDefault();"
@@ -92,7 +98,7 @@ class OWSU_Captcha {
 			echo '<input type="hidden" name="g-recaptcha-response" class="owsu-rc3" value="">';
 			return;
 		}
-		// O formulário de login tem 272px úteis; a caixa do Google tem 304px.
+		// The login form has 272px of usable width; Google's box is 304px.
 		echo '<div class="g-recaptcha" data-sitekey="' . esc_attr( $c['site'] ) . '" style="transform:scale(.89);transform-origin:0 0;margin:0 0 4px;"></div>';
 	}
 
@@ -131,18 +137,18 @@ class OWSU_Captcha {
 		return $errors;
 	}
 
-	/* Verificação no Google ------------------------------------------------- */
+	/* Verification with Google ---------------------------------------------- */
 
 	/**
-	 * @param string $token  Resposta enviada pelo formulário.
-	 * @param string $action Ação esperada (v3).
-	 * @param bool   $strict true = falha se o Google não responder (usado no teste); false = libera o login.
+	 * @param string $token  Response sent by the form.
+	 * @param string $action Expected action (v3).
+	 * @param bool   $strict true = fail if Google does not answer (used by the test); false = let the login through.
 	 * @return true|WP_Error
 	 */
 	public static function verify( $token, $action = 'login', $strict = false, $cfg = null ) {
 		$c = $cfg ? $cfg : self::cfg();
 		if ( '' === $token ) {
-			return new WP_Error( 'owsu_captcha', '<strong>Erro:</strong> confirme que você não é um robô e tente novamente.' );
+			return new WP_Error( 'owsu_captcha', '<strong>' . __( 'Error:', 'ondaweb-security' ) . '</strong> ' . __( 'please confirm you are not a robot and try again.', 'ondaweb-security' ) );
 		}
 		$res = wp_remote_post(
 			self::VERIFY_URL,
@@ -158,36 +164,38 @@ class OWSU_Captcha {
 		if ( is_wp_error( $res ) || 200 !== (int) wp_remote_retrieve_response_code( $res ) ) {
 			$msg = is_wp_error( $res ) ? $res->get_error_message() : 'HTTP ' . wp_remote_retrieve_response_code( $res );
 			update_site_option( 'owsu_rc_error', array( 'time' => current_time( 'mysql' ), 'msg' => $msg ) );
-			OWUM_ErrorLog::add( 'warning', 'reCAPTCHA: o Google não respondeu (' . $msg . '). Login liberado sem verificação.', array( 'source' => 'Ondaweb Security Updater' ), false );
+			/* translators: %s: error message */
+			OWUM_ErrorLog::add( 'warning', sprintf( __( 'reCAPTCHA: Google did not answer (%s). Login allowed without verification.', 'ondaweb-security' ), $msg ), array( 'source' => 'self' ), false );
 			if ( $strict ) {
-				return new WP_Error( 'owsu_captcha', 'Não foi possível contatar o Google para validar (' . $msg . ').' );
+				/* translators: %s: error message */
+				return new WP_Error( 'owsu_captcha', sprintf( __( 'Could not reach Google to validate (%s).', 'ondaweb-security' ), $msg ) );
 			}
-			// Google fora do ar ou bloqueado pelo servidor: não tranca o acesso.
+			// Google down or blocked by the server: never lock the access.
 			return true;
 		}
 		$d = json_decode( wp_remote_retrieve_body( $res ), true );
 		if ( empty( $d['success'] ) ) {
 			$codes = ! empty( $d['error-codes'] ) ? implode( ', ', (array) $d['error-codes'] ) : '';
 			if ( $strict ) {
-				return new WP_Error( 'owsu_captcha', 'O Google recusou a verificação' . ( $codes ? ' (' . $codes . ')' : '' ) . '. Confira se as chaves são da versão escolhida e se o domínio está cadastrado.' );
+				return new WP_Error( 'owsu_captcha', __( 'Google rejected the verification', 'ondaweb-security' ) . ( $codes ? ' (' . $codes . ')' : '' ) . '. ' . __( 'Check that the keys belong to the chosen version and that the domain is registered.', 'ondaweb-security' ) );
 			}
-			return new WP_Error( 'owsu_captcha', '<strong>Erro:</strong> a verificação anti-robô falhou. Tente novamente.' );
+			return new WP_Error( 'owsu_captcha', '<strong>' . __( 'Error:', 'ondaweb-security' ) . '</strong> ' . __( 'the anti-robot check failed. Please try again.', 'ondaweb-security' ) );
 		}
 		if ( 'v3' === $c['v'] ) {
 			if ( isset( $d['action'] ) && $d['action'] !== $action ) {
-				return new WP_Error( 'owsu_captcha', '<strong>Erro:</strong> a verificação anti-robô falhou. Tente novamente.' );
+				return new WP_Error( 'owsu_captcha', '<strong>' . __( 'Error:', 'ondaweb-security' ) . '</strong> ' . __( 'the anti-robot check failed. Please try again.', 'ondaweb-security' ) );
 			}
 			if ( ! $strict && isset( $d['score'] ) && (float) $d['score'] < $c['score'] ) {
-				return new WP_Error( 'owsu_captcha', '<strong>Erro:</strong> o acesso foi bloqueado pela proteção anti-robô. Tente novamente em alguns minutos.' );
+				return new WP_Error( 'owsu_captcha', '<strong>' . __( 'Error:', 'ondaweb-security' ) . '</strong> ' . __( 'access was blocked by the anti-robot protection. Please try again in a few minutes.', 'ondaweb-security' ) );
 			}
 		}
 		return true;
 	}
 
 	/**
-	 * Confere se a chave secreta existe (sem precisar de um token válido).
+	 * Checks that the secret key exists (without needing a valid token).
 	 *
-	 * @return true|WP_Error|null null = não foi possível consultar o Google.
+	 * @return true|WP_Error|null null = Google could not be reached.
 	 */
 	public static function check_secret( $secret ) {
 		$res = wp_remote_post( self::VERIFY_URL, array( 'timeout' => 10, 'body' => array( 'secret' => $secret, 'response' => 'owsu-test' ) ) );
@@ -196,7 +204,7 @@ class OWSU_Captcha {
 		}
 		$d = json_decode( wp_remote_retrieve_body( $res ), true );
 		if ( ! empty( $d['error-codes'] ) && in_array( 'invalid-input-secret', (array) $d['error-codes'], true ) ) {
-			return new WP_Error( 'owsu', 'A chave secreta do reCAPTCHA é inválida.' );
+			return new WP_Error( 'owsu', __( 'The reCAPTCHA secret key is invalid.', 'ondaweb-security' ) );
 		}
 		return true;
 	}

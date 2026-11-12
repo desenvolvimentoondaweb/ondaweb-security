@@ -26,7 +26,7 @@ class OWUM_Admin {
 
 	private static function guard( $action ) {
 		if ( ! current_user_can( owum_cap() ) ) {
-			wp_die( 'Sem permissão.', 403 );
+			wp_die( esc_html__( 'You are not allowed to do this.', 'ondaweb-security' ), 403 );
 		}
 		check_admin_referer( $action );
 	}
@@ -35,13 +35,13 @@ class OWUM_Admin {
 		$cap   = owum_cap();
 		$count = self::pending_count();
 		$bubble = $count ? ' <span class="awaiting-mod"><span class="pending-count">' . (int) $count . '</span></span>' : '';
-		add_menu_page( 'Ondaweb Security Updater', 'Ondaweb Security' . $bubble, $cap, 'owum', array( __CLASS__, 'page_dashboard' ), 'dashicons-shield', 21 );
-		add_submenu_page( 'owum', 'Atualizações', 'Atualizações', $cap, 'owum', array( __CLASS__, 'page_dashboard' ) );
-		add_submenu_page( 'owum', 'Segurança', 'Segurança', $cap, 'owum-security', array( 'OWSU_Admin', 'page' ) );
-		add_submenu_page( 'owum', 'Histórico de atualizações', 'Histórico', $cap, 'owum-history', array( __CLASS__, 'page_history' ) );
+		add_menu_page( OWUM_PRODUCT, 'Ondaweb Security' . $bubble, $cap, 'owum', array( __CLASS__, 'page_dashboard' ), 'dashicons-shield', 21 );
+		add_submenu_page( 'owum', __( 'Updates', 'ondaweb-security' ), __( 'Updates', 'ondaweb-security' ), $cap, 'owum', array( __CLASS__, 'page_dashboard' ) );
+		add_submenu_page( 'owum', __( 'Security', 'ondaweb-security' ), __( 'Security', 'ondaweb-security' ), $cap, 'owum-security', array( 'OWSU_Admin', 'page' ) );
+		add_submenu_page( 'owum', __( 'Update history', 'ondaweb-security' ), __( 'History', 'ondaweb-security' ), $cap, 'owum-history', array( __CLASS__, 'page_history' ) );
 		$errs = OWUM_ErrorLog::unseen();
-		add_submenu_page( 'owum', 'Registro de erros', 'Registro de erros' . ( $errs ? ' <span class="awaiting-mod"><span class="pending-count">' . (int) $errs . '</span></span>' : '' ), $cap, 'owum-errors', array( __CLASS__, 'page_errors' ) );
-		add_submenu_page( 'owum', 'Configurações', 'Configurações', $cap, 'owum-settings', array( __CLASS__, 'page_settings' ) );
+		add_submenu_page( 'owum', __( 'Error log', 'ondaweb-security' ), __( 'Error log', 'ondaweb-security' ) . ( $errs ? ' <span class="awaiting-mod"><span class="pending-count">' . (int) $errs . '</span></span>' : '' ), $cap, 'owum-errors', array( __CLASS__, 'page_errors' ) );
+		add_submenu_page( 'owum', __( 'Settings', 'ondaweb-security' ), __( 'Settings', 'ondaweb-security' ), $cap, 'owum-settings', array( __CLASS__, 'page_settings' ) );
 	}
 
 	public static function enqueue( $hook ) {
@@ -56,21 +56,22 @@ class OWUM_Admin {
 		$l  = owum_logo( $which );
 		?>
 		<tr><th scope="row"><?php echo esc_html( $label ); ?></th>
-			<td class="owum-logo" data-which="<?php echo esc_attr( $which ); ?>" data-default="<?php echo 'ondaweb' === $which ? esc_url( owum_default_logo()['url'] ) : ''; ?>">
+			<td class="owum-logo" data-which="<?php echo esc_attr( $which ); ?>" data-default="<?php echo ( 'ondaweb' === $which && ! empty( $s['brand_logo_default'] ) ) ? esc_url( owum_default_logo()['url'] ) : ''; ?>">
 				<input type="hidden" name="logo_<?php echo esc_attr( $which ); ?>" value="<?php echo (int) $id; ?>">
 				<div class="owum-logo-preview" style="margin-bottom:8px;min-height:20px;"><?php if ( $l ) : ?><img src="<?php echo esc_url( $l['url'] ); ?>" style="max-height:60px;max-width:240px;background:#fff;padding:6px;border:1px solid #dcdcde;border-radius:4px;"><?php endif; ?></div>
-				<button type="button" class="button owum-logo-pick">Escolher imagem</button>
-				<button type="button" class="button-link owum-logo-remove" style="margin-left:8px;color:#b32d2e;<?php echo $id ? '' : 'display:none;'; ?>"><?php echo 'ondaweb' === $which ? 'Voltar ao logo padrão' : 'Remover'; ?></button>
-				<?php if ( 'ondaweb' === $which && ! $id ) : ?><span class="description" style="margin-left:8px">Usando o logo padrão incluído no plugin.</span><?php endif; ?>
+				<button type="button" class="button owum-logo-pick"><?php esc_html_e( 'Choose image', 'ondaweb-security' ); ?></button>
+				<?php $legacy = 'ondaweb' === $which && ! empty( $s['brand_logo_default'] ); ?>
+				<button type="button" class="button-link owum-logo-remove" style="margin-left:8px;color:#b32d2e;<?php echo $id ? '' : 'display:none;'; ?>"><?php echo $legacy ? esc_html__( 'Back to the default logo', 'ondaweb-security' ) : esc_html__( 'Remove', 'ondaweb-security' ); ?></button>
+				<?php if ( $legacy && ! $id ) : ?><span class="description" style="margin-left:8px"><?php esc_html_e( 'Using the default logo bundled with the plugin.', 'ondaweb-security' ); ?></span><?php endif; ?>
 				<p class="description"><?php echo esc_html( $help ); ?></p>
 			</td></tr>
 		<?php
 	}
 
 	/**
-	 * Janela de progresso / carregamento usada em todas as telas do plugin:
-	 * - verificação de segurança item a item (com barra de progresso);
-	 * - indicador "trabalhando…" para ações demoradas (aplicar correção, enviar relatório etc.).
+	 * Progress / loading window used on every screen of the plugin:
+	 * - security check item by item (with a progress bar);
+	 * - "working…" indicator for slow actions (apply a fix, send the report, etc.).
 	 */
 	public static function progress_ui() {
 		$page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : ''; // phpcs:ignore
@@ -80,6 +81,24 @@ class OWUM_Admin {
 		$cfg = array(
 			'ajax'  => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'owsu_scan_step' ),
+			'i18n'  => array(
+				'dontClose'  => __( 'Do not close this page.', 'ondaweb-security' ),
+				'wait'       => __( 'Please wait', 'ondaweb-security' ),
+				'processing' => __( 'Processing…', 'ondaweb-security' ),
+				'fewSeconds' => __( 'This may take a few seconds. Do not close this page.', 'ondaweb-security' ),
+				'serverErr'  => __( 'server error', 'ondaweb-security' ),
+				'timeout'    => __( 'timed out', 'ondaweb-security' ),
+				'noResponse' => __( 'no response from the server', 'ondaweb-security' ),
+				'scanTitle'  => __( 'Checking the site\'s security', 'ondaweb-security' ),
+				'scanSub'    => __( 'Each item is tested in turn. Do not close this page.', 'ondaweb-security' ),
+				'cancelled'  => __( 'Cancelled.', 'ondaweb-security' ),
+				'grading'    => __( 'Calculating the grade…', 'ondaweb-security' ),
+				/* translators: %s: number of seconds (JavaScript placeholder) */
+				'secsLeft'   => __( '≈ %s s left', 'ondaweb-security' ),
+				'noAnswer'   => __( 'No response', 'ondaweb-security' ),
+				'cantGoOn'   => __( 'Could not continue:', 'ondaweb-security' ),
+				'close'      => __( 'Close', 'ondaweb-security' ),
+			),
 		);
 		?>
 		<style>
@@ -108,57 +127,57 @@ class OWUM_Admin {
 		</style>
 		<div id="owum-modal" role="dialog" aria-modal="true" aria-live="polite">
 			<div class="box">
-				<h2 class="ttl">Trabalhando…</h2>
-				<p class="sub">Não feche esta página.</p>
+				<h2 class="ttl"><?php esc_html_e( 'Working…', 'ondaweb-security' ); ?></h2>
+				<p class="sub"><?php esc_html_e( 'Do not close this page.', 'ondaweb-security' ); ?></p>
 				<div class="bar"><span></span></div>
-				<div class="row"><span class="cur"><span class="spin"></span><span class="txt">Preparando…</span></span><span class="pct"></span></div>
+				<div class="row"><span class="cur"><span class="spin"></span><span class="txt"><?php esc_html_e( 'Preparing…', 'ondaweb-security' ); ?></span></span><span class="pct"></span></div>
 				<div class="grp"></div>
 				<ul></ul>
-				<div class="foot"><span class="grp tm"></span><button type="button" class="button cancel" style="display:none">Cancelar</button></div>
+				<div class="foot"><span class="grp tm"></span><button type="button" class="button cancel" style="display:none"><?php esc_html_e( 'Cancel', 'ondaweb-security' ); ?></button></div>
 			</div>
 		</div>
 		<script>
 		(function(){
-			var C=<?php echo wp_json_encode( $cfg ); ?>;
+			var C=<?php echo wp_json_encode( $cfg ); ?>,T=C.i18n;
 			var M=document.getElementById('owum-modal');if(!M)return;
 			var q=function(s){return M.querySelector(s);};
-			function open(title,sub,busy){q('.ttl').textContent=title;q('.sub').textContent=sub||'Não feche esta página.';M.classList.toggle('busy',!!busy);q('.bar span').style.width=busy?'':'0';q('ul').innerHTML='';q('.pct').textContent='';q('.grp').textContent='';q('.tm').textContent='';q('.cancel').style.display='none';M.classList.add('on');}
-			window.owumBusy=function(msg){open('Aguarde',msg||'Processando…',true);q('.txt').textContent=msg||'Processando…';q('.sub').textContent='Isso pode levar alguns segundos. Não feche esta página.';};
-			// Ações demoradas: links e formulários marcados.
+			function open(title,sub,busy){q('.ttl').textContent=title;q('.sub').textContent=sub||T.dontClose;M.classList.toggle('busy',!!busy);q('.bar span').style.width=busy?'':'0';q('ul').innerHTML='';q('.pct').textContent='';q('.grp').textContent='';q('.tm').textContent='';q('.cancel').style.display='none';M.classList.add('on');}
+			window.owumBusy=function(msg){open(T.wait,msg||T.processing,true);q('.txt').textContent=msg||T.processing;q('.sub').textContent=T.fewSeconds;};
+			// Slow actions: marked links and forms.
 			document.addEventListener('click',function(e){var a=e.target.closest('a[data-owum-busy]');if(!a||e.ctrlKey||e.metaKey||a.target==='_blank')return;if(a.dataset.owumConfirm&&!confirm(a.dataset.owumConfirm)){e.preventDefault();return;}owumBusy(a.dataset.owumBusy);});
 			document.addEventListener('submit',function(e){var f=e.target;if(!f.matches('form[data-owum-confirm],form[data-owum-busy]'))return;if(f.dataset.owumConfirm&&!confirm(f.dataset.owumConfirm)){e.preventDefault();return;}if(f.dataset.owumBusy)owumBusy(f.dataset.owumBusy);});
 			window.addEventListener('pageshow',function(ev){if(ev.persisted)M.classList.remove('on');});
 
-			// Verificação de segurança item a item.
+			// Security check item by item.
 			function post(data,timeout){var fd=new FormData();fd.append('action','owsu_scan_step');fd.append('nonce',C.nonce);for(var k in data)fd.append(k,data[k]);
 				var ctl=window.AbortController?new AbortController():null,t=ctl?setTimeout(function(){ctl.abort();},timeout||90000):0;
-				return fetch(C.ajax,{method:'POST',body:fd,credentials:'same-origin',signal:ctl?ctl.signal:undefined}).then(function(r){clearTimeout(t);return r.text().then(function(x){var j=null;try{j=JSON.parse(x);}catch(err){}if(!r.ok||!j||!j.success){var m=(j&&j.data&&j.data.msg)?j.data.msg:('HTTP '+r.status+(r.status>=500?' – erro no servidor':''));throw new Error(m);}return j.data;});},function(err){clearTimeout(t);throw new Error(err&&err.name==='AbortError'?'tempo esgotado':'sem resposta do servidor');});}
+				return fetch(C.ajax,{method:'POST',body:fd,credentials:'same-origin',signal:ctl?ctl.signal:undefined}).then(function(r){clearTimeout(t);return r.text().then(function(x){var j=null;try{j=JSON.parse(x);}catch(err){}if(!r.ok||!j||!j.success){var m=(j&&j.data&&j.data.msg)?j.data.msg:('HTTP '+r.status+(r.status>=500?' – '+T.serverErr:''));throw new Error(m);}return j.data;});},function(err){clearTimeout(t);throw new Error(err&&err.name==='AbortError'?T.timeout:T.noResponse);});}
 			function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 			var stop=false;
 			function runScan(vuln){
-				stop=false;open('Verificando a segurança do site','Cada item é testado em sequência. Não feche esta página.');
+				stop=false;open(T.scanTitle,T.scanSub);
 				q('.cancel').style.display='';var t0=Date.now();
 				post({op:'start',vuln:vuln?1:0}).then(function(d){
 					var steps=d.steps,i=0,n=steps.length,ul=q('ul');
 					function next(){
-						if(stop){q('.txt').textContent='Cancelado.';setTimeout(function(){location.reload();},600);return;}
-						if(i>=n){q('.txt').textContent='Calculando a nota…';q('.cancel').style.display='none';
+						if(stop){q('.txt').textContent=T.cancelled;setTimeout(function(){location.reload();},600);return;}
+						if(i>=n){q('.txt').textContent=T.grading;q('.cancel').style.display='none';
 							return post({op:'finish'}).then(function(r){q('.bar span').style.width='100%';q('.pct').textContent='100%';location.href=r.redirect;},fatal);}
 						var s=steps[i];q('.txt').textContent=s.label;q('.grp').textContent=s.group;
 						var p=Math.round(i/n*100);q('.bar span').style.width=p+'%';q('.pct').textContent=p+'%';
-						var el=(Date.now()-t0)/1000;q('.tm').textContent=i?('≈ '+Math.max(1,Math.round(el/i*(n-i)))+' s restantes'):'';
+						var el=(Date.now()-t0)/1000;q('.tm').textContent=i?T.secsLeft.replace('%s',Math.max(1,Math.round(el/i*(n-i)))):'';
 						post({op:'step',id:s.id},s.slow?300000:90000).then(function(r){
 							ul.insertAdjacentHTML('afterbegin','<li><b><span class="owsu-badge '+esc(r.status)+'">'+esc(r.label)+'</span></b><span>'+esc(s.label)+'</span></li>');i++;next();
 						},function(err){
-							ul.insertAdjacentHTML('afterbegin','<li><b><span class="owsu-badge info">Sem resposta</span></b><span>'+esc(s.label)+' — '+esc(err.message)+'</span></li>');
+							ul.insertAdjacentHTML('afterbegin','<li><b><span class="owsu-badge info">'+esc(T.noAnswer)+'</span></b><span>'+esc(s.label)+' — '+esc(err.message)+'</span></li>');
 							post({op:'fail',id:s.id,why:err.message}).catch(function(){});i++;next();
 						});
 					}
 					next();
 				},fatal);
 			}
-			function fatal(err){q('.spin').style.display='none';q('.txt').textContent='Não foi possível continuar: '+err.message;q('.cancel').textContent='Fechar';q('.cancel').style.display='';stop=true;}
-			q('.cancel').addEventListener('click',function(){if(q('.cancel').textContent==='Fechar'){location.reload();return;}stop=true;q('.cancel').disabled=true;});
+			function fatal(err){q('.spin').style.display='none';q('.txt').textContent=T.cantGoOn+' '+err.message;q('.cancel').textContent=T.close;q('.cancel').style.display='';stop=true;}
+			q('.cancel').addEventListener('click',function(){if(q('.cancel').textContent===T.close){location.reload();return;}stop=true;q('.cancel').disabled=true;});
 			document.addEventListener('click',function(e){var a=e.target.closest('a[data-owsu-scan]');if(!a||!window.fetch)return;e.preventDefault();runScan(a.dataset.owsuScan==='1');});
 		})();
 		</script>
@@ -166,7 +185,7 @@ class OWUM_Admin {
 	}
 
 	public static function action_links( $links ) {
-		array_unshift( $links, '<a href="' . esc_url( self::page_url() ) . '"><strong>Abrir painel</strong></a>' );
+		array_unshift( $links, '<a href="' . esc_url( self::page_url() ) . '"><strong>' . esc_html__( 'Open dashboard', 'ondaweb-security' ) . '</strong></a>' );
 		return $links;
 	}
 
@@ -225,11 +244,11 @@ class OWUM_Admin {
 			return;
 		}
 		$msgs = array(
-			'saved'    => 'Classificações salvas.',
-			'checked'  => 'Verificação de atualizações concluída.',
-			'settings' => 'Configurações salvas.',
-			'sent'     => 'Relatório enviado por e-mail.',
-			'notsent'  => 'Não foi possível enviar o e-mail. O motivo aparece abaixo, em "Último envio", e no Registro de erros.',
+			'saved'    => __( 'Classifications saved.', 'ondaweb-security' ),
+			'checked'  => __( 'Update check finished.', 'ondaweb-security' ),
+			'settings' => __( 'Settings saved.', 'ondaweb-security' ),
+			'sent'     => __( 'Report sent by email.', 'ondaweb-security' ),
+			'notsent'  => __( 'The email could not be sent. The reason is shown below, under "Last sent", and in the Error log.', 'ondaweb-security' ),
 		);
 		$key  = sanitize_key( $_GET['owum_msg'] ); // phpcs:ignore
 		if ( isset( $msgs[ $key ] ) ) {
@@ -239,7 +258,7 @@ class OWUM_Admin {
 	}
 
 	/* ------------------------------------------------------------------ */
-	/* Painel                                                              */
+	/* Dashboard                                                           */
 	/* ------------------------------------------------------------------ */
 
 	public static function page_dashboard() {
@@ -254,37 +273,46 @@ class OWUM_Admin {
 		self::styles();
 		?>
 		<div class="wrap">
-			<h1 class="wp-heading-inline">Atualizações</h1>
-			<a class="page-title-action" data-owum-busy="Consultando atualizações no WordPress.org, no GitHub e nos plugins pagos…" href="<?php echo esc_url( self::action_url( 'owum_refresh' ) ); ?>">Verificar atualizações agora</a>
-			<a class="page-title-action" target="_blank" href="<?php echo esc_url( self::action_url( 'owum_report', array( 'month' => current_time( 'Y-m' ) ) ) ); ?>">Relatório / PDF</a>
+			<h1 class="wp-heading-inline"><?php esc_html_e( 'Updates', 'ondaweb-security' ); ?></h1>
+			<a class="page-title-action" data-owum-busy="<?php esc_attr_e( 'Checking for updates on WordPress.org, GitHub and paid plugins…', 'ondaweb-security' ); ?>" href="<?php echo esc_url( self::action_url( 'owum_refresh' ) ); ?>"><?php esc_html_e( 'Check for updates now', 'ondaweb-security' ); ?></a>
+			<a class="page-title-action" target="_blank" href="<?php echo esc_url( self::action_url( 'owum_report', array( 'month' => current_time( 'Y-m' ) ) ) ); ?>"><?php esc_html_e( 'Report / PDF', 'ondaweb-security' ); ?></a>
 			<hr class="wp-header-end">
 			<?php self::notice(); ?>
 
 			<div class="owum-cards">
-				<div class="owum-card"><div class="l">WordPress</div><div class="v <?php echo $core['available'] ? 'owum-free' : 'owum-ok'; ?>"><?php echo esc_html( $core['installed'] ); ?></div><div class="s"><?php echo $core['available'] ? 'Disponível: <strong>' . esc_html( $core['available'] ) . '</strong> — <a href="' . esc_url( is_multisite() ? network_admin_url( 'update-core.php' ) : admin_url( 'update-core.php' ) ) . '">atualizar</a>' : 'Versão mais recente'; ?></div></div>
+				<div class="owum-card"><div class="l">WordPress</div><div class="v <?php echo $core['available'] ? 'owum-free' : 'owum-ok'; ?>"><?php echo esc_html( $core['installed'] ); ?></div><div class="s"><?php
+					/* translators: %s: version number (in bold) */
+					echo $core['available'] ? sprintf( esc_html__( 'Available: %s', 'ondaweb-security' ), '<strong>' . esc_html( $core['available'] ) . '</strong>' ) . ' — <a href="' . esc_url( is_multisite() ? network_admin_url( 'update-core.php' ) : admin_url( 'update-core.php' ) ) . '">' . esc_html__( 'update', 'ondaweb-security' ) . '</a>' : esc_html__( 'Latest version', 'ondaweb-security' );
+					?></div></div>
 				<?php if ( is_multisite() ) : ?>
-				<div class="owum-card"><div class="l">Sites na rede</div><div class="v"><?php echo count( $inv['sites'] ); ?></div><div class="s"><?php echo count( $inv['plugins'] ); ?> plugins · <?php echo count( $inv['themes'] ); ?> temas</div></div>
+				<div class="owum-card"><div class="l"><?php esc_html_e( 'Sites in the network', 'ondaweb-security' ); ?></div><div class="v"><?php echo count( $inv['sites'] ); ?></div><div class="s"><?php echo esc_html( sprintf( /* translators: 1: number of plugins, 2: number of themes */ __( '%1$d plugins · %2$d themes', 'ondaweb-security' ), count( $inv['plugins'] ), count( $inv['themes'] ) ) ); ?></div></div>
 				<?php else : ?>
-				<div class="owum-card"><div class="l">Plugins instalados</div><div class="v"><?php echo count( $inv['plugins'] ); ?></div><div class="s"><?php echo count( $inv['themes'] ); ?> temas</div></div>
+				<div class="owum-card"><div class="l"><?php esc_html_e( 'Installed plugins', 'ondaweb-security' ); ?></div><div class="v"><?php echo count( $inv['plugins'] ); ?></div><div class="s"><?php echo esc_html( sprintf( /* translators: %d: number of themes */ _n( '%d theme', '%d themes', count( $inv['themes'] ), 'ondaweb-security' ), count( $inv['themes'] ) ) ); ?></div></div>
 				<?php endif; ?>
-				<div class="owum-card"><div class="l">Pendências da equipe</div><div class="v owum-free"><?php echo (int) $free; ?></div><div class="s">gratuitos + licença Ondaweb</div></div>
-				<div class="owum-card"><div class="l">Pagas pendentes</div><div class="v owum-paid"><?php echo (int) $paid; ?></div><div class="s">solicitar ao cliente</div></div>
+				<div class="owum-card"><div class="l"><?php esc_html_e( 'Pending (team)', 'ondaweb-security' ); ?></div><div class="v owum-free"><?php echo (int) $free; ?></div><div class="s"><?php echo esc_html( sprintf( /* translators: %s: "Agency license" type label */ __( 'free + %s', 'ondaweb-security' ), OWUM_Collector::tipo_label( 'ondaweb' ) ) ); ?></div></div>
+				<div class="owum-card"><div class="l"><?php esc_html_e( 'Pending (paid)', 'ondaweb-security' ); ?></div><div class="v owum-paid"><?php echo (int) $paid; ?></div><div class="s"><?php esc_html_e( 'ask the client', 'ondaweb-security' ); ?></div></div>
 			</div>
-			<p class="description">Última verificação: <?php echo $last ? esc_html( mysql2date( 'd/m/Y H:i', $last ) ) : '—'; ?>. Itens fora do wordpress.org são sugeridos como <strong>Pago (cliente)</strong>; marque como <strong>Licença Ondaweb</strong> os que a Ondaweb fornece e salve.</p>
+			<p class="description"><?php
+				/* translators: %s: date and time */
+				echo esc_html( sprintf( __( 'Last check: %s.', 'ondaweb-security' ), $last ? owum_date( $last, true ) : '—' ) ) . ' ';
+				/* translators: 1: "Paid (client)" type label, 2: "Agency license" type label */
+				echo sprintf( esc_html__( 'Items not from wordpress.org are suggested as %1$s; mark the ones whose license you provide as %2$s, and save.', 'ondaweb-security' ), '<strong>' . esc_html( OWUM_Collector::tipo_label( 'pago' ) ) . '</strong>', '<strong>' . esc_html( OWUM_Collector::tipo_label( 'ondaweb' ) ) . '</strong>' );
+			?></p>
 
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<input type="hidden" name="action" value="owum_save_meta">
 				<?php wp_nonce_field( 'owum_save_meta' ); ?>
 
 				<?php
-				self::items_table( 'Plugins', $inv['plugins'], $inv['sites'] );
-				self::items_table( 'Temas', $inv['themes'], $inv['sites'] );
+				self::items_table( 'plugins', $inv['plugins'], $inv['sites'] );
+				self::items_table( 'themes', $inv['themes'], $inv['sites'] );
 				?>
-				<?php submit_button( 'Salvar classificações' ); ?>
+				<?php submit_button( __( 'Save classifications', 'ondaweb-security' ) ); ?>
 			</form>
 		</div>
 		<script>
 		(function(){
+			var L=document.documentElement.lang||undefined,SHOWING=<?php echo wp_json_encode( /* translators: 1: visible rows, 2: total rows (JavaScript placeholders) */ __( 'Showing %1$s of %2$s', 'ondaweb-security' ) ); ?>;
 			function vcmp(a,b){
 				if(a===b)return 0;if(!a)return -1;if(!b)return 1;
 				var x=a.split(/[.\-+]/),y=b.split(/[.\-+]/);
@@ -323,7 +351,7 @@ class OWUM_Admin {
 						tr.classList.toggle('owum-hide',!ok);
 						if(ok){tr.classList.toggle('owum-alt',n%2===1);n++;}
 					});
-					out.textContent='Mostrando '+n+' de '+rows.length;
+					out.textContent=SHOWING.replace('%1$s',n).replace('%2$s',rows.length);
 				}
 				q.addEventListener('keydown',function(e){if(e.key==='Enter')e.preventDefault();});
 				[q,fs,ft,fu,fsite].forEach(function(el){if(el){el.addEventListener('input',apply);el.addEventListener('change',apply);}});
@@ -338,8 +366,8 @@ class OWUM_Admin {
 							var va=val(a,key),vb=val(b,key),c;
 							if(key==='installed'||key==='available')c=vcmp(va,vb);
 							else if(typeof va==='number')c=va-vb;
-							else c=String(va).localeCompare(String(vb),'pt-BR');
-							if(!c)c=a.dataset.name.localeCompare(b.dataset.name,'pt-BR');
+							else c=String(va).localeCompare(String(vb),L);
+							if(!c)c=a.dataset.name.localeCompare(b.dataset.name,L);
 							return dir==='asc'?c:-c;
 						});
 						rows.forEach(function(tr){tbody.appendChild(tr);});
@@ -360,8 +388,12 @@ class OWUM_Admin {
 		return $r['site_ids'] ? 'parcial' : 'inativo';
 	}
 
-	private static function items_table( $title, $rows, $sites ) {
-		$id     = 'owum-' . sanitize_title( $title );
+	/**
+	 * @param string $kind 'plugins' or 'themes'.
+	 */
+	private static function items_table( $kind, $rows, $sites ) {
+		$title  = 'plugins' === $kind ? __( 'Plugins', 'ondaweb-security' ) : __( 'Themes', 'ondaweb-security' );
+		$id     = 'owum-' . $kind;
 		$counts = array( 'all' => count( $rows ), 'paid' => 0, 'free' => 0, 'ok' => 0 );
 		$uso    = array( 'rede' => 0, 'parcial' => 0, 'inativo' => 0 );
 		foreach ( $rows as $r ) {
@@ -371,40 +403,39 @@ class OWUM_Admin {
 		?>
 		<h2><?php echo esc_html( $title ); ?></h2>
 		<div class="owum-filters" data-table="<?php echo esc_attr( $id ); ?>">
-			<label>Buscar<input type="search" data-f="q" placeholder="Nome do <?php echo 'Plugins' === $title ? 'plugin' : 'tema'; ?>"></label>
-			<label>Situação<select data-f="status">
-				<option value="">Todas (<?php echo (int) $counts['all']; ?>)</option>
-				<option value="paid">Solicitar ao cliente (<?php echo (int) $counts['paid']; ?>)</option>
-				<option value="free">Atualização disponível (<?php echo (int) $counts['free']; ?>)</option>
-				<option value="ok">Atualizados (<?php echo (int) $counts['ok']; ?>)</option>
+			<label><?php esc_html_e( 'Search', 'ondaweb-security' ); ?><input type="search" data-f="q" placeholder="<?php echo 'plugins' === $kind ? esc_attr__( 'Plugin name', 'ondaweb-security' ) : esc_attr__( 'Theme name', 'ondaweb-security' ); ?>"></label>
+			<label><?php esc_html_e( 'Status', 'ondaweb-security' ); ?><select data-f="status">
+				<option value=""><?php echo esc_html( sprintf( /* translators: %d: count */ __( 'All (%d)', 'ondaweb-security' ), $counts['all'] ) ); ?></option>
+				<option value="paid"><?php echo esc_html( OWUM_Collector::status_label( 'paid' ) . ' (' . (int) $counts['paid'] . ')' ); ?></option>
+				<option value="free"><?php echo esc_html( OWUM_Collector::status_label( 'free' ) . ' (' . (int) $counts['free'] . ')' ); ?></option>
+				<option value="ok"><?php echo esc_html( OWUM_Collector::status_label( 'ok' ) . ' (' . (int) $counts['ok'] . ')' ); ?></option>
 			</select></label>
-			<label>Tipo<select data-f="tipo">
-				<option value="">Todos</option>
-				<option value="gratuito">Gratuito</option>
-				<option value="ondaweb">Licença Ondaweb</option>
-				<option value="pago">Pago (cliente)</option>
-				<option value="personalizado">Personalizado</option>
+			<label><?php esc_html_e( 'Type', 'ondaweb-security' ); ?><select data-f="tipo">
+				<option value=""><?php esc_html_e( 'All', 'ondaweb-security' ); ?></option>
+				<?php foreach ( array( 'gratuito', 'ondaweb', 'pago', 'personalizado' ) as $t ) : ?>
+					<option value="<?php echo esc_attr( $t ); ?>"><?php echo esc_html( OWUM_Collector::tipo_label( $t ) ); ?></option>
+				<?php endforeach; ?>
 			</select></label>
-			<label>Uso<select data-f="uso">
-				<option value="">Todos</option>
-				<?php if ( $uso['rede'] ) : ?><option value="rede">Ativo na rede toda (<?php echo (int) $uso['rede']; ?>)</option><?php endif; ?>
-				<option value="parcial"><?php echo is_multisite() ? 'Ativo em alguns sites' : 'Ativo'; ?> (<?php echo (int) $uso['parcial']; ?>)</option>
-				<option value="inativo"><?php echo is_multisite() ? 'Inativo em todos' : 'Inativo'; ?> (<?php echo (int) $uso['inativo']; ?>)</option>
+			<label><?php esc_html_e( 'Usage', 'ondaweb-security' ); ?><select data-f="uso">
+				<option value=""><?php esc_html_e( 'All', 'ondaweb-security' ); ?></option>
+				<?php if ( $uso['rede'] ) : ?><option value="rede"><?php echo esc_html( sprintf( /* translators: %d: count */ __( 'Active network-wide (%d)', 'ondaweb-security' ), $uso['rede'] ) ); ?></option><?php endif; ?>
+				<option value="parcial"><?php echo esc_html( sprintf( is_multisite() ? /* translators: %d: count */ __( 'Active on some sites (%d)', 'ondaweb-security' ) : /* translators: %d: count */ __( 'Active (%d)', 'ondaweb-security' ), $uso['parcial'] ) ); ?></option>
+				<option value="inativo"><?php echo esc_html( sprintf( is_multisite() ? /* translators: %d: count */ __( 'Inactive everywhere (%d)', 'ondaweb-security' ) : /* translators: %d: count */ __( 'Inactive (%d)', 'ondaweb-security' ), $uso['inativo'] ) ); ?></option>
 			</select></label>
 			<?php if ( count( $sites ) > 1 ) : ?>
-			<label>Ativo no site<select data-f="site">
-				<option value="">Qualquer site</option>
+			<label><?php esc_html_e( 'Active on site', 'ondaweb-security' ); ?><select data-f="site">
+				<option value=""><?php esc_html_e( 'Any site', 'ondaweb-security' ); ?></option>
 				<?php foreach ( $sites as $sid => $info ) : ?>
 					<option value="<?php echo (int) $sid; ?>"><?php echo esc_html( $info['name'] . ' — ' . $info['url'] ); ?></option>
 				<?php endforeach; ?>
 			</select></label>
 			<?php endif; ?>
-			<label>&nbsp;<button type="button" class="button" data-f="clear">Limpar filtros</button></label>
+			<label>&nbsp;<button type="button" class="button" data-f="clear"><?php esc_html_e( 'Clear filters', 'ondaweb-security' ); ?></button></label>
 			<span class="owum-count"></span>
 		</div>
 		<table class="widefat striped owum-table" id="<?php echo esc_attr( $id ); ?>">
 			<thead><tr>
-				<th class="owum-sort" data-key="name">Nome</th><th class="owum-sort" data-key="installed">Instalada</th><th class="owum-sort" data-key="available">Disponível</th><th class="owum-sort" data-key="status">Situação</th><th class="owum-sort" data-key="tipo" style="width:150px">Tipo</th><th class="owum-sort" data-key="uso">Uso</th><th>Observações / licença / fornecedor</th><th title="Para plugins pagos que não avisam atualização sozinhos">Última versão conhecida</th>
+				<th class="owum-sort" data-key="name"><?php esc_html_e( 'Name', 'ondaweb-security' ); ?></th><th class="owum-sort" data-key="installed"><?php esc_html_e( 'Installed', 'ondaweb-security' ); ?></th><th class="owum-sort" data-key="available"><?php esc_html_e( 'Available', 'ondaweb-security' ); ?></th><th class="owum-sort" data-key="status"><?php esc_html_e( 'Status', 'ondaweb-security' ); ?></th><th class="owum-sort" data-key="tipo" style="width:150px"><?php esc_html_e( 'Type', 'ondaweb-security' ); ?></th><th class="owum-sort" data-key="uso"><?php esc_html_e( 'Usage', 'ondaweb-security' ); ?></th><th><?php esc_html_e( 'Notes / license / vendor', 'ondaweb-security' ); ?></th><th title="<?php esc_attr_e( 'For paid plugins that do not announce updates on their own', 'ondaweb-security' ); ?>"><?php esc_html_e( 'Latest known version', 'ondaweb-security' ); ?></th>
 			</tr></thead>
 			<tbody>
 			<?php foreach ( $rows as $r ) :
@@ -414,16 +445,15 @@ class OWUM_Admin {
 				<tr data-status="<?php echo esc_attr( $r['status'] ); ?>" data-name="<?php echo esc_attr( function_exists( 'mb_strtolower' ) ? mb_strtolower( $r['name'] ) : strtolower( $r['name'] ) ); ?>" data-installed="<?php echo esc_attr( $r['installed'] ); ?>" data-available="<?php echo esc_attr( $r['available'] ); ?>" data-uso="<?php echo esc_attr( self::uso_kind( $r ) ); ?>" data-uso-n="<?php echo $r['network_active'] ? 100000 : count( $r['site_ids'] ); ?>" data-sites="|<?php echo esc_attr( implode( '|', $r['site_ids'] ) ); ?>|">
 					<td><strong><?php echo esc_html( $r['name'] ); ?></strong><?php echo $r['wporg'] ? '<br><span class="description" style="font-size:11px">wordpress.org</span>' : ''; ?></td>
 					<td><?php echo esc_html( $r['installed'] ); ?></td>
-					<td><?php echo $r['available'] ? '<strong>' . esc_html( $r['available'] ) . '</strong>' . ( 'manual' === $r['available_src'] ? '<br><span class="description" style="font-size:11px">manual</span>' : '' ) : '—'; ?></td>
+					<td><?php echo $r['available'] ? '<strong>' . esc_html( $r['available'] ) . '</strong>' . ( 'manual' === $r['available_src'] ? '<br><span class="description" style="font-size:11px">' . esc_html__( 'manual', 'ondaweb-security' ) . '</span>' : '' ) : '—'; ?></td>
 					<td><span class="owum-badge <?php echo esc_attr( $r['status'] ); ?>"><?php echo esc_html( OWUM_Collector::status_label( $r['status'] ) ); ?></span></td>
 					<td>
 						<select name="owum[<?php echo esc_attr( $k ); ?>][tipo]">
-							<option value="gratuito" <?php selected( $r['tipo'], 'gratuito' ); ?>>Gratuito</option>
-							<option value="ondaweb" <?php selected( $r['tipo'], 'ondaweb' ); ?>>Licença Ondaweb</option>
-							<option value="pago" <?php selected( $r['tipo'], 'pago' ); ?>>Pago (cliente)</option>
-							<option value="personalizado" <?php selected( $r['tipo'], 'personalizado' ); ?>>Personalizado</option>
+							<?php foreach ( array( 'gratuito', 'ondaweb', 'pago', 'personalizado' ) as $t ) : ?>
+								<option value="<?php echo esc_attr( $t ); ?>" <?php selected( $r['tipo'], $t ); ?>><?php echo esc_html( OWUM_Collector::tipo_label( $t ) ); ?></option>
+							<?php endforeach; ?>
 						</select>
-						<?php if ( ! $r['classified'] ) : ?><span class="owum-unclassified">sugestão automática</span><?php endif; ?>
+						<?php if ( ! $r['classified'] ) : ?><span class="owum-unclassified"><?php esc_html_e( 'automatic suggestion', 'ondaweb-security' ); ?></span><?php endif; ?>
 					</td>
 					<td>
 						<?php if ( $r['network_active'] || ! $names ) : ?>
@@ -432,8 +462,8 @@ class OWUM_Admin {
 							<details><summary><?php echo esc_html( OWUM_Collector::where_label( $r, $sites ) ); ?></summary><ul><?php foreach ( $names as $n ) { echo '<li>' . esc_html( $n ) . '</li>'; } ?></ul></details>
 						<?php endif; ?>
 					</td>
-					<td><input type="text" class="regular-text" name="owum[<?php echo esc_attr( $k ); ?>][obs]" value="<?php echo esc_attr( $r['obs'] ); ?>" placeholder="<?php echo 'pago' === $r['tipo'] ? 'Ex.: licença vence 03/2027 – conta do cliente' : ''; ?>"></td>
-					<td><input type="text" class="small" name="owum[<?php echo esc_attr( $k ); ?>][ultima_conhecida]" value="<?php echo esc_attr( $r['known'] ); ?>" placeholder="ex.: 2.4.1"></td>
+					<td><input type="text" class="regular-text" name="owum[<?php echo esc_attr( $k ); ?>][obs]" value="<?php echo esc_attr( $r['obs'] ); ?>" placeholder="<?php echo 'pago' === $r['tipo'] ? esc_attr__( 'E.g. license expires 03/2027 – client account', 'ondaweb-security' ) : ''; ?>"></td>
+					<td><input type="text" class="small" name="owum[<?php echo esc_attr( $k ); ?>][ultima_conhecida]" value="<?php echo esc_attr( $r['known'] ); ?>" placeholder="<?php esc_attr_e( 'e.g. 2.4.1', 'ondaweb-security' ); ?>"></td>
 				</tr>
 			<?php endforeach; ?>
 			</tbody>
@@ -471,7 +501,7 @@ class OWUM_Admin {
 	}
 
 	/* ------------------------------------------------------------------ */
-	/* Relatório para impressão / PDF                                      */
+	/* Printable report / PDF                                              */
 	/* ------------------------------------------------------------------ */
 
 	public static function owum_report() {
@@ -484,12 +514,12 @@ class OWUM_Admin {
 			$m            = gmdate( 'Y-m', strtotime( "-{$i} month", $first ) );
 			$months[ $m ] = OWUM_Report::month_label( $m );
 		}
-		$title = 'Relatorio-Atualizacoes-' . sanitize_title( $s['client_name'] ) . '-' . $ym;
+		$title = sanitize_title( __( 'Updates report', 'ondaweb-security' ) ) . '-' . sanitize_title( $s['client_name'] ) . '-' . $ym;
 		nocache_headers();
 		header( 'Content-Type: text/html; charset=utf-8' );
 		?>
 <!doctype html>
-<html lang="pt-BR">
+<html <?php language_attributes(); ?>>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -517,18 +547,18 @@ class OWUM_Admin {
 <form class="bar" method="get" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 	<input type="hidden" name="action" value="owum_report">
 	<input type="hidden" name="_wpnonce" value="<?php echo esc_attr( wp_create_nonce( 'owum_report' ) ); ?>">
-	<label>Mês do histórico:
+	<label><?php esc_html_e( 'History month:', 'ondaweb-security' ); ?>
 		<select name="month" onchange="this.form.submit()">
 			<?php foreach ( $months as $m => $label ) : ?>
 				<option value="<?php echo esc_attr( $m ); ?>" <?php selected( $m, $ym ); ?>><?php echo esc_html( $label ); ?></option>
 			<?php endforeach; ?>
 		</select>
 	</label>
-	<button type="button" onclick="window.print()">Salvar como PDF / Imprimir</button>
-	<a href="<?php echo esc_url( self::page_url() ); ?>">Voltar ao painel</a>
-	<span class="hint">Na janela de impressão, escolha “Salvar como PDF”.</span>
+	<button type="button" onclick="window.print()"><?php esc_html_e( 'Save as PDF / Print', 'ondaweb-security' ); ?></button>
+	<a href="<?php echo esc_url( self::page_url() ); ?>"><?php esc_html_e( 'Back to the dashboard', 'ondaweb-security' ); ?></a>
+	<span class="hint"><?php esc_html_e( 'In the print window, choose “Save as PDF”.', 'ondaweb-security' ); ?></span>
 </form>
-<div class="page"><?php echo OWUM_Report::html( $ym ); // phpcs:ignore -- já escapado ?></div>
+<div class="page"><?php echo OWUM_Report::html( $ym ); // phpcs:ignore -- already escaped ?></div>
 </body>
 </html>
 		<?php
@@ -536,7 +566,7 @@ class OWUM_Admin {
 	}
 
 	/* ------------------------------------------------------------------ */
-	/* Histórico                                                           */
+	/* History                                                             */
 	/* ------------------------------------------------------------------ */
 
 	public static function page_history() {
@@ -552,46 +582,46 @@ class OWUM_Admin {
 		self::styles();
 		?>
 		<div class="wrap">
-			<h1 class="wp-heading-inline">Histórico de atualizações</h1>
+			<h1 class="wp-heading-inline"><?php esc_html_e( 'Update history', 'ondaweb-security' ); ?></h1>
 			<?php if ( 'all' !== $ym ) : ?>
-				<a class="page-title-action" target="_blank" href="<?php echo esc_url( self::action_url( 'owum_report', array( 'month' => $ym ) ) ); ?>">Relatório deste mês / PDF</a>
+				<a class="page-title-action" target="_blank" href="<?php echo esc_url( self::action_url( 'owum_report', array( 'month' => $ym ) ) ); ?>"><?php esc_html_e( 'This month\'s report / PDF', 'ondaweb-security' ); ?></a>
 			<?php endif; ?>
 			<hr class="wp-header-end">
 			<form method="get" class="owum-toolbar">
 				<input type="hidden" name="page" value="owum-history">
 				<select name="month">
-					<option value="all" <?php selected( $ym, 'all' ); ?>>Todo o período</option>
+					<option value="all" <?php selected( $ym, 'all' ); ?>><?php esc_html_e( 'All time', 'ondaweb-security' ); ?></option>
 					<?php for ( $i = 0; $i < 24; $i++ ) : $m = gmdate( 'Y-m', strtotime( "-{$i} month", $first ) ); ?>
 						<option value="<?php echo esc_attr( $m ); ?>" <?php selected( $ym, $m ); ?>><?php echo esc_html( OWUM_Report::month_label( $m ) ); ?></option>
 					<?php endfor; ?>
 				</select>
 				<select name="type">
-					<option value="">Todos os tipos</option>
+					<option value=""><?php esc_html_e( 'All types', 'ondaweb-security' ); ?></option>
 					<option value="core" <?php selected( $type, 'core' ); ?>>WordPress</option>
-					<option value="plugin" <?php selected( $type, 'plugin' ); ?>>Plugins</option>
-					<option value="theme" <?php selected( $type, 'theme' ); ?>>Temas</option>
-					<option value="security" <?php selected( $type, 'security' ); ?>>Segurança</option>
+					<option value="plugin" <?php selected( $type, 'plugin' ); ?>><?php esc_html_e( 'Plugins', 'ondaweb-security' ); ?></option>
+					<option value="theme" <?php selected( $type, 'theme' ); ?>><?php esc_html_e( 'Themes', 'ondaweb-security' ); ?></option>
+					<option value="security" <?php selected( $type, 'security' ); ?>><?php esc_html_e( 'Security', 'ondaweb-security' ); ?></option>
 				</select>
-				<?php submit_button( 'Filtrar', 'secondary', '', false ); ?>
-				<span class="description"><?php echo count( $rows ); ?> registro(s)</span>
+				<?php submit_button( __( 'Filter', 'ondaweb-security' ), 'secondary', '', false ); ?>
+				<span class="description"><?php echo esc_html( sprintf( /* translators: %d: number of entries */ _n( '%d entry', '%d entries', count( $rows ), 'ondaweb-security' ), count( $rows ) ) ); ?></span>
 			</form>
 			<table class="widefat striped owum-table">
-				<thead><tr><th>Data</th><th>Tipo</th><th>Item</th><th>Ação</th><th>De</th><th>Para</th><th>Origem</th><th>Usuário</th><th>Notas</th></tr></thead>
+				<thead><tr><th><?php esc_html_e( 'Date', 'ondaweb-security' ); ?></th><th><?php esc_html_e( 'Type', 'ondaweb-security' ); ?></th><th><?php esc_html_e( 'Item', 'ondaweb-security' ); ?></th><th><?php esc_html_e( 'Action', 'ondaweb-security' ); ?></th><th><?php esc_html_e( 'From', 'ondaweb-security' ); ?></th><th><?php esc_html_e( 'To', 'ondaweb-security' ); ?></th><th><?php esc_html_e( 'Source', 'ondaweb-security' ); ?></th><th><?php esc_html_e( 'User', 'ondaweb-security' ); ?></th><th><?php esc_html_e( 'Notes', 'ondaweb-security' ); ?></th></tr></thead>
 				<tbody>
 				<?php if ( ! $rows ) : ?>
-					<tr><td colspan="9">Nenhum registro neste período.</td></tr>
+					<tr><td colspan="9"><?php esc_html_e( 'No entries in this period.', 'ondaweb-security' ); ?></td></tr>
 				<?php endif; ?>
 				<?php foreach ( $rows as $r ) : ?>
 					<tr>
-						<td style="white-space:nowrap"><?php echo esc_html( mysql2date( 'd/m/Y H:i', $r['logged_at'] ) ); ?></td>
+						<td style="white-space:nowrap"><?php echo esc_html( owum_date( $r['logged_at'], true ) ); ?></td>
 						<td><?php echo esc_html( OWUM_Logger::type_label( $r['item_type'] ) ); ?></td>
-						<td><strong><?php echo esc_html( $r['item_name'] ); ?></strong></td>
+						<td><strong><?php echo esc_html( OWUM_Logger::item_label( $r ) ); ?></strong></td>
 						<td><?php echo esc_html( OWUM_Logger::action_label( $r['action'] ) ); ?></td>
 						<td><?php echo esc_html( $r['old_version'] ? $r['old_version'] : '—' ); ?></td>
 						<td><strong><?php echo esc_html( $r['new_version'] ? $r['new_version'] : '—' ); ?></strong></td>
-						<td><?php echo esc_html( $r['source'] ); ?></td>
+						<td><?php echo esc_html( OWUM_Logger::source_label( $r['source'] ) ); ?></td>
 						<td><?php echo esc_html( $r['user_login'] ); ?></td>
-						<td><?php echo esc_html( (string) $r['notes'] ); ?></td>
+						<td><?php echo esc_html( OWUM_Logger::notes_label( $r ) ); ?></td>
 					</tr>
 				<?php endforeach; ?>
 				</tbody>
@@ -601,7 +631,7 @@ class OWUM_Admin {
 	}
 
 	/* ------------------------------------------------------------------ */
-	/* Configurações                                                       */
+	/* Settings                                                            */
 	/* ------------------------------------------------------------------ */
 
 	public static function page_settings() {
@@ -616,60 +646,75 @@ class OWUM_Admin {
 		$prev  = OWUM_Mailer::previous_month();
 		?>
 		<div class="wrap">
-			<h1>Configurações</h1>
+			<h1><?php esc_html_e( 'Settings', 'ondaweb-security' ); ?></h1>
 			<?php self::notice(); ?>
-			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" data-owum-busy="Salvando configurações…">
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" data-owum-busy="<?php esc_attr_e( 'Saving settings…', 'ondaweb-security' ); ?>">
 				<input type="hidden" name="action" value="owum_save_settings">
 				<?php wp_nonce_field( 'owum_save_settings' ); ?>
-				<h2>Relatório</h2>
+				<h2 id="owum-brand"><?php esc_html_e( 'Your agency (support provider)', 'ondaweb-security' ); ?></h2>
+				<p class="description"><?php esc_html_e( 'Shown to the client in the report and in the emails. Leave the name blank to use neutral wording such as "the support team".', 'ondaweb-security' ); ?></p>
 				<table class="form-table" role="presentation">
-					<tr><th scope="row"><label for="owum-client">Nome no relatório</label></th>
+					<tr><th scope="row"><label for="owum-brand-name"><?php esc_html_e( 'Agency name', 'ondaweb-security' ); ?></label></th>
+						<td><input id="owum-brand-name" type="text" class="regular-text" name="brand_name" value="<?php echo esc_attr( $s['brand_name'] ); ?>" placeholder="<?php esc_attr_e( 'e.g. Acme Web Studio', 'ondaweb-security' ); ?>"></td></tr>
+					<tr><th scope="row"><label for="owum-brand-url"><?php esc_html_e( 'Agency website', 'ondaweb-security' ); ?></label></th>
+						<td><input id="owum-brand-url" type="url" class="regular-text" name="brand_url" value="<?php echo esc_attr( $s['brand_url'] ); ?>" placeholder="https://"></td></tr>
+					<?php self::logo_field( 'ondaweb', __( 'Agency logo', 'ondaweb-security' ), __( 'Shown at the top right of the report, as technical support. Use PNG or JPG.', 'ondaweb-security' ) ); ?>
+				</table>
+
+				<h2><?php esc_html_e( 'Report', 'ondaweb-security' ); ?></h2>
+				<table class="form-table" role="presentation">
+					<tr><th scope="row"><label for="owum-client"><?php esc_html_e( 'Client name in the report', 'ondaweb-security' ); ?></label></th>
 						<td><input id="owum-client" type="text" class="regular-text" name="client_name" value="<?php echo esc_attr( $s['client_name'] ); ?>"></td></tr>
-					<?php
-					self::logo_field( 'client', 'Logo do cliente', 'Aparece no canto superior esquerdo do relatório. Use PNG ou JPG (SVG não aparece no Gmail/Outlook).' );
-					self::logo_field( 'ondaweb', 'Logo da Ondaweb', 'Aparece no canto superior direito, como suporte técnico. Já vem configurado; troque apenas se quiser outra versão.' );
-					?>
-					<tr><th scope="row"><label for="owum-emails">Destinatários</label></th>
+					<?php self::logo_field( 'client', __( 'Client logo', 'ondaweb-security' ), __( 'Shown at the top left of the report. Use PNG or JPG (SVG does not show in Gmail/Outlook).', 'ondaweb-security' ) ); ?>
+					<tr><th scope="row"><label for="owum-emails"><?php esc_html_e( 'Recipients', 'ondaweb-security' ); ?></label></th>
 						<td><input id="owum-emails" type="text" class="large-text" name="emails" value="<?php echo esc_attr( $s['emails'] ); ?>">
-						<p class="description">Separe vários e-mails por vírgula.</p></td></tr>
-					<tr><th scope="row">Envio mensal</th>
-						<td><label><input type="checkbox" name="enabled" value="1" <?php checked( $s['enabled'], 1 ); ?>> Enviar automaticamente o relatório do mês anterior</label></td></tr>
-					<tr><th scope="row"><label for="owum-day">Dia do envio</label></th>
+						<p class="description"><?php esc_html_e( 'Separate multiple emails with commas.', 'ondaweb-security' ); ?></p></td></tr>
+					<tr><th scope="row"><?php esc_html_e( 'Monthly email', 'ondaweb-security' ); ?></th>
+						<td><label><input type="checkbox" name="enabled" value="1" <?php checked( $s['enabled'], 1 ); ?>> <?php esc_html_e( 'Automatically send the previous month\'s report', 'ondaweb-security' ); ?></label></td></tr>
+					<tr><th scope="row"><label for="owum-day"><?php esc_html_e( 'Day of the month', 'ondaweb-security' ); ?></label></th>
 						<td><select id="owum-day" name="day"><?php for ( $d = 1; $d <= 28; $d++ ) : ?><option value="<?php echo (int) $d; ?>" <?php selected( (int) $s['day'], $d ); ?>><?php echo (int) $d; ?></option><?php endfor; ?></select>
-						<p class="description">Próxima execução da rotina diária: <?php echo $next ? esc_html( get_date_from_gmt( gmdate( 'Y-m-d H:i:s', $next ), 'd/m/Y H:i' ) ) : '<strong>não agendada</strong>'; ?>.
-						O WP-Cron depende de visitas ao site; para garantir o horário, configure um cron real no servidor chamando <code><?php echo esc_html( site_url( 'wp-cron.php' ) ); ?></code>.</p></td></tr>
+						<p class="description"><?php
+							/* translators: %s: date and time, or "not scheduled" */
+							echo sprintf( esc_html__( 'Next run of the daily routine: %s.', 'ondaweb-security' ), $next ? esc_html( owum_date_ts( $next, true ) ) : '<strong>' . esc_html__( 'not scheduled', 'ondaweb-security' ) . '</strong>' ) . ' ';
+							/* translators: %s: wp-cron.php address */
+							echo sprintf( esc_html__( 'WP-Cron depends on site visits; to guarantee the time, set up a real server cron calling %s.', 'ondaweb-security' ), '<code>' . esc_html( site_url( 'wp-cron.php' ) ) . '</code>' );
+						?></p></td></tr>
 				</table>
 
-				<h2>Vulnerabilidades</h2>
+				<h2><?php esc_html_e( 'Vulnerabilities', 'ondaweb-security' ); ?></h2>
 				<table class="form-table" role="presentation">
-					<tr><th scope="row"><label for="owum-wfkey">Chave da API Wordfence Intelligence</label></th>
+					<tr><th scope="row"><label for="owum-wfkey"><?php esc_html_e( 'Wordfence Intelligence API key', 'ondaweb-security' ); ?></label></th>
 						<td><input id="owum-wfkey" type="password" autocomplete="off" class="regular-text" name="wf_key" value="<?php echo esc_attr( $s['wf_key'] ); ?>">
-						<button type="button" class="button" onclick="var i=document.getElementById('owum-wfkey');i.type=i.type==='password'?'text':'password';">Mostrar</button>
-						<p class="description">Gratuita. Gere em <a href="https://www.wordfence.com/threat-intel/vulnerabilities/" target="_blank" rel="noopener">wordfence.com</a> (conta Wordfence → Wordfence Intelligence → API key). Usada para verificar vulnerabilidades conhecidas uma vez por dia.</p></td></tr>
+						<button type="button" class="button" onclick="var i=document.getElementById('owum-wfkey');i.type=i.type==='password'?'text':'password';"><?php esc_html_e( 'Show', 'ondaweb-security' ); ?></button>
+						<p class="description"><?php
+							/* translators: %s: link to wordfence.com */
+							echo sprintf( esc_html__( 'Free. Create it at %s (Wordfence account → Wordfence Intelligence → API key). Used to check for known vulnerabilities once a day.', 'ondaweb-security' ), '<a href="https://www.wordfence.com/threat-intel/vulnerabilities/" target="_blank" rel="noopener">wordfence.com</a>' );
+						?></p></td></tr>
 				</table>
 
-				<h2 id="owum-errors-cfg">Alertas de erro</h2>
+				<h2 id="owum-errors-cfg"><?php esc_html_e( 'Error alerts', 'ondaweb-security' ); ?></h2>
 				<table class="form-table" role="presentation">
-					<tr><th scope="row"><label for="owum-erremail">E-mail do desenvolvedor</label></th>
+					<tr><th scope="row"><label for="owum-erremail"><?php esc_html_e( 'Developer email', 'ondaweb-security' ); ?></label></th>
 						<td><input id="owum-erremail" type="text" class="large-text" name="err_email" value="<?php echo esc_attr( $s['err_email'] ); ?>">
-						<p class="description">Recebe os alertas de erro. Separe vários e-mails por vírgula.</p></td></tr>
-					<tr><th scope="row">Alertas</th>
-						<td><label><input type="checkbox" name="err_mail" value="1" <?php checked( $s['err_mail'], 1 ); ?>> Enviar e-mail na hora quando ocorrer um erro fatal ou uma falha do plugin</label>
-						<p class="description">O mesmo erro gera no máximo um e-mail a cada 6 horas (e no máximo 10 e-mails por hora no total).</p>
-						<label style="display:block;margin-top:8px"><input type="checkbox" name="err_site" value="1" <?php checked( $s['err_site'], 1 ); ?>> Registrar também erros fatais de outros plugins, do tema e do WordPress</label>
-						<p class="description">Desmarcado, registra apenas erros deste plugin.</p></td></tr>
+						<p class="description"><?php esc_html_e( 'Receives the error alerts. Separate multiple emails with commas.', 'ondaweb-security' ); ?></p></td></tr>
+					<tr><th scope="row"><?php esc_html_e( 'Alerts', 'ondaweb-security' ); ?></th>
+						<td><label><input type="checkbox" name="err_mail" value="1" <?php checked( $s['err_mail'], 1 ); ?>> <?php esc_html_e( 'Send an email right away when a fatal error or a plugin failure happens', 'ondaweb-security' ); ?></label>
+						<p class="description"><?php esc_html_e( 'The same error sends at most one email every 6 hours (and at most 10 emails per hour overall).', 'ondaweb-security' ); ?></p>
+						<label style="display:block;margin-top:8px"><input type="checkbox" name="err_site" value="1" <?php checked( $s['err_site'], 1 ); ?>> <?php esc_html_e( 'Also record fatal errors from other plugins, the theme and WordPress', 'ondaweb-security' ); ?></label>
+						<p class="description"><?php esc_html_e( 'Unchecked, only this plugin\'s errors are recorded.', 'ondaweb-security' ); ?></p></td></tr>
 				</table>
 
 				<?php self::login_section( $s ); ?>
-				<?php submit_button( 'Salvar configurações' ); ?>
+				<?php submit_button( __( 'Save settings', 'ondaweb-security' ) ); ?>
 			</form>
 			<script>
 			window.addEventListener('load',function(){
+				var LT=<?php echo wp_json_encode( array( 'nolib' => __( 'Media library unavailable.', 'ondaweb-security' ), 'title' => __( 'Choose logo', 'ondaweb-security' ), 'use' => __( 'Use this image', 'ondaweb-security' ) ) ); ?>;
 				document.querySelectorAll('.owum-logo').forEach(function(box){
 					var input=box.querySelector('input'),prev=box.querySelector('.owum-logo-preview'),rm=box.querySelector('.owum-logo-remove'),frame;
 					box.querySelector('.owum-logo-pick').addEventListener('click',function(){
-						if(!window.wp||!wp.media){alert('Biblioteca de mídia indisponível.');return;}
-						if(!frame){frame=wp.media({title:'Escolher logo',button:{text:'Usar esta imagem'},library:{type:'image'},multiple:false});
+						if(!window.wp||!wp.media){alert(LT.nolib);return;}
+						if(!frame){frame=wp.media({title:LT.title,button:{text:LT.use},library:{type:'image'},multiple:false});
 							frame.on('select',function(){var a=frame.state().get('selection').first().toJSON();input.value=a.id;
 								prev.innerHTML='<img src="'+a.url+'" style="max-height:60px;max-width:240px;background:#fff;padding:6px;border:1px solid #dcdcde;border-radius:4px;">';rm.style.display='';});}
 						frame.open();
@@ -681,20 +726,30 @@ class OWUM_Admin {
 
 			<?php self::rc_test_box(); ?>
 
-			<h2>Enviar agora</h2>
+			<h2><?php esc_html_e( 'Send now', 'ondaweb-security' ); ?></h2>
 			<p>
-				<a class="button" data-owum-busy="Montando e enviando o relatório…" href="<?php echo esc_url( self::action_url( 'owum_send_now', array( 'month' => $prev ) ) ); ?>">Enviar relatório de <?php echo esc_html( OWUM_Report::month_label( $prev ) ); ?></a>
-				<a class="button" data-owum-busy="Montando e enviando o relatório…" href="<?php echo esc_url( self::action_url( 'owum_send_now', array( 'month' => current_time( 'Y-m' ) ) ) ); ?>">Enviar relatório do mês atual (parcial)</a>
+				<a class="button" data-owum-busy="<?php esc_attr_e( 'Building and sending the report…', 'ondaweb-security' ); ?>" href="<?php echo esc_url( self::action_url( 'owum_send_now', array( 'month' => $prev ) ) ); ?>"><?php echo esc_html( sprintf( /* translators: %s: month and year */ __( 'Send the %s report', 'ondaweb-security' ), OWUM_Report::month_label( $prev ) ) ); ?></a>
+				<a class="button" data-owum-busy="<?php esc_attr_e( 'Building and sending the report…', 'ondaweb-security' ); ?>" href="<?php echo esc_url( self::action_url( 'owum_send_now', array( 'month' => current_time( 'Y-m' ) ) ) ); ?>"><?php esc_html_e( 'Send this month\'s report (partial)', 'ondaweb-security' ); ?></a>
 			</p>
 			<?php if ( is_array( $last ) ) : ?>
-				<p class="description">Último envio: <?php echo esc_html( mysql2date( 'd/m/Y H:i', $last['when'] ) ); ?> — <?php echo esc_html( OWUM_Report::month_label( $last['month'] ) ); ?> para <?php echo esc_html( $last['to'] ); ?> — <?php echo $last['ok'] ? 'enviado' : '<strong style="color:#b32d2e">falhou</strong>' . ( ! empty( $last['error'] ) ? ' — ' . esc_html( $last['error'] ) : '' ); ?>.</p>
+				<p class="description"><?php
+					echo esc_html(
+						sprintf(
+							/* translators: 1: date and time, 2: month and year, 3: recipients */
+							__( 'Last sent: %1$s — %2$s to %3$s', 'ondaweb-security' ),
+							owum_date( $last['when'], true ),
+							OWUM_Report::month_label( $last['month'] ),
+							$last['to']
+						)
+					) . ' — ' . ( $last['ok'] ? esc_html__( 'sent', 'ondaweb-security' ) : '<strong style="color:#b32d2e">' . esc_html__( 'failed', 'ondaweb-security' ) . '</strong>' . ( ! empty( $last['error'] ) ? ' — ' . esc_html( $last['error'] ) : '' ) ) . '.';
+				?></p>
 			<?php endif; ?>
 		</div>
 		<?php
 	}
 
 	/* ------------------------------------------------------------------ */
-	/* Proteção do login                                                   */
+	/* Login protection                                                    */
 	/* ------------------------------------------------------------------ */
 
 	private static function login_section( $s ) {
@@ -708,58 +763,88 @@ class OWUM_Admin {
 		$rc_off  = defined( 'OWSU_RECAPTCHA_OFF' ) && OWSU_RECAPTCHA_OFF;
 		$rc_err  = get_site_option( 'owsu_rc_error' );
 		?>
-		<h2 id="owum-login">Proteção do login</h2>
+		<h2 id="owum-login"><?php esc_html_e( 'Login protection', 'ondaweb-security' ); ?></h2>
 		<?php if ( $wps ) : ?>
-			<div class="notice notice-warning inline"><p><strong>O plugin WPS Hide Login está ativo</strong><?php echo $wpsslug ? ' (endereço atual: <code>/' . esc_html( $wpsslug ) . '</code>)' : ''; ?>. Para usar o recurso deste plugin: salve o mesmo endereço abaixo e depois desative o WPS Hide Login — o login continua no mesmo endereço, sem interrupção.</p></div>
+			<div class="notice notice-warning inline"><p><strong><?php esc_html_e( 'The WPS Hide Login plugin is active', 'ondaweb-security' ); ?></strong><?php echo $wpsslug ? ' (' . sprintf( /* translators: %s: current login address */ esc_html__( 'current address: %s', 'ondaweb-security' ), '<code>/' . esc_html( $wpsslug ) . '</code>' ) . ')' : ''; ?>. <?php esc_html_e( 'To use this plugin\'s feature instead: save the same address below, then deactivate WPS Hide Login — the login stays at the same address, with no interruption.', 'ondaweb-security' ); ?></p></div>
 		<?php endif; ?>
 		<table class="form-table" role="presentation">
-			<tr><th scope="row"><label for="owum-slug">Endereço de login</label></th>
+			<tr><th scope="row"><label for="owum-slug"><?php esc_html_e( 'Login address', 'ondaweb-security' ); ?></label></th>
 				<td>
-					<code style="padding:6px 4px;background:none"><?php echo esc_html( $prefix ); ?></code><input id="owum-slug" type="text" class="regular-text" style="width:220px" name="login_slug" value="<?php echo esc_attr( $slug ? $slug : ( $wps ? $wpsslug : '' ) ); ?>" placeholder="ex.: acesso-restrito" autocomplete="off" spellcheck="false">
+					<code style="padding:6px 4px;background:none"><?php echo esc_html( $prefix ); ?></code><input id="owum-slug" type="text" class="regular-text" style="width:220px" name="login_slug" value="<?php echo esc_attr( $slug ? $slug : ( $wps ? $wpsslug : '' ) ); ?>" placeholder="<?php esc_attr_e( 'e.g. private-access', 'ondaweb-security' ); ?>" autocomplete="off" spellcheck="false">
 					<?php if ( OWSU_Login::slug() ) : ?>
-						<p style="margin-top:8px"><span class="dashicons dashicons-yes-alt" style="color:#00a32a"></span> Ativo: <a href="<?php echo esc_url( OWSU_Login::url( $main ) ); ?>" target="_blank"><strong><?php echo esc_html( OWSU_Login::url( $main ) ); ?></strong></a>
-						<button type="button" class="button button-small" onclick="navigator.clipboard&&navigator.clipboard.writeText(<?php echo esc_attr( wp_json_encode( OWSU_Login::url( $main ) ) ); ?>);this.textContent='Copiado';">Copiar</button></p>
+						<p style="margin-top:8px"><span class="dashicons dashicons-yes-alt" style="color:#00a32a"></span> <?php esc_html_e( 'Active:', 'ondaweb-security' ); ?> <a href="<?php echo esc_url( OWSU_Login::url( $main ) ); ?>" target="_blank"><strong><?php echo esc_html( OWSU_Login::url( $main ) ); ?></strong></a>
+						<button type="button" class="button button-small" onclick="navigator.clipboard&&navigator.clipboard.writeText(<?php echo esc_attr( wp_json_encode( OWSU_Login::url( $main ) ) ); ?>);this.textContent=<?php echo esc_attr( wp_json_encode( __( 'Copied', 'ondaweb-security' ) ) ); ?>;"><?php esc_html_e( 'Copy', 'ondaweb-security' ); ?></button></p>
 					<?php elseif ( $off && $slug ) : ?>
-						<p style="margin-top:8px;color:#b32d2e"><strong>Desligado pela constante OWSU_LOGIN_SLUG_OFF no wp-config.php.</strong> Remova a constante para reativar.</p>
+						<p style="margin-top:8px;color:#b32d2e"><strong><?php esc_html_e( 'Turned off by the OWSU_LOGIN_SLUG_OFF constant in wp-config.php.', 'ondaweb-security' ); ?></strong> <?php esc_html_e( 'Remove the constant to turn it back on.', 'ondaweb-security' ); ?></p>
 					<?php endif; ?>
-					<p class="description">Substitui o <strong>/wp-login.php</strong>, que passa a responder "página não encontrada", assim como o <strong>/wp-admin</strong> para quem não está logado. Deixe em branco para usar o endereço padrão.<?php echo is_multisite() ? ' Vale para todos os sites da rede, cada um no seu próprio caminho.' : ''; ?> Ao salvar, o novo endereço é enviado por e-mail aos destinatários do relatório.</p>
-					<p class="description">Use letras, números e hífen (mínimo 4 caracteres). Evite nomes óbvios como <code>login</code> ou <code>admin</code>.</p>
+					<p class="description"><?php
+						/* translators: 1: /wp-login.php, 2: /wp-admin */
+						echo sprintf( esc_html__( 'Replaces %1$s, which starts answering "page not found", as does %2$s for anyone not logged in. Leave blank to use the default address.', 'ondaweb-security' ), '<strong>/wp-login.php</strong>', '<strong>/wp-admin</strong>' );
+						echo is_multisite() ? ' ' . esc_html__( 'Applies to every site in the network, each under its own path.', 'ondaweb-security' ) : '';
+						echo ' ' . esc_html__( 'When saved, the new address is emailed to the report recipients.', 'ondaweb-security' );
+					?></p>
+					<p class="description"><?php
+						/* translators: 1: "login", 2: "admin" */
+						echo sprintf( esc_html__( 'Use letters, numbers and hyphens (at least 4 characters). Avoid obvious names such as %1$s or %2$s.', 'ondaweb-security' ), '<code>login</code>', '<code>admin</code>' );
+					?></p>
 				</td></tr>
-			<tr><th scope="row"><label for="owum-rcv">reCAPTCHA no login</label></th>
+			<tr><th scope="row"><label for="owum-rcv"><?php esc_html_e( 'reCAPTCHA on login', 'ondaweb-security' ); ?></label></th>
 				<td>
 					<select id="owum-rcv" name="rc_version">
-						<option value="" <?php selected( $c['v'], '' ); ?>>Desativado</option>
-						<option value="v2" <?php selected( $c['v'], 'v2' ); ?>>v2 — caixa "Não sou um robô"</option>
-						<option value="v3" <?php selected( $c['v'], 'v3' ); ?>>v3 — invisível (por pontuação)</option>
+						<option value="" <?php selected( $c['v'], '' ); ?>><?php esc_html_e( 'Off', 'ondaweb-security' ); ?></option>
+						<option value="v2" <?php selected( $c['v'], 'v2' ); ?>><?php esc_html_e( 'v2 — "I\'m not a robot" checkbox', 'ondaweb-security' ); ?></option>
+						<option value="v3" <?php selected( $c['v'], 'v3' ); ?>><?php esc_html_e( 'v3 — invisible (score based)', 'ondaweb-security' ); ?></option>
 					</select>
 					<?php
 					if ( OWSU_Captcha::active() ) {
-						echo ' <span style="margin-left:8px"><span class="dashicons dashicons-yes-alt" style="color:#00a32a"></span> Ativo no login, senha perdida e cadastro.</span>';
+						echo ' <span style="margin-left:8px"><span class="dashicons dashicons-yes-alt" style="color:#00a32a"></span> ' . esc_html__( 'Active on login, lost password and registration.', 'ondaweb-security' ) . '</span>';
 					} elseif ( $rc_off && OWSU_Captcha::verified() ) {
-						echo ' <span style="margin-left:8px;color:#b32d2e"><strong>Desligado pela constante OWSU_RECAPTCHA_OFF.</strong></span>';
+						echo ' <span style="margin-left:8px;color:#b32d2e"><strong>' . esc_html__( 'Turned off by the OWSU_RECAPTCHA_OFF constant.', 'ondaweb-security' ) . '</strong></span>';
 					} elseif ( OWSU_Captcha::configured() ) {
-						echo ' <span style="margin-left:8px;color:#996800"><span class="dashicons dashicons-warning"></span> Aguardando teste — faça o teste abaixo para ativar.</span>';
+						echo ' <span style="margin-left:8px;color:#996800"><span class="dashicons dashicons-warning"></span> ' . esc_html__( 'Waiting for the test — run the test below to turn it on.', 'ondaweb-security' ) . '</span>';
 					}
 					?>
-					<p class="description">Gere as chaves em <a href="<?php echo esc_url( OWSU_Captcha::ADMIN_URL ); ?>" target="_blank" rel="noopener"><strong>google.com/recaptcha/admin</strong></a>: escolha o mesmo tipo selecionado aqui (as chaves de v2 e v3 são diferentes) e cadastre o domínio <code><?php echo esc_html( wp_parse_url( home_url(), PHP_URL_HOST ) ); ?></code><?php echo is_multisite() ? ' e todos os domínios usados pela rede' : ''; ?>.</p>
+					<p class="description"><?php
+						echo sprintf(
+							/* translators: 1: link to the Google reCAPTCHA admin, 2: domain name */
+							esc_html__( 'Create the keys at %1$s: choose the same type selected here (v2 and v3 keys are different) and register the domain %2$s', 'ondaweb-security' ),
+							'<a href="' . esc_url( OWSU_Captcha::ADMIN_URL ) . '" target="_blank" rel="noopener"><strong>google.com/recaptcha/admin</strong></a>',
+							'<code>' . esc_html( wp_parse_url( home_url(), PHP_URL_HOST ) ) . '</code>'
+						);
+						echo is_multisite() ? ' ' . esc_html__( 'and every domain used by the network', 'ondaweb-security' ) : '';
+						echo '.';
+					?></p>
 				</td></tr>
-			<tr class="owum-rc"><th scope="row"><label for="owum-rcsite">Chave do site</label></th>
+			<tr class="owum-rc"><th scope="row"><label for="owum-rcsite"><?php esc_html_e( 'Site key', 'ondaweb-security' ); ?></label></th>
 				<td><input id="owum-rcsite" type="text" class="regular-text" name="rc_site" value="<?php echo esc_attr( $c['site'] ); ?>" autocomplete="off" spellcheck="false"></td></tr>
-			<tr class="owum-rc"><th scope="row"><label for="owum-rcsecret">Chave secreta</label></th>
+			<tr class="owum-rc"><th scope="row"><label for="owum-rcsecret"><?php esc_html_e( 'Secret key', 'ondaweb-security' ); ?></label></th>
 				<td><input id="owum-rcsecret" type="password" class="regular-text" name="rc_secret" value="<?php echo esc_attr( $c['secret'] ); ?>" autocomplete="off">
-				<button type="button" class="button" onclick="var i=document.getElementById('owum-rcsecret');i.type=i.type==='password'?'text':'password';">Mostrar</button></td></tr>
-			<tr class="owum-rc owum-rc3"><th scope="row"><label for="owum-rcscore">Pontuação mínima (v3)</label></th>
-				<td><select id="owum-rcscore" name="rc_score"><?php foreach ( array( '0.3', '0.5', '0.7' ) as $v ) : ?><option value="<?php echo esc_attr( $v ); ?>" <?php selected( number_format( $c['score'], 1 ), $v ); ?>><?php echo esc_html( $v . ( '0.5' === $v ? ' (recomendado)' : ( '0.3' === $v ? ' (mais tolerante)' : ' (mais rígido)' ) ) ); ?></option><?php endforeach; ?></select>
-				<p class="description">O Google dá uma nota de 0 (robô) a 1 (humano) para cada login.</p></td></tr>
+				<button type="button" class="button" onclick="var i=document.getElementById('owum-rcsecret');i.type=i.type==='password'?'text':'password';"><?php esc_html_e( 'Show', 'ondaweb-security' ); ?></button></td></tr>
+			<tr class="owum-rc owum-rc3"><th scope="row"><label for="owum-rcscore"><?php esc_html_e( 'Minimum score (v3)', 'ondaweb-security' ); ?></label></th>
+				<td><select id="owum-rcscore" name="rc_score"><?php
+					$score_labels = array(
+						'0.3' => __( '0.3 (more lenient)', 'ondaweb-security' ),
+						'0.5' => __( '0.5 (recommended)', 'ondaweb-security' ),
+						'0.7' => __( '0.7 (stricter)', 'ondaweb-security' ),
+					);
+					foreach ( $score_labels as $v => $lbl ) :
+						?><option value="<?php echo esc_attr( $v ); ?>" <?php selected( number_format( $c['score'], 1 ), $v ); ?>><?php echo esc_html( $lbl ); ?></option><?php
+					endforeach;
+				?></select>
+				<p class="description"><?php esc_html_e( 'Google gives every login a score from 0 (robot) to 1 (human).', 'ondaweb-security' ); ?></p></td></tr>
 		</table>
 		<?php if ( is_array( $rc_err ) && OWSU_Captcha::active() ) : ?>
-			<p class="description">Última falha de comunicação com o Google: <?php echo esc_html( mysql2date( 'd/m/Y H:i', $rc_err['time'] ) . ' — ' . $rc_err['msg'] ); ?>. Nessas falhas o login é liberado para não trancar o acesso.</p>
+			<p class="description"><?php echo esc_html( sprintf( /* translators: 1: date and time, 2: error message */ __( 'Last communication failure with Google: %1$s — %2$s. During such failures the login is allowed so access is never locked.', 'ondaweb-security' ), owum_date( $rc_err['time'], true ), $rc_err['msg'] ) ); ?></p>
 		<?php endif; ?>
-		<details style="margin:4px 0 8px"><summary style="cursor:pointer;color:#2271b1">Recuperação de acesso (se ficar sem conseguir entrar)</summary>
-			<p class="description" style="margin-top:6px">Adicione no <code>wp-config.php</code>, acima da linha "That's all, stop editing":</p>
-			<pre style="background:#fff;border:1px solid #dcdcde;padding:8px;display:inline-block">define( 'OWSU_LOGIN_SLUG_OFF', true ); // volta o login para /wp-login.php
-define( 'OWSU_RECAPTCHA_OFF', true );  // desliga o reCAPTCHA</pre>
-			<p class="description">Ou renomeie a pasta do plugin por FTP. Depois de entrar, corrija a configuração e remova as linhas.</p>
+		<details style="margin:4px 0 8px"><summary style="cursor:pointer;color:#2271b1"><?php esc_html_e( 'Access recovery (if you cannot log in)', 'ondaweb-security' ); ?></summary>
+			<p class="description" style="margin-top:6px"><?php
+				/* translators: %s: wp-config.php */
+				echo sprintf( esc_html__( 'Add to %s, above the line "That\'s all, stop editing":', 'ondaweb-security' ), '<code>wp-config.php</code>' );
+			?></p>
+			<pre style="background:#fff;border:1px solid #dcdcde;padding:8px;display:inline-block">define( 'OWSU_LOGIN_SLUG_OFF', true ); // <?php esc_html_e( 'login back at /wp-login.php', 'ondaweb-security' ); ?>
+
+define( 'OWSU_RECAPTCHA_OFF', true );  // <?php esc_html_e( 'turns reCAPTCHA off', 'ondaweb-security' ); ?></pre>
+			<p class="description"><?php esc_html_e( 'Or rename the plugin folder over FTP. Once logged in, fix the settings and remove the lines.', 'ondaweb-security' ); ?></p>
 		</details>
 		<script>
 		(function(){var s=document.getElementById('owum-rcv');function t(){document.querySelectorAll('.owum-rc').forEach(function(r){r.style.display=s.value?'':'none';});document.querySelectorAll('.owum-rc3').forEach(function(r){r.style.display=s.value==='v3'?'':'none';});}s.addEventListener('change',t);t();})();
@@ -767,7 +852,7 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // desliga o reCAPTCHA</pre>
 		<?php
 	}
 
-	/** Caixa de teste: o reCAPTCHA só é ativado depois que funciona de verdade neste domínio. */
+	/** Test box: reCAPTCHA is only turned on after it really works on this domain. */
 	private static function rc_test_box() {
 		if ( ! OWSU_Captcha::configured() || OWSU_Captcha::verified() ) {
 			return;
@@ -775,9 +860,13 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // desliga o reCAPTCHA</pre>
 		$c = OWSU_Captcha::cfg();
 		?>
 		<div id="owum-rctest" style="background:#fff;border:1px solid #dcdcde;border-left:4px solid #dba617;padding:12px 16px;margin:16px 0;max-width:720px">
-			<h3 style="margin-top:0">Testar e ativar o reCAPTCHA</h3>
-			<p>Para evitar que chaves erradas bloqueiem o acesso, o reCAPTCHA só passa a valer no login depois deste teste.
-			<?php echo 'v2' === $c['v'] ? 'Marque a caixa abaixo e clique em <strong>Testar e ativar</strong>.' : 'Clique em <strong>Testar e ativar</strong> (o v3 é invisível).'; ?></p>
+			<h3 style="margin-top:0"><?php esc_html_e( 'Test and turn on reCAPTCHA', 'ondaweb-security' ); ?></h3>
+			<p><?php esc_html_e( 'So that wrong keys never lock you out, reCAPTCHA only starts applying to the login after this test.', 'ondaweb-security' ); ?>
+			<?php
+			$btn = '<strong>' . esc_html__( 'Test and turn on', 'ondaweb-security' ) . '</strong>';
+			/* translators: %s: "Test and turn on" button label */
+			echo 'v2' === $c['v'] ? sprintf( esc_html__( 'Tick the box below and click %s.', 'ondaweb-security' ), $btn ) : sprintf( esc_html__( 'Click %s (v3 is invisible).', 'ondaweb-security' ), $btn ); // phpcs:ignore
+			?></p>
 			<form id="owsurctest" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<input type="hidden" name="action" value="owum_rc_test">
 				<?php wp_nonce_field( 'owum_rc_test' ); ?>
@@ -786,12 +875,12 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // desliga o reCAPTCHA</pre>
 				<?php else : ?>
 					<input type="hidden" name="g-recaptcha-response" class="owsu-rc3" value="">
 				<?php endif; ?>
-				<?php submit_button( 'Testar e ativar', 'primary', 'submit', false ); ?>
+				<?php submit_button( __( 'Test and turn on', 'ondaweb-security' ), 'primary', 'submit', false ); ?>
 			</form>
-			<p class="description" style="margin-bottom:0">Se aparecer "Chave inválida" ou "Domínio inválido" na caixa do Google, confira as chaves e os domínios cadastrados.</p>
+			<p class="description" style="margin-bottom:0"><?php esc_html_e( 'If Google\'s box shows "Invalid key" or "Invalid domain", check the keys and the registered domains.', 'ondaweb-security' ); ?></p>
 		</div>
 		<?php if ( 'v2' === $c['v'] ) : ?>
-			<script src="https://www.google.com/recaptcha/api.js?hl=pt-BR" async defer></script><?php // phpcs:ignore ?>
+			<script src="https://www.google.com/recaptcha/api.js?hl=<?php echo esc_attr( OWSU_Captcha::hl() ); ?>" async defer></script><?php // phpcs:ignore ?>
 		<?php else : ?>
 			<script src="https://www.google.com/recaptcha/api.js?render=<?php echo rawurlencode( $c['site'] ); ?>"></script><?php // phpcs:ignore ?>
 			<script><?php echo OWSU_Captcha::v3_js( $c['site'] ); // phpcs:ignore ?></script>
@@ -804,25 +893,25 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // desliga o reCAPTCHA</pre>
 		$back  = self::page_url( 'owum-settings' ) . '#owum-login';
 		$token = isset( $_POST['g-recaptcha-response'] ) ? sanitize_text_field( wp_unslash( $_POST['g-recaptcha-response'] ) ) : ''; // phpcs:ignore
 		if ( '' === $token ) {
-			wp_safe_redirect( add_query_arg( 'owum_err', rawurlencode( 'O teste não recebeu resposta do reCAPTCHA. Marque a caixa (v2) ou verifique se o script do Google carregou nesta página.' ), $back ) );
+			wp_safe_redirect( add_query_arg( 'owum_err', rawurlencode( __( 'The test got no answer from reCAPTCHA. Tick the box (v2) or check whether Google\'s script loaded on this page.', 'ondaweb-security' ) ), $back ) );
 			exit;
 		}
 		$c = OWSU_Captcha::cfg();
 		$r = OWSU_Captcha::verify( $token, 'settings_test', true, $c );
 		if ( is_wp_error( $r ) ) {
-			wp_safe_redirect( add_query_arg( 'owum_err', rawurlencode( 'Teste falhou: ' . wp_strip_all_tags( $r->get_error_message() ) ), $back ) );
+			wp_safe_redirect( add_query_arg( 'owum_err', rawurlencode( __( 'Test failed:', 'ondaweb-security' ) . ' ' . wp_strip_all_tags( $r->get_error_message() ) ), $back ) );
 			exit;
 		}
 		$s                = owum_settings();
 		$s['rc_verified'] = OWSU_Captcha::hash( $c );
 		update_site_option( 'owum_settings', $s );
 		OWSU_Security::mark( 'login_captcha', true );
-		wp_safe_redirect( add_query_arg( 'owum_ok', rawurlencode( 'Teste concluído: ' . OWSU_Captcha::label() . ' ativado no login, senha perdida e cadastro.' ), $back ) );
+		wp_safe_redirect( add_query_arg( 'owum_ok', rawurlencode( sprintf( /* translators: %s: reCAPTCHA version label */ __( 'Test passed: %s turned on for login, lost password and registration.', 'ondaweb-security' ), OWSU_Captcha::label() ) ), $back ) );
 		exit;
 	}
 
 	/* ------------------------------------------------------------------ */
-	/* Registro de erros                                                   */
+	/* Error log                                                           */
 	/* ------------------------------------------------------------------ */
 
 	public static function page_errors() {
@@ -851,19 +940,22 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // desliga o reCAPTCHA</pre>
 			.owum-err pre{white-space:pre-wrap;font-size:11px;background:#f6f7f7;border:1px solid #dcdcde;padding:8px;max-height:260px;overflow:auto}
 		</style>
 		<div class="wrap">
-			<h1 class="wp-heading-inline">Registro de erros</h1>
-			<a class="page-title-action" href="<?php echo esc_url( self::action_url( 'owum_err_export' ) ); ?>">Baixar (.txt)</a>
-			<a class="page-title-action" data-owum-busy="Enviando e-mail de teste…" href="<?php echo esc_url( self::action_url( 'owum_err_test' ) ); ?>">Enviar e-mail de teste</a>
+			<h1 class="wp-heading-inline"><?php esc_html_e( 'Error log', 'ondaweb-security' ); ?></h1>
+			<a class="page-title-action" href="<?php echo esc_url( self::action_url( 'owum_err_export' ) ); ?>"><?php esc_html_e( 'Download (.txt)', 'ondaweb-security' ); ?></a>
+			<a class="page-title-action" data-owum-busy="<?php esc_attr_e( 'Sending test email…', 'ondaweb-security' ); ?>" href="<?php echo esc_url( self::action_url( 'owum_err_test' ) ); ?>"><?php esc_html_e( 'Send test email', 'ondaweb-security' ); ?></a>
 			<?php if ( $log ) : ?>
-				<a class="page-title-action" href="<?php echo esc_url( self::action_url( 'owum_err_clear' ) ); ?>" onclick="return confirm('Apagar todo o registro de erros?');">Limpar registro</a>
+				<a class="page-title-action" href="<?php echo esc_url( self::action_url( 'owum_err_clear' ) ); ?>" onclick="return confirm(<?php echo esc_attr( wp_json_encode( __( 'Delete the whole error log?', 'ondaweb-security' ) ) ); ?>);"><?php esc_html_e( 'Clear log', 'ondaweb-security' ); ?></a>
 			<?php endif; ?>
 			<hr class="wp-header-end">
 			<?php self::notice(); ?>
-			<p class="description">Erros fatais do site<?php echo empty( $s['err_site'] ) ? ' (somente deste plugin)' : ''; ?>, avisos do PHP gerados por este plugin e falhas das operações (correções, e-mails, base de vulnerabilidades, verificações). Erros iguais são agrupados.
-			Alertas por e-mail: <?php echo ! empty( $s['err_mail'] ) && $s['err_email'] ? '<strong>' . esc_html( $s['err_email'] ) . '</strong>' : '<strong>desativados</strong>'; ?> — <a href="<?php echo esc_url( self::page_url( 'owum-settings' ) . '#owum-errors-cfg' ); ?>">alterar</a>.</p>
+			<p class="description"><?php
+				echo esc_html( empty( $s['err_site'] ) ? __( 'Fatal errors (this plugin only), PHP warnings raised by this plugin and failed operations (fixes, emails, vulnerability database, checks). Identical errors are grouped.', 'ondaweb-security' ) : __( 'Fatal errors of the site, PHP warnings raised by this plugin and failed operations (fixes, emails, vulnerability database, checks). Identical errors are grouped.', 'ondaweb-security' ) );
+				echo ' ' . esc_html__( 'Email alerts:', 'ondaweb-security' ) . ' ' . ( ! empty( $s['err_mail'] ) && $s['err_email'] ? '<strong>' . esc_html( $s['err_email'] ) . '</strong>' : '<strong>' . esc_html__( 'off', 'ondaweb-security' ) . '</strong>' );
+			?> — <a href="<?php echo esc_url( self::page_url( 'owum-settings' ) . '#owum-errors-cfg' ); ?>"><?php esc_html_e( 'change', 'ondaweb-security' ); ?></a>.</p>
 			<div class="owum-filter" style="margin:10px 0">
 				<?php
-				$links = array( '' => 'Todos (' . count( $log ) . ')' );
+				/* translators: %d: count */
+				$links = array( '' => sprintf( __( 'All (%d)', 'ondaweb-security' ), count( $log ) ) );
 				foreach ( $counts as $k => $n ) {
 					$links[ $k ] = OWUM_ErrorLog::level_label( $k ) . ' (' . $n . ')';
 				}
@@ -873,10 +965,10 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // desliga o reCAPTCHA</pre>
 				?>
 			</div>
 			<table class="widefat striped owum-err">
-				<thead><tr><th style="width:110px">Nível</th><th>Mensagem</th><th style="width:220px">Origem</th><th style="width:150px">Última vez</th><th style="width:70px">Vezes</th></tr></thead>
+				<thead><tr><th style="width:110px"><?php esc_html_e( 'Level', 'ondaweb-security' ); ?></th><th><?php esc_html_e( 'Message', 'ondaweb-security' ); ?></th><th style="width:220px"><?php esc_html_e( 'Origin', 'ondaweb-security' ); ?></th><th style="width:150px"><?php esc_html_e( 'Last time', 'ondaweb-security' ); ?></th><th style="width:70px"><?php esc_html_e( 'Times', 'ondaweb-security' ); ?></th></tr></thead>
 				<tbody>
 				<?php if ( ! $rows ) : ?>
-					<tr><td colspan="5">Nenhum erro registrado.</td></tr>
+					<tr><td colspan="5"><?php esc_html_e( 'No errors recorded.', 'ondaweb-security' ); ?></td></tr>
 				<?php endif; ?>
 				<?php foreach ( $rows as $e ) : ?>
 					<tr class="<?php echo $e['last'] > $seen && in_array( $e['level'], array( 'fatal', 'error' ), true ) ? 'is-new' : ''; ?>">
@@ -887,20 +979,20 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // desliga o reCAPTCHA</pre>
 								<?php echo $e['file'] ? esc_html( $e['file'] . ( $e['line'] ? ':' . $e['line'] : '' ) ) . '<br>' : ''; ?>
 								<?php echo esc_html( $e['url'] ); ?><?php echo $e['user'] ? ' · ' . esc_html( $e['user'] ) : ''; ?>
 								<?php echo $e['extra'] ? '<br>' . esc_html( $e['extra'] ) : ''; ?>
-								<?php echo $e['mailed'] ? '<br>Alerta enviado em ' . esc_html( mysql2date( 'd/m/Y H:i', $e['mailed'] ) ) : ''; ?>
+								<?php echo $e['mailed'] ? '<br>' . esc_html( sprintf( /* translators: %s: date and time */ __( 'Alert sent on %s', 'ondaweb-security' ), owum_date( $e['mailed'], true ) ) ) : ''; ?>
 							</div>
 							<?php if ( $e['trace'] ) : ?>
-								<details><summary style="cursor:pointer;color:#2271b1;font-size:12px;margin-top:4px">Rastreamento</summary><pre><?php echo esc_html( $e['trace'] ); ?></pre></details>
+								<details><summary style="cursor:pointer;color:#2271b1;font-size:12px;margin-top:4px"><?php esc_html_e( 'Stack trace', 'ondaweb-security' ); ?></summary><pre><?php echo esc_html( $e['trace'] ); ?></pre></details>
 							<?php endif; ?>
 						</td>
-						<td><?php echo esc_html( $e['source'] ); ?></td>
-						<td><?php echo esc_html( mysql2date( 'd/m/Y H:i:s', $e['last'] ) ); ?><?php echo $e['count'] > 1 ? '<br><span class="description">desde ' . esc_html( mysql2date( 'd/m/Y H:i', $e['first'] ) ) . '</span>' : ''; ?></td>
+						<td><?php echo esc_html( OWUM_ErrorLog::source_label( $e['source'] ) ); ?></td>
+						<td><?php echo esc_html( owum_date( $e['last'], true ) ); ?><?php echo $e['count'] > 1 ? '<br><span class="description">' . esc_html( sprintf( /* translators: %s: date and time */ __( 'since %s', 'ondaweb-security' ), owum_date( $e['first'], true ) ) ) . '</span>' : ''; ?></td>
 						<td><?php echo (int) $e['count']; ?></td>
 					</tr>
 				<?php endforeach; ?>
 				</tbody>
 			</table>
-			<p class="description">Guarda os <?php echo (int) OWUM_ErrorLog::MAX; ?> erros mais recentes.</p>
+			<p class="description"><?php echo esc_html( sprintf( /* translators: %d: maximum number of entries */ __( 'Keeps the %d most recent errors.', 'ondaweb-security' ), OWUM_ErrorLog::MAX ) ); ?></p>
 		</div>
 		<?php
 	}
@@ -908,20 +1000,21 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // desliga o reCAPTCHA</pre>
 	public static function owum_err_clear() {
 		self::guard( 'owum_err_clear' );
 		OWUM_ErrorLog::clear();
-		wp_safe_redirect( self::page_url( 'owum-errors', array( 'owum_ok' => rawurlencode( 'Registro de erros apagado.' ) ) ) );
+		wp_safe_redirect( self::page_url( 'owum-errors', array( 'owum_ok' => rawurlencode( __( 'Error log cleared.', 'ondaweb-security' ) ) ) ) );
 		exit;
 	}
 
 	public static function owum_err_export() {
 		self::guard( 'owum_err_export' );
-		$out = array( 'Registro de erros — ' . network_home_url( '/' ) . ' — gerado em ' . current_time( 'd/m/Y H:i:s' ), str_repeat( '=', 70 ), '' );
+		/* translators: 1: site address, 2: date and time */
+		$out = array( sprintf( __( 'Error log — %1$s — generated on %2$s', 'ondaweb-security' ), network_home_url( '/' ), owum_date( '', true ) ), str_repeat( '=', 70 ), '' );
 		foreach ( OWUM_ErrorLog::all() as $e ) {
 			$out[] = OWUM_ErrorLog::mail_body( $e );
 			$out[] = str_repeat( '-', 70 );
 		}
 		nocache_headers();
 		header( 'Content-Type: text/plain; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename="erros-' . sanitize_title( wp_parse_url( network_home_url(), PHP_URL_HOST ) ) . '-' . current_time( 'Y-m-d' ) . '.txt"' );
+		header( 'Content-Disposition: attachment; filename="' . sanitize_title( __( 'errors', 'ondaweb-security' ) ) . '-' . sanitize_title( wp_parse_url( network_home_url(), PHP_URL_HOST ) ) . '-' . current_time( 'Y-m-d' ) . '.txt"' );
 		echo implode( "\n", $out ); // phpcs:ignore
 		exit;
 	}
@@ -931,11 +1024,15 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // desliga o reCAPTCHA</pre>
 		$s  = owum_settings();
 		$to = array_values( array_filter( array_map( 'trim', explode( ',', (string) $s['err_email'] ) ), 'is_email' ) );
 		if ( ! $to ) {
-			wp_safe_redirect( self::page_url( 'owum-errors', array( 'owum_err' => rawurlencode( 'Nenhum e-mail de desenvolvedor configurado.' ) ) ) );
+			wp_safe_redirect( self::page_url( 'owum-errors', array( 'owum_err' => rawurlencode( __( 'No developer email is configured.', 'ondaweb-security' ) ) ) ) );
 			exit;
 		}
-		$ok = wp_mail( $to, '[' . ( is_multisite() ? get_network()->site_name : get_bloginfo( 'name' ) ) . '] Teste dos alertas de erro', "Este é um teste dos alertas de erro do Ondaweb Security Updater.\n\nSite: " . network_home_url( '/' ) . "\nRegistro: " . OWUM_ErrorLog::page_url() );
-		wp_safe_redirect( self::page_url( 'owum-errors', $ok ? array( 'owum_ok' => rawurlencode( 'E-mail de teste enviado para ' . implode( ', ', $to ) . '.' ) ) : array( 'owum_err' => rawurlencode( 'Não foi possível enviar o e-mail de teste. Veja o registro abaixo.' ) ) ) );
+		$site = is_multisite() ? get_network()->site_name : get_bloginfo( 'name' );
+		/* translators: %s: plugin name */
+		$body = sprintf( __( 'This is a test of the %s error alerts.', 'ondaweb-security' ), OWUM_PRODUCT ) . "\n\n" . __( 'Site', 'ondaweb-security' ) . ': ' . network_home_url( '/' ) . "\n" . __( 'Error log', 'ondaweb-security' ) . ': ' . OWUM_ErrorLog::page_url();
+		$ok   = wp_mail( $to, '[' . $site . '] ' . __( 'Error alerts test', 'ondaweb-security' ), $body );
+		/* translators: %s: email addresses */
+		wp_safe_redirect( self::page_url( 'owum-errors', $ok ? array( 'owum_ok' => rawurlencode( sprintf( __( 'Test email sent to %s.', 'ondaweb-security' ), implode( ', ', $to ) ) ) ) : array( 'owum_err' => rawurlencode( __( 'The test email could not be sent. See the log below.', 'ondaweb-security' ) ) ) ) );
 		exit;
 	}
 
@@ -953,6 +1050,8 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // desliga o reCAPTCHA</pre>
 				'day'         => isset( $_POST['day'] ) ? max( 1, min( 28, (int) $_POST['day'] ) ) : 1,
 				'logo_client' => isset( $_POST['logo_client'] ) ? absint( $_POST['logo_client'] ) : 0,
 				'logo_ondaweb'=> isset( $_POST['logo_ondaweb'] ) ? absint( $_POST['logo_ondaweb'] ) : 0,
+				'brand_name'  => isset( $_POST['brand_name'] ) ? sanitize_text_field( wp_unslash( $_POST['brand_name'] ) ) : $old['brand_name'],
+				'brand_url'   => isset( $_POST['brand_url'] ) ? esc_url_raw( wp_unslash( $_POST['brand_url'] ) ) : $old['brand_url'],
 				'wf_key'      => isset( $_POST['wf_key'] ) ? preg_replace( '/[^A-Za-z0-9_\-.]/', '', wp_unslash( $_POST['wf_key'] ) ) : '',
 				'rc_version'  => isset( $_POST['rc_version'] ) && in_array( $_POST['rc_version'], array( 'v2', 'v3' ), true ) ? $_POST['rc_version'] : '', // phpcs:ignore
 				'rc_site'     => isset( $_POST['rc_site'] ) ? preg_replace( '/[^A-Za-z0-9_\-]/', '', wp_unslash( $_POST['rc_site'] ) ) : '',
@@ -966,19 +1065,19 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // desliga o reCAPTCHA</pre>
 		$errors = array();
 		$notes  = array();
 
-		// Endereço de login.
+		// Login address.
 		$slug = OWSU_Login::validate( isset( $_POST['login_slug'] ) ? wp_unslash( $_POST['login_slug'] ) : '' ); // phpcs:ignore
 		if ( is_wp_error( $slug ) ) {
-			$errors[] = $slug->get_error_message() . ' O endereço anterior foi mantido.';
+			$errors[] = $slug->get_error_message() . ' ' . __( 'The previous address was kept.', 'ondaweb-security' );
 		} else {
 			$new['login_slug'] = $slug;
 		}
 
-		// Chave secreta do reCAPTCHA (confere se existe antes de salvar).
+		// reCAPTCHA secret key (checked with Google before saving).
 		if ( $new['rc_secret'] && $new['rc_secret'] !== $old['rc_secret'] ) {
 			$chk = OWSU_Captcha::check_secret( $new['rc_secret'] );
 			if ( is_wp_error( $chk ) ) {
-				$errors[]         = $chk->get_error_message() . ' A chave anterior foi mantida.';
+				$errors[]         = $chk->get_error_message() . ' ' . __( 'The previous key was kept.', 'ondaweb-security' );
 				$new['rc_secret'] = $old['rc_secret'];
 			}
 		}
@@ -989,14 +1088,15 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // desliga o reCAPTCHA</pre>
 			OWSU_Login::notify( $new['login_slug'] );
 			OWSU_Security::mark( 'login_url', '' !== $new['login_slug'] );
 			if ( '' !== $new['login_slug'] ) {
-				$notes[] = 'Novo endereço de login: ' . OWSU_Login::url( is_multisite() ? get_main_site_id() : null, null, $new['login_slug'] ) . ' (enviado por e-mail aos destinatários).';
+				/* translators: %s: new login address */
+				$notes[] = sprintf( __( 'New login address: %s (emailed to the recipients).', 'ondaweb-security' ), OWSU_Login::url( is_multisite() ? get_main_site_id() : null, null, $new['login_slug'] ) );
 			}
 		}
 		$was = '' !== $old['rc_version'] && hash_equals( (string) $old['rc_verified'], md5( $old['rc_version'] . '|' . $old['rc_site'] . '|' . $old['rc_secret'] ) );
 		if ( $was && ! OWSU_Captcha::verified() ) {
 			OWSU_Security::mark( 'login_captcha', false );
 			if ( OWSU_Captcha::configured() ) {
-				$notes[] = 'As chaves do reCAPTCHA mudaram: faça o teste novamente para reativá-lo.';
+				$notes[] = __( 'The reCAPTCHA keys changed: run the test again to turn it back on.', 'ondaweb-security' );
 			}
 		}
 

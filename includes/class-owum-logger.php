@@ -2,8 +2,11 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Histórico: compara a "foto" anterior com a atual e registra cada mudança.
- * Funciona para atualizações pelo painel, automáticas, WP-CLI e feitas por FTP.
+ * History: compares the previous snapshot with the current one and records every change.
+ * Works for updates made in the dashboard, automatic updates, WP-CLI and FTP.
+ *
+ * Action and source are stored as codes and translated on display. Rows recorded by
+ * versions before 1.5 hold Portuguese source labels; those are mapped too.
  */
 class OWUM_Logger {
 
@@ -18,7 +21,7 @@ class OWUM_Logger {
 	public static function on_upgrade( $upgrader, $extra ) {
 		$type = isset( $extra['type'] ) ? $extra['type'] : '';
 		if ( ! in_array( $type, array( 'plugin', 'theme', 'core' ), true ) ) {
-			return; // traduções etc.
+			return; // translations etc.
 		}
 		self::sync( self::source() );
 	}
@@ -27,7 +30,7 @@ class OWUM_Logger {
 		self::sync( self::source() );
 	}
 
-	/** Verificação de mudanças externas (FTP), no máximo 1x por hora ao navegar pelo painel. */
+	/** Detects external (FTP) changes, at most once an hour while browsing the dashboard. */
 	public static function maybe_detect() {
 		if ( wp_doing_ajax() || get_site_transient( 'owum_detect_lock' ) ) {
 			return;
@@ -37,17 +40,17 @@ class OWUM_Logger {
 	}
 
 	public static function detect() {
-		self::sync( 'Detectada (FTP/externa)' );
+		self::sync( 'external' );
 	}
 
 	public static function source() {
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			return 'WP-CLI';
+			return 'cli';
 		}
 		if ( wp_doing_cron() ) {
-			return 'Automática (WP-Cron)';
+			return 'cron';
 		}
-		return 'Painel';
+		return 'panel';
 	}
 
 	public static function sync( $source ) {
@@ -130,7 +133,7 @@ class OWUM_Logger {
 	}
 
 	/**
-	 * Registros entre duas datas (formato Y-m-d H:i:s, horário local).
+	 * Rows between two dates (Y-m-d H:i:s, local time).
 	 */
 	public static function get( $start = null, $end = null, $type = '', $limit = 500 ) {
 		global $wpdb;
@@ -156,24 +159,73 @@ class OWUM_Logger {
 
 	public static function action_label( $action ) {
 		$labels = array(
-			'atualizado' => 'Atualizado',
-			'instalado'  => 'Instalado',
-			'removido'   => 'Removido',
-			'revertido'  => 'Versão revertida',
-			'inicio'     => 'Início do monitoramento',
-			'correcao'   => 'Correção de segurança aplicada',
-			'desfeito'   => 'Correção de segurança desfeita',
+			'atualizado' => __( 'Updated', 'ondaweb-security' ),
+			'instalado'  => __( 'Installed', 'ondaweb-security' ),
+			'removido'   => __( 'Removed', 'ondaweb-security' ),
+			'revertido'  => __( 'Rolled back', 'ondaweb-security' ),
+			'inicio'     => __( 'Monitoring started', 'ondaweb-security' ),
+			'correcao'   => __( 'Security fix applied', 'ondaweb-security' ),
+			'desfeito'   => __( 'Security fix undone', 'ondaweb-security' ),
 		);
 		return isset( $labels[ $action ] ) ? $labels[ $action ] : $action;
 	}
 
 	public static function type_label( $type ) {
 		$labels = array(
-			'core'   => 'WordPress',
-			'plugin' => 'Plugin',
-			'theme'    => 'Tema',
-			'security' => 'Segurança',
+			'core'     => 'WordPress',
+			'plugin'   => __( 'Plugin', 'ondaweb-security' ),
+			'theme'    => __( 'Theme', 'ondaweb-security' ),
+			'security' => __( 'Security', 'ondaweb-security' ),
 		);
 		return isset( $labels[ $type ] ) ? $labels[ $type ] : $type;
+	}
+
+	/** Where a change came from (stored code, or legacy Portuguese label). */
+	public static function source_label( $source ) {
+		$labels = array(
+			'panel'                   => __( 'Dashboard', 'ondaweb-security' ),
+			'cli'                     => 'WP-CLI',
+			'cron'                    => __( 'Automatic (WP-Cron)', 'ondaweb-security' ),
+			'external'                => __( 'Detected (FTP/external)', 'ondaweb-security' ),
+			'system'                  => __( 'System', 'ondaweb-security' ),
+			'Painel'                  => __( 'Dashboard', 'ondaweb-security' ),
+			'WP-CLI'                  => 'WP-CLI',
+			'Automática (WP-Cron)'    => __( 'Automatic (WP-Cron)', 'ondaweb-security' ),
+			'Detectada (FTP/externa)' => __( 'Detected (FTP/external)', 'ondaweb-security' ),
+			'Sistema'                 => __( 'System', 'ondaweb-security' ),
+		);
+		return isset( $labels[ $source ] ) ? $labels[ $source ] : $source;
+	}
+
+	/** Display name of a row: security fixes use the (translated) check name. */
+	public static function item_label( $row ) {
+		if ( 'security' === $row['item_type'] && 0 === strpos( $row['item_key'], 'sec:' ) ) {
+			$defs = OWSU_Security::definitions();
+			$id   = substr( $row['item_key'], 4 );
+			if ( isset( $defs[ $id ] ) ) {
+				return $defs[ $id ]['client'];
+			}
+		}
+		return $row['item_name'];
+	}
+
+	/** Notes of a row, translated when stored as data. */
+	public static function notes_label( $row ) {
+		$n = (string) $row['notes'];
+		if ( 'inicio' === $row['action'] ) {
+			$d = json_decode( $n, true );
+			if ( is_array( $d ) ) {
+				/* translators: 1: number of plugins, 2: number of themes */
+				return sprintf( __( 'Monitoring started: %1$d plugins and %2$d themes recorded.', 'ondaweb-security' ), (int) $d['plugins'], (int) $d['themes'] );
+			}
+		}
+		if ( 'security' === $row['item_type'] && 0 === strpos( $row['item_key'], 'sec:' ) ) {
+			$defs = OWSU_Security::definitions();
+			$id   = substr( $row['item_key'], 4 );
+			if ( isset( $defs[ $id ] ) ) {
+				return $defs[ $id ]['title'];
+			}
+		}
+		return $n;
 	}
 }

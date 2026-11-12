@@ -1,11 +1,11 @@
 <?php
-// Remove tabela e opções ao EXCLUIR o plugin (desativar não apaga nada).
+// Removes the table and options when the plugin is DELETED (deactivating keeps everything).
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
 global $wpdb;
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->base_prefix}owum_log" ); // phpcs:ignore
 
-foreach ( array( 'owum_snapshot', 'owum_meta', 'owum_settings', 'owum_db_version', 'owum_last_sent', 'owum_last_mail', 'owum_last_check', 'owsu_fixes', 'owsu_scan', 'owsu_vulns', 'owsu_tracking_since', 'owum_mig_child_themes', 'owsu_rc_error', 'owum_gh_check', 'owum_errors', 'owum_errors_seen' ) as $opt ) {
+foreach ( array( 'owum_snapshot', 'owum_meta', 'owum_settings', 'owum_db_version', 'owum_last_sent', 'owum_last_mail', 'owum_last_check', 'owsu_fixes', 'owsu_scan', 'owsu_vulns', 'owsu_tracking_since', 'owum_mig_child_themes', 'owsu_rc_error', 'owum_gh_check', 'owum_errors', 'owum_errors_seen', 'owum_mig_brand' ) as $opt ) {
 	delete_site_option( $opt );
 }
 delete_site_transient( 'owum_detect_lock' );

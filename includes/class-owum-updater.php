@@ -2,11 +2,11 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Atualizações do próprio plugin a partir das versões publicadas no GitHub.
+ * Updates of the plugin itself from the releases published on GitHub.
  *
  * Usa o mecanismo oficial do WordPress para plugins de fora do wordpress.org
- * (cabeçalho "Update URI" + filtro update_plugins_github.com, WP 5.8+).
- * A atualização aparece na tela de Plugins como qualquer outra e pode ser automática.
+ * ("Update URI" header + update_plugins_github.com filter, WP 5.8+).
+ * The update shows up on the Plugins screen like any other and can be automatic.
  */
 class OWUM_Updater {
 
@@ -34,7 +34,7 @@ class OWUM_Updater {
 	}
 
 	/**
-	 * Última versão publicada no GitHub (com cache de 6 horas).
+	 * Latest release published on GitHub (cached for 6 hours).
 	 *
 	 * @return array|null
 	 */
@@ -79,7 +79,7 @@ class OWUM_Updater {
 		return $rel;
 	}
 
-	/** Chamado pelo WordPress ao verificar atualizações de plugins com "Update URI" no github.com. */
+	/** Called by WordPress when checking updates of plugins whose "Update URI" is on github.com. */
 	public static function check( $update, $plugin_data, $plugin_file, $locales = array() ) {
 		if ( self::basename() !== $plugin_file ) {
 			return $update;
@@ -101,7 +101,7 @@ class OWUM_Updater {
 		);
 	}
 
-	/** Janela "Ver detalhes" da atualização. */
+	/** "View details" window of the update. */
 	public static function info( $result, $action, $args ) {
 		if ( 'plugin_information' !== $action || empty( $args->slug ) || self::slug() !== $args->slug ) {
 			return $result;
@@ -111,7 +111,7 @@ class OWUM_Updater {
 			return $result;
 		}
 		return (object) array(
-			'name'          => 'Ondaweb Security Updater',
+			'name'          => OWUM_PRODUCT,
 			'slug'          => self::slug(),
 			'version'       => $rel['version'],
 			'author'        => '<a href="https://ondaweb.com.br">Ondaweb</a>',
@@ -123,13 +123,13 @@ class OWUM_Updater {
 			'download_link' => $rel['package'],
 			'sections'      => array(
 				'changelog'   => self::markdown( $rel['notes'] ),
-				'description' => '<p>Inventário de versões, histórico de atualizações, verificações e correções de segurança e relatório mensal para clientes da Ondaweb.</p>',
+				'description' => '<p>' . esc_html__( 'Version inventory, update history, security checks and fixes, and a monthly client report.', 'ondaweb-security' ) . '</p>',
 			),
 			'banners'       => array(),
 		);
 	}
 
-	/** Garante que a pasta instalada continue com o mesmo nome (mantém histórico e configurações). */
+	/** Keeps the installed folder name (preserves history and settings). */
 	public static function fix_folder( $source, $remote_source, $upgrader, $extra = array() ) {
 		if ( empty( $extra['plugin'] ) || self::basename() !== $extra['plugin'] ) {
 			return $source;
@@ -142,14 +142,14 @@ class OWUM_Updater {
 		if ( $wp_filesystem && $wp_filesystem->move( $source, $want, true ) ) {
 			return $want;
 		}
-		return new WP_Error( 'owum_folder', 'Não foi possível preparar a pasta da atualização.' );
+		return new WP_Error( 'owum_folder', __( 'Could not prepare the update folder.', 'ondaweb-security' ) );
 	}
 
-	/** Markdown simples (títulos, listas, negrito, links) para HTML. */
+	/** Simple Markdown (headings, lists, bold, links) to HTML. */
 	public static function markdown( $md ) {
 		$md = trim( str_replace( "\r", '', (string) $md ) );
 		if ( '' === $md ) {
-			return '<p>Sem notas para esta versão.</p>';
+			return '<p>' . esc_html__( 'No notes for this version.', 'ondaweb-security' ) . '</p>';
 		}
 		$html = '';
 		$list = false;

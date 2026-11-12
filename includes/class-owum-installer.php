@@ -11,9 +11,13 @@ class OWUM_Installer {
 	}
 
 	public static function activate() {
+		// Brand-new install (never activated before): starts neutral, without the Ondaweb branding.
+		if ( false === get_site_option( 'owum_db_version' ) && ! get_site_option( 'owum_mig_brand' ) ) {
+			update_site_option( 'owum_mig_brand', 'fresh' );
+		}
 		self::create_table();
 
-		// Primeira "foto" das versões: serve de base para o histórico.
+		// First version snapshot: baseline for the update history.
 		if ( ! is_array( get_site_option( 'owum_snapshot' ) ) ) {
 			$snap = OWUM_Collector::snapshot();
 			update_site_option( 'owum_snapshot', $snap );
@@ -21,11 +25,11 @@ class OWUM_Installer {
 				array(
 					'item_type'   => 'core',
 					'item_key'    => 'core',
-					'item_name'   => 'Ondaweb Security Updater',
+					'item_name'   => OWUM_PRODUCT,
 					'action'      => 'inicio',
 					'new_version' => $snap['core']['version'],
-					'source'      => 'Sistema',
-					'notes'       => sprintf( 'Início do monitoramento: %d plugins e %d temas registrados.', count( $snap['plugin'] ), count( $snap['theme'] ) ),
+					'source'      => 'system',
+					'notes'       => wp_json_encode( array( 'plugins' => count( $snap['plugin'] ), 'themes' => count( $snap['theme'] ) ) ),
 				)
 			);
 		}
@@ -37,7 +41,7 @@ class OWUM_Installer {
 	}
 
 	public static function deactivate() {
-		// As regras .htaccess deixam de valer junto com o plugin; ficam guardadas para a reativação.
+		// .htaccess rules stop applying with the plugin; they are kept and restored on reactivation.
 		OWSU_Security::clear_htaccess();
 		self::on_main_site(
 			function () {
@@ -71,12 +75,12 @@ class OWUM_Installer {
 		update_site_option( 'owum_db_version', self::DB_VERSION );
 	}
 
-	/** Garante tabela e agendamento mesmo se o plugin for copiado via FTP sem ativação "oficial". */
+	/** Ensures table and schedule even if the plugin was copied over FTP without a proper activation. */
 	public static function maybe_upgrade() {
 		if ( get_site_option( 'owum_db_version' ) !== self::DB_VERSION ) {
 			self::activate();
 		}
-		// 1.1.1: temas filhos classificados antes como pago/licença passam a "Personalizado".
+		// 1.1.1: child themes previously classified as paid/agency license become "Custom".
 		if ( ! get_site_option( 'owum_mig_child_themes' ) ) {
 			$meta = (array) get_site_option( 'owum_meta', array() );
 			foreach ( wp_get_themes() as $slug => $theme ) {
@@ -88,9 +92,37 @@ class OWUM_Installer {
 			update_site_option( 'owum_meta', $meta );
 			update_site_option( 'owum_mig_child_themes', 1 );
 		}
+		if ( ! get_site_option( 'owum_mig_brand' ) ) {
+			self::migrate_brand();
+		}
 		if ( is_admin() && is_main_site() && ! wp_next_scheduled( 'owum_daily' ) ) {
 			self::schedule();
 		}
+	}
+
+	/**
+	 * 1.5.0: branding became configurable (white label). Installs that existed before keep
+	 * exactly what they had: Ondaweb name and bundled logo, Elementor Pro as agency license,
+	 * and the same email recipients.
+	 */
+	public static function migrate_brand() {
+		$saved = get_site_option( 'owum_settings' );
+		$saved = is_array( $saved ) ? $saved : array();
+		$keep  = array(
+			'brand_name'         => 'Ondaweb',
+			'brand_url'          => 'https://ondaweb.com.br',
+			'brand_logo_default' => 1,
+			'agency_licensed'    => array( 'plugin:elementor-pro/elementor-pro.php' ),
+			'emails'             => 'suporte@ondaweb.com.br',
+			'err_email'          => 'desenvolvimento.ondaweb@gmail.com',
+		);
+		foreach ( $keep as $k => $v ) {
+			if ( ! array_key_exists( $k, $saved ) ) {
+				$saved[ $k ] = $v;
+			}
+		}
+		update_site_option( 'owum_settings', $saved );
+		update_site_option( 'owum_mig_brand', 'legacy' );
 	}
 
 	public static function schedule() {
@@ -103,7 +135,7 @@ class OWUM_Installer {
 		);
 	}
 
-	/** O cron fica no site principal da rede. */
+	/** The cron event lives on the network's main site. */
 	public static function on_main_site( callable $fn ) {
 		$switched = false;
 		if ( is_multisite() && ! is_main_site() ) {

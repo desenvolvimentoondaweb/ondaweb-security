@@ -2,8 +2,8 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Aplica, a cada requisição, as proteções ativadas no painel de segurança.
- * Tudo aqui é reversível: basta desligar a correção no painel.
+ * Applies, on every request, the protections turned on in the security panel.
+ * Everything here is reversible: just undo the fix in the panel.
  */
 class OWSU_Hardening {
 
@@ -47,7 +47,7 @@ class OWSU_Hardening {
 		}
 	}
 
-	/** Cabeçalhos ativados. */
+	/** Headers turned on. */
 	public static function headers() {
 		$fixes = OWSU_Security::fixes();
 		$out   = array();
@@ -96,7 +96,7 @@ class OWSU_Hardening {
 		if ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) {
 			status_header( 403 );
 			header( 'Content-Type: text/plain; charset=utf-8' );
-			exit( 'XML-RPC desativado.' );
+			exit( 'XML-RPC is disabled.' );
 		}
 	}
 

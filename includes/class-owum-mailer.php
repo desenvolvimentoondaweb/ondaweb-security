@@ -2,8 +2,8 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Envio mensal do relatório. Roda dentro do evento diário: no dia configurado
- * (ou no primeiro dia seguinte em que o cron rodar) envia o relatório do mês anterior.
+ * Monthly report email. Runs inside the daily event: on the configured day
+ * (or the first day after it on which cron runs) it sends the previous month's report.
  */
 class OWUM_Mailer {
 
@@ -38,7 +38,7 @@ class OWUM_Mailer {
 	}
 
 	/**
-	 * @param string $ym Mês (Y-m) do histórico.
+	 * @param string $ym History month (Y-m).
 	 */
 	public static function send( $ym ) {
 		$to = self::recipients();
@@ -49,8 +49,9 @@ class OWUM_Mailer {
 		$error = '';
 		try {
 			$s       = owum_settings();
-			$subject = sprintf( '[%s] Relatório de atualizações e segurança – %s', $s['client_name'], OWUM_Report::month_label( $ym ) );
-			// Logos por endereço (funcionam com qualquer plugin de envio/SMTP).
+			/* translators: 1: client / site name, 2: month and year */
+			$subject = sprintf( __( '[%1$s] Updates and security report – %2$s', 'ondaweb-security' ), $s['client_name'], OWUM_Report::month_label( $ym ) );
+			// Logos by URL (work with any email/SMTP plugin).
 			$body = '<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:24px;background:#ffffff;">' . OWUM_Report::html( $ym, 'print' ) . '</body></html>';
 
 			$embed = array( __CLASS__, 'embed_logos' );
@@ -65,7 +66,7 @@ class OWUM_Mailer {
 		} catch ( \Throwable $e ) {
 			$sent  = false;
 			$error = $e->getMessage() . ' (' . basename( $e->getFile() ) . ':' . $e->getLine() . ')';
-			OWUM_ErrorLog::add( 'error', 'Relatório por e-mail: ' . $e->getMessage(), array( 'file' => $e->getFile(), 'line' => $e->getLine(), 'trace' => $e->getTraceAsString(), 'source' => 'Ondaweb Security Updater' ) );
+			OWUM_ErrorLog::add( 'error', __( 'Report email', 'ondaweb-security' ) . ': ' . $e->getMessage(), array( 'file' => $e->getFile(), 'line' => $e->getLine(), 'trace' => $e->getTraceAsString(), 'source' => 'self' ) );
 		}
 		update_site_option(
 			'owum_last_mail',
@@ -83,7 +84,7 @@ class OWUM_Mailer {
 	/**
 	 * Quando o envio usa o PHPMailer do WordPress, embute os logos na mensagem
 	 * (aparecem mesmo com imagens externas bloqueadas). Com outros plugins de
-	 * envio, os logos continuam pelo endereço da imagem.
+	 * mail plugins, logos keep loading from the image URL.
 	 */
 	public static function embed_logos( $phpmailer ) {
 		if ( ! is_object( $phpmailer ) || ! method_exists( $phpmailer, 'addEmbeddedImage' ) || ! property_exists( $phpmailer, 'Body' ) ) {
@@ -100,7 +101,7 @@ class OWUM_Mailer {
 					$phpmailer->Body = str_replace( 'src="' . esc_attr( $l['url'] ) . '"', 'src="cid:' . $cid . '"', $phpmailer->Body );
 				}
 			} catch ( \Throwable $e ) {
-				OWUM_ErrorLog::add( 'warning', 'Não foi possível embutir o logo no e-mail: ' . $e->getMessage(), array( 'source' => 'Ondaweb Security Updater' ), false );
+				OWUM_ErrorLog::add( 'warning', __( 'Could not embed the logo in the email', 'ondaweb-security' ) . ': ' . $e->getMessage(), array( 'source' => 'self' ), false );
 			}
 		}
 	}

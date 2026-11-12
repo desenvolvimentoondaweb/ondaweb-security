@@ -2,9 +2,9 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Vulnerabilidades conhecidas: base Wordfence Intelligence (API v3).
- * O arquivo da base é grande, então é baixado para disco e lido em fluxo,
- * um registro por vez, sem carregar tudo na memória.
+ * Known vulnerabilities: Wordfence Intelligence database (API v3).
+ * The database file is large, so it is downloaded to disk and read as a stream,
+ * one record at a time, without loading everything into memory.
  */
 class OWSU_Vulns {
 
@@ -20,7 +20,7 @@ class OWSU_Vulns {
 		return is_array( $v ) ? $v : array( 'time' => '', 'error' => '', 'items' => array() );
 	}
 
-	/** Vulnerabilidades de um item do inventário (ex.: "plugin:elementor-pro/elementor-pro.php"). */
+	/** Vulnerabilities of an inventory item (e.g. "plugin:elementor-pro/elementor-pro.php"). */
 	public static function for_key( $key ) {
 		$out = array();
 		foreach ( (array) self::get()['items'] as $it ) {
@@ -31,7 +31,7 @@ class OWSU_Vulns {
 		return $out;
 	}
 
-	/** Mapa do que está instalado, no formato da base: tipo => slug => [versão, nome, chave do inventário]. */
+	/** Map of what is installed, in the database's format: type => slug => [version, name, inventory key]. */
 	public static function targets() {
 		$snap = OWUM_Collector::snapshot();
 		$t    = array(
@@ -61,7 +61,7 @@ class OWSU_Vulns {
 		$key  = self::key();
 		$prev = self::get();
 		if ( ! $key ) {
-			return new WP_Error( 'owsu', 'Chave da API Wordfence Intelligence não configurada.' );
+			return new WP_Error( 'owsu', __( 'The Wordfence Intelligence API key is not configured.', 'ondaweb-security' ) );
 		}
 		@set_time_limit( 900 ); // phpcs:ignore
 		require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -82,22 +82,25 @@ class OWSU_Vulns {
 		$code = is_wp_error( $res ) ? 0 : (int) wp_remote_retrieve_response_code( $res );
 		if ( 200 !== $code ) {
 			if ( is_wp_error( $res ) ) {
-				$msg = 'Falha ao baixar a base: ' . $res->get_error_message();
+				/* translators: %s: error message */
+				$msg = sprintf( __( 'Could not download the database: %s', 'ondaweb-security' ), $res->get_error_message() );
 			} elseif ( in_array( $code, array( 401, 403 ), true ) ) {
-				$msg = 'A Wordfence recusou a chave de API (HTTP ' . $code . '). Confira a chave em Configurações.';
+				/* translators: %d: HTTP status code */
+				$msg = sprintf( __( 'Wordfence rejected the API key (HTTP %d). Check the key in Settings.', 'ondaweb-security' ), $code );
 			} else {
-				$msg = 'A Wordfence respondeu HTTP ' . $code . '.';
+				/* translators: %d: HTTP status code */
+				$msg = sprintf( __( 'Wordfence answered HTTP %d.', 'ondaweb-security' ), $code );
 			}
 			@unlink( $tmp ); // phpcs:ignore
 			$prev['error'] = $msg;
 			update_site_option( 'owsu_vulns', $prev );
-			OWUM_ErrorLog::op( 'Base de vulnerabilidades', $msg );
+			OWUM_ErrorLog::op( __( 'Vulnerability database', 'ondaweb-security' ), $msg );
 			return new WP_Error( 'owsu', $msg );
 		}
 		$result = self::scan_file( $tmp, self::targets() );
 		@unlink( $tmp ); // phpcs:ignore
 		if ( is_wp_error( $result ) ) {
-			OWUM_ErrorLog::op( 'Base de vulnerabilidades', $result->get_error_message() );
+			OWUM_ErrorLog::op( __( 'Vulnerability database', 'ondaweb-security' ), $result->get_error_message() );
 			$prev['error'] = $result->get_error_message();
 			update_site_option( 'owsu_vulns', $prev );
 			return $result;
@@ -114,7 +117,7 @@ class OWSU_Vulns {
 		return true;
 	}
 
-	/** Testa se uma versão está dentro de uma faixa afetada da base. */
+	/** Tests whether a version is inside an affected range of the database. */
 	public static function in_range( $v, $r ) {
 		$from = isset( $r['from_version'] ) ? (string) $r['from_version'] : '*';
 		$to   = isset( $r['to_version'] ) ? (string) $r['to_version'] : '*';
@@ -134,14 +137,14 @@ class OWSU_Vulns {
 	}
 
 	/**
-	 * Lê o JSON da base em fluxo. Formato: { "<id>": { ...registro... }, ... }
+	 * Reads the database JSON as a stream. Format: { "<id>": { ...record... }, ... }
 	 *
 	 * @return array|WP_Error ['items' => [...], 'records' => int]
 	 */
 	public static function scan_file( $file, $targets ) {
 		$fh = @fopen( $file, 'rb' ); // phpcs:ignore
 		if ( ! $fh ) {
-			return new WP_Error( 'owsu', 'Não foi possível ler a base baixada.' );
+			return new WP_Error( 'owsu', __( 'Could not read the downloaded database.', 'ondaweb-security' ) );
 		}
 		$buf     = '';
 		$pos     = 0;
@@ -206,7 +209,7 @@ class OWSU_Vulns {
 					break;
 				}
 				if ( ! feof( $fh ) ) {
-					// Descarta o que já foi consumido e lê mais 1 MB.
+					// Drops what was already consumed and reads 1 more MB.
 					$cut = $start >= 0 ? $start : $pos;
 					$buf = substr( $buf, $cut ) . fread( $fh, 1048576 );
 					$pos -= $cut;
@@ -253,7 +256,7 @@ class OWSU_Vulns {
 		fclose( $fh ); // phpcs:ignore
 
 		if ( 0 === $records ) {
-			return new WP_Error( 'owsu', 'A base baixada está vazia ou em formato inesperado.' );
+			return new WP_Error( 'owsu', __( 'The downloaded database is empty or in an unexpected format.', 'ondaweb-security' ) );
 		}
 		usort(
 			$items,
