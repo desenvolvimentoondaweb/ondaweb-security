@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 1.5.1
+- **Novo visual do painel no padrão Ondaweb:** barra com o logo da Ondaweb no topo de todas as telas, botões arredondados (ação principal em laranja), cartões de resumo e nota de segurança no estilo do relatório, tabelas com cabeçalho preto e cantos arredondados, seções de Configurações em cartões e etiquetas de situação nas cores da marca.
+- Barra de progresso da verificação e item do plugin no menu lateral nas cores da Ondaweb.
+
 ## 1.5.0
 - **Novo layout do relatório do cliente** (e-mail e PDF), no padrão visual da Ondaweb: capa com a nota de segurança, resumo com indicadores, "Como a verificação foi feita", as 9 áreas cobertas, cartões de "Medidas implementadas e verificadas" (ações, risco reduzido e resultado verificado), quadro geral de resultados, atualizações, inventário, datas de referência (validade do certificado HTTPS e fim do suporte do PHP) e observação final.
 - No PDF, cada página tem o logo da Ondaweb no topo e rodapé com "Página X de Y" (Chrome/Edge).
