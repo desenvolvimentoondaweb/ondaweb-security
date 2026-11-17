@@ -256,7 +256,7 @@ class OWSU_Admin {
 			tr.owsu-hide,h2.owsu-hide,table.owsu-hide{display:none}
 			.owsu-vt td{font-size:12px}
 		</style>
-		<div class="wrap">
+		<div class="wrap owum-ui"><?php OWUM_Admin::brand_bar(); ?>
 			<h1 class="wp-heading-inline"><?php esc_html_e( 'Security', 'ondaweb-security' ); ?></h1>
 			<?php
 			echo str_replace( '<a ', '<a data-owsu-scan="0" ', self::link( 'owsu_scan', __( 'Run check', 'ondaweb-security' ) ) ); // phpcs:ignore
@@ -287,15 +287,15 @@ class OWSU_Admin {
 			?>
 			<div class="owsu-head">
 				<div class="owsu-grade">
-					<div class="g" style="color:<?php echo esc_attr( OWSU_Security::grade_color( $sc['grade'] ) ); ?>"><?php echo esc_html( $sc['grade'] ); ?></div>
+					<div class="g"><?php echo esc_html( $sc['grade'] ); ?></div>
 					<div class="s"><?php echo esc_html( sprintf( /* translators: %d: score 0-100 */ __( 'Score %d/100', 'ondaweb-security' ), $sc['score'] ) ); ?></div>
 				</div>
 				<div>
 					<div class="owsu-counts">
-						<div><div class="l"><?php esc_html_e( 'Critical', 'ondaweb-security' ); ?></div><div class="n" style="color:#991b1b"><?php echo (int) $sc['count']['crit']; ?></div></div>
-						<div><div class="l"><?php esc_html_e( 'Warning', 'ondaweb-security' ); ?></div><div class="n" style="color:#9a3412"><?php echo (int) $sc['count']['warn']; ?></div></div>
-						<div><div class="l">OK</div><div class="n" style="color:#166534"><?php echo (int) $sc['count']['ok']; ?></div></div>
-						<div><div class="l"><?php esc_html_e( 'Informational', 'ondaweb-security' ); ?></div><div class="n" style="color:#3730a3"><?php echo (int) $sc['count']['info']; ?></div></div>
+						<div><div class="l"><?php esc_html_e( 'Critical', 'ondaweb-security' ); ?></div><div class="n"><?php echo (int) $sc['count']['crit']; ?></div></div>
+						<div><div class="l"><?php esc_html_e( 'Warning', 'ondaweb-security' ); ?></div><div class="n"><?php echo (int) $sc['count']['warn']; ?></div></div>
+						<div><div class="l">OK</div><div class="n"><?php echo (int) $sc['count']['ok']; ?></div></div>
+						<div><div class="l"><?php esc_html_e( 'Informational', 'ondaweb-security' ); ?></div><div class="n"><?php echo (int) $sc['count']['info']; ?></div></div>
 					</div>
 					<p class="description"><?php
 						/* translators: %s: date and time */

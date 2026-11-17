@@ -1,0 +1,415 @@
+/* Ondaweb Security Updater — admin screens in the Ondaweb visual identity (same as the client report). */
+.owum-ui {
+	--ow-black: #000;
+	--ow-text: #1b1d1f;
+	--ow-body: #2c3033;
+	--ow-muted: #5f666a;
+	--ow-line: #e3e5e7;
+	--ow-soft: #f6f6f3;
+	--ow-orange: #f58634;
+	--ow-orange-d: #e0701c;
+	--ow-red: #ef4057;
+	--ow-teal: #0cbbc8;
+	--ow-teal-d: #0a9aa5;
+	--ow-navy: #2c2e49;
+	--ow-radius: 12px;
+	color: var(--ow-body);
+	max-width: 1280px;
+}
+
+/* Brand bar ---------------------------------------------------------- */
+.owum-ui .owum-brandbar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	background: var(--ow-black);
+	border-radius: var(--ow-radius);
+	padding: 16px 22px;
+	margin: 14px 0 22px;
+	position: relative;
+	overflow: hidden;
+}
+.owum-ui .owum-brandbar::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 4px;
+	background: linear-gradient(90deg, var(--ow-orange) 0 60%, var(--ow-red) 60% 80%, var(--ow-teal) 80% 100%);
+}
+.owum-ui .owum-brandbar .logo {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+.owum-ui .owum-brandbar .logo img {
+	height: 26px;
+	width: auto;
+	display: block;
+}
+.owum-ui .owum-brandbar .prod {
+	color: #aeb2b5;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: .16em;
+	text-transform: uppercase;
+	border-left: 1px solid #33373a;
+	padding-left: 14px;
+}
+.owum-ui .owum-brandbar .site {
+	color: #d4d6d8;
+	font-size: 12px;
+}
+.owum-ui .owum-brandbar .site b {
+	color: var(--ow-orange);
+	font-size: 10px;
+	letter-spacing: .16em;
+	text-transform: uppercase;
+	margin-right: 8px;
+}
+
+/* Titles ------------------------------------------------------------- */
+.owum-ui h1,
+.owum-ui h1.wp-heading-inline {
+	font-size: 24px;
+	font-weight: 700;
+	color: var(--ow-text);
+	margin-right: 10px;
+}
+.owum-ui h2 {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 17px;
+	font-weight: 700;
+	color: var(--ow-text);
+	margin: 28px 0 12px;
+}
+.owum-ui h2::before {
+	content: "";
+	width: 11px;
+	height: 11px;
+	border-radius: 2px;
+	background: var(--ow-orange);
+	flex: 0 0 auto;
+}
+.owum-ui h2.owsu-hide,
+.owum-ui .owsu-hide { display: none; }
+.owum-ui .description { color: var(--ow-muted); }
+.owum-ui a { color: var(--ow-orange-d); }
+.owum-ui a:hover,
+.owum-ui a:focus { color: var(--ow-black); }
+
+/* Buttons ------------------------------------------------------------ */
+.owum-ui .button,
+.owum-ui .page-title-action,
+.owum-ui input[type=submit].button {
+	border-radius: 999px !important;
+	padding: 2px 16px !important;
+	min-height: 34px;
+	line-height: 28px !important;
+	font-weight: 600;
+	border: 1.5px solid var(--ow-text) !important;
+	background: #fff !important;
+	color: var(--ow-text) !important;
+	box-shadow: none !important;
+	transition: background .15s, color .15s, border-color .15s;
+}
+.owum-ui .button:hover,
+.owum-ui .page-title-action:hover {
+	background: var(--ow-black) !important;
+	border-color: var(--ow-black) !important;
+	color: #fff !important;
+}
+.owum-ui .button-primary,
+.owum-ui .button.button-primary,
+.owum-ui input[type=submit].button-primary {
+	background: var(--ow-orange) !important;
+	border-color: var(--ow-orange) !important;
+	color: #fff !important;
+}
+.owum-ui .button-primary:hover,
+.owum-ui .button.button-primary:hover {
+	background: var(--ow-orange-d) !important;
+	border-color: var(--ow-orange-d) !important;
+}
+.owum-ui .page-title-action {
+	top: -3px;
+	margin-left: 4px;
+}
+.owum-ui .page-title-action[data-owsu-scan="0"],
+.owum-ui .page-title-action:first-of-type {
+	background: var(--ow-orange) !important;
+	border-color: var(--ow-orange) !important;
+	color: #fff !important;
+}
+.owum-ui .page-title-action[data-owsu-scan="0"]:hover,
+.owum-ui .page-title-action:first-of-type:hover {
+	background: var(--ow-orange-d) !important;
+	border-color: var(--ow-orange-d) !important;
+}
+.owum-ui .button-small { min-height: 26px; line-height: 22px !important; padding: 0 12px !important; }
+.owum-ui .button-link { border: 0 !important; background: none !important; }
+
+/* Notices ------------------------------------------------------------ */
+.owum-ui .notice {
+	border-radius: 10px;
+	border: 1px solid var(--ow-line);
+	border-left-width: 4px;
+	box-shadow: none;
+}
+.owum-ui .notice-success { border-left-color: var(--ow-teal); }
+.owum-ui .notice-error { border-left-color: var(--ow-red); }
+.owum-ui .notice-info { border-left-color: var(--ow-orange); }
+.owum-ui .notice-warning { border-left-color: var(--ow-orange); }
+
+/* Stat cards (Updates) ---------------------------------------------- */
+.owum-ui .owum-cards { gap: 14px; margin: 6px 0 18px; }
+.owum-ui .owum-card {
+	background: var(--ow-soft);
+	border: 0;
+	border-top: 3px solid var(--ow-navy);
+	border-radius: 10px;
+	padding: 16px 18px 18px;
+}
+.owum-ui .owum-card:nth-child(2) { border-top-color: var(--ow-teal); }
+.owum-ui .owum-card:nth-child(3) { border-top-color: var(--ow-orange); }
+.owum-ui .owum-card:nth-child(4) { border-top-color: var(--ow-red); }
+.owum-ui .owum-card .l {
+	font-size: 9.5px;
+	font-weight: 700;
+	letter-spacing: .14em;
+	color: var(--ow-muted);
+}
+.owum-ui .owum-card .v { font-size: 28px; font-weight: 700; color: var(--ow-text); margin: 6px 0 4px; }
+.owum-ui .owum-card .s { font-size: 12px; color: var(--ow-muted); }
+.owum-ui .owum-ok { color: var(--ow-teal-d) !important; }
+.owum-ui .owum-free { color: var(--ow-text) !important; }
+.owum-ui .owum-paid { color: var(--ow-orange-d) !important; }
+
+/* Badges ------------------------------------------------------------- */
+.owum-ui .owum-badge,
+.owum-ui .owsu-badge,
+.owum-ui .owum-lv,
+#owum-modal .owsu-badge {
+	border-radius: 999px;
+	padding: 3px 10px;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: .04em;
+}
+.owum-ui .owum-badge.ok, .owum-ui .owsu-badge.ok, #owum-modal .owsu-badge.ok { background: #e3f7f9; color: var(--ow-teal-d); }
+.owum-ui .owum-badge.free { background: #ebebf1; color: var(--ow-navy); }
+.owum-ui .owum-badge.paid, .owum-ui .owsu-badge.warn, #owum-modal .owsu-badge.warn { background: #fff1e6; color: #c2600f; }
+.owum-ui .owsu-badge.crit, #owum-modal .owsu-badge.crit { background: #fdecee; color: #c81e3a; }
+.owum-ui .owsu-badge.info, #owum-modal .owsu-badge.info { background: #ebebf1; color: var(--ow-navy); }
+
+/* Filters and toolbars ---------------------------------------------- */
+.owum-ui .owum-filters {
+	background: #fff;
+	border: 1px solid var(--ow-line);
+	border-radius: var(--ow-radius);
+	padding: 12px 14px;
+	gap: 12px;
+}
+.owum-ui .owum-filters label {
+	font-size: 9.5px;
+	font-weight: 700;
+	letter-spacing: .12em;
+	text-transform: uppercase;
+	color: var(--ow-muted);
+}
+.owum-ui input[type=text],
+.owum-ui input[type=search],
+.owum-ui input[type=url],
+.owum-ui input[type=email],
+.owum-ui input[type=password],
+.owum-ui input[type=number],
+.owum-ui select,
+.owum-ui textarea {
+	border-radius: 8px;
+	border-color: #c9cdd0;
+	min-height: 34px;
+}
+.owum-ui input:focus,
+.owum-ui select:focus,
+.owum-ui textarea:focus {
+	border-color: var(--ow-orange);
+	box-shadow: 0 0 0 1px var(--ow-orange);
+	outline: 0;
+}
+.owum-ui input[type=checkbox]:checked { background-color: #f58634; border-color: #f58634; }
+.owum-ui input[type=checkbox]:focus { box-shadow: 0 0 0 1px #f58634; border-color: #f58634; }
+.owum-ui details summary { color: var(--ow-orange-d); }
+.owum-ui input[type=radio]:checked::before { background: var(--ow-orange); }
+
+/* Tables ------------------------------------------------------------- */
+.owum-ui table.widefat {
+	border: 1px solid var(--ow-line);
+	border-radius: var(--ow-radius);
+	border-collapse: separate;
+	border-spacing: 0;
+	overflow: hidden;
+	box-shadow: none;
+}
+.owum-ui table.widefat thead th,
+.owum-ui table.widefat thead td,
+.owum-ui table.widefat tfoot th {
+	background: var(--ow-black);
+	color: #fff;
+	font-size: 9.5px;
+	font-weight: 700;
+	letter-spacing: .14em;
+	text-transform: uppercase;
+	border-bottom: 0;
+	padding: 11px 12px;
+}
+.owum-ui table.widefat thead th a,
+.owum-ui table.widefat thead th.owum-sort:hover { color: #fff; }
+.owum-ui table.widefat thead th.owum-sort.asc,
+.owum-ui table.widefat thead th.owum-sort.desc { color: var(--ow-orange); }
+.owum-ui table.widefat td { border-bottom: 1px solid var(--ow-line); padding: 11px 12px; }
+.owum-ui table.widefat tbody tr:last-child td { border-bottom: 0; }
+.owum-ui .owum-table tbody tr.owum-alt,
+.owum-ui table.striped > tbody > :nth-child(odd) { background: #fbfbfa; }
+.owum-ui .owum-unclassified { color: var(--ow-orange-d); }
+
+/* Settings: each section as a rounded card ---------------------------- */
+.owum-ui .form-table {
+	background: #fff;
+	border: 1px solid var(--ow-line);
+	border-left: 4px solid var(--ow-orange);
+	border-radius: var(--ow-radius);
+	border-collapse: separate;
+	margin-top: 4px;
+}
+.owum-ui .form-table th { padding: 18px 10px 18px 22px; color: var(--ow-text); }
+.owum-ui .form-table td { padding: 15px 22px 15px 10px; }
+.owum-ui .form-table tr + tr th,
+.owum-ui .form-table tr + tr td { border-top: 1px solid #f0f1f2; }
+
+/* Security ----------------------------------------------------------- */
+.owum-ui .owsu-head { grid-template-columns: 230px 1fr; gap: 16px; align-items: stretch; }
+.owum-ui .owsu-grade {
+	background: var(--ow-black);
+	border: 0;
+	border-radius: 14px;
+	padding: 22px 16px 24px;
+	position: relative;
+	overflow: hidden;
+}
+.owum-ui .owsu-grade::after {
+	content: "";
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	height: 5px;
+	background: linear-gradient(90deg, var(--ow-orange) 0 60%, var(--ow-red) 60% 80%, var(--ow-teal) 80% 100%);
+}
+.owum-ui .owsu-grade .g {
+	width: 104px;
+	height: 104px;
+	margin: 0 auto;
+	border: 7px solid var(--ow-orange);
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-sizing: border-box;
+	color: #fff !important;
+	font-size: 46px;
+}
+.owum-ui .owsu-grade .s {
+	color: #aeb2b5;
+	margin-top: 12px;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: .16em;
+	text-transform: uppercase;
+}
+.owum-ui .owsu-counts { gap: 14px; }
+.owum-ui .owsu-counts > div {
+	background: var(--ow-soft);
+	border: 0;
+	border-top: 3px solid var(--ow-red);
+	border-radius: 10px;
+	padding: 16px 18px;
+}
+.owum-ui .owsu-counts > div:nth-child(2) { border-top-color: var(--ow-orange); }
+.owum-ui .owsu-counts > div:nth-child(3) { border-top-color: var(--ow-teal); }
+.owum-ui .owsu-counts > div:nth-child(4) { border-top-color: var(--ow-navy); }
+.owum-ui .owsu-counts .n { font-size: 28px; font-weight: 700; color: var(--ow-text) !important; margin-top: 4px; }
+.owum-ui .owsu-counts .l { font-size: 9.5px; font-weight: 700; letter-spacing: .14em; color: var(--ow-muted); }
+.owum-ui .owsu-head .description { margin-top: 12px; }
+
+.owum-ui .owsu-filter {
+	display: inline-flex;
+	gap: 4px;
+	background: #fff;
+	border: 1px solid var(--ow-line);
+	border-radius: 999px;
+	padding: 4px;
+	margin: 4px 0 6px;
+}
+.owum-ui .owsu-filter a {
+	margin: 0;
+	padding: 6px 16px;
+	border-radius: 999px;
+	color: var(--ow-body);
+	font-weight: 600;
+}
+.owum-ui .owsu-filter a.current { background: var(--ow-black); color: #fff; }
+
+.owum-ui .owsu-table {
+	border-left: 4px solid var(--ow-orange) !important;
+}
+.owum-ui .owsu-table td { padding: 14px 14px; }
+.owum-ui .owsu-table td:first-child { width: 96px; }
+.owum-ui .owsu-table strong { color: var(--ow-text); font-size: 14px; }
+.owum-ui .owsu-table .why { color: var(--ow-muted); }
+.owum-ui .owsu-table details.howto summary { color: var(--ow-orange-d); font-weight: 600; }
+.owum-ui .owsu-table details.howto > div {
+	background: var(--ow-soft);
+	border-left: 3px solid var(--ow-orange);
+	border-radius: 0 8px 8px 0;
+	padding: 10px 14px;
+}
+.owum-ui .owsu-table pre { border-radius: 8px; }
+.owum-ui .owsu-table .applied { color: var(--ow-teal-d); font-weight: 600; }
+.owum-ui .owsu-table tr.owsu-focus { outline: 2px solid var(--ow-orange); outline-offset: -2px; }
+
+/* Error log ---------------------------------------------------------- */
+.owum-ui .owum-lv.fatal { background: #fdecee; color: #c81e3a; }
+.owum-ui .owum-lv.error { background: #fff1e6; color: #c2600f; }
+.owum-ui .owum-lv.warning { background: #fff7e0; color: #8a5a00; }
+.owum-ui .owum-lv.notice { background: #ebebf1; color: var(--ow-navy); }
+.owum-ui .owum-err tr.is-new td:first-child { box-shadow: inset 3px 0 0 var(--ow-red); }
+.owum-ui .subsubsub a.current { color: var(--ow-text); }
+.owum-ui .owum-err pre { border-radius: 8px; }
+
+/* Progress window ---------------------------------------------------- */
+#owum-modal .box { border-radius: 16px; border-top: 4px solid var(--ow-orange, #f58634); }
+#owum-modal .bar { background: #f0f0ee; }
+#owum-modal .bar span { background: #f58634; }
+#owum-modal .spin { border-top-color: #f58634; }
+#owum-modal .button { border-radius: 999px; border: 1.5px solid #1b1d1f; color: #1b1d1f; background: #fff; padding: 0 16px; }
+#owum-modal .button:hover { background: #000; color: #fff; }
+
+@media (max-width: 782px) {
+	.owum-ui .owsu-head { grid-template-columns: 1fr; }
+	.owum-ui .owum-brandbar { flex-direction: column; align-items: flex-start; }
+}
+
+.owum-ui .notice a { color: var(--ow-orange-d); }
+
+/* Plugin item in the WordPress side menu */
+#adminmenu li#toplevel_page_owum.wp-has-current-submenu > a.menu-top,
+#adminmenu li#toplevel_page_owum.current > a.menu-top { background: #f58634; color: #fff; }
+#adminmenu li#toplevel_page_owum.wp-has-current-submenu div.wp-menu-image::before { color: #fff; }
+#adminmenu li#toplevel_page_owum.wp-has-current-submenu .wp-submenu { background: #000; }
+#adminmenu li#toplevel_page_owum .wp-submenu li.current a { color: #f58634; }
+#adminmenu li#toplevel_page_owum.wp-has-current-submenu .wp-menu-arrow div { background: #f58634; }
+#adminmenu li#toplevel_page_owum .awaiting-mod { background: #ef4057; }

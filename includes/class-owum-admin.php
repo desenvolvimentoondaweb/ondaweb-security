@@ -48,6 +48,25 @@ class OWUM_Admin {
 		if ( false !== strpos( (string) $hook, 'owum-settings' ) ) {
 			wp_enqueue_media();
 		}
+		$page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : ''; // phpcs:ignore
+		if ( 0 === strpos( $page, 'owum' ) ) {
+			wp_enqueue_style( 'owum-admin', plugins_url( 'assets/admin.css', OWUM_FILE ), array(), OWUM_VERSION );
+		}
+	}
+
+	/** Ondaweb bar shown at the top of every screen of the plugin. */
+	public static function brand_bar() {
+		$s      = owum_settings();
+		$client = $s['client_name'] ? $s['client_name'] : OWUM_Report::site_host();
+		?>
+		<div class="owum-brandbar">
+			<div class="logo">
+				<img src="<?php echo esc_url( plugins_url( 'assets/logo-ondaweb-white.png', OWUM_FILE ) ); ?>" alt="<?php echo esc_attr( OWUM_BRAND ); ?>">
+				<span class="prod">Security Updater</span>
+			</div>
+			<div class="site"><b><?php esc_html_e( 'Client', 'ondaweb-security' ); ?></b><?php echo esc_html( $client ); ?></div>
+		</div>
+		<?php
 	}
 
 	private static function logo_field( $which, $label, $help ) {
@@ -270,7 +289,7 @@ class OWUM_Admin {
 		$last  = $last ? $last : ( isset( $up->last_checked ) ? get_date_from_gmt( gmdate( 'Y-m-d H:i:s', $up->last_checked ) ) : '' );
 		self::styles();
 		?>
-		<div class="wrap">
+		<div class="wrap owum-ui"><?php OWUM_Admin::brand_bar(); ?>
 			<h1 class="wp-heading-inline"><?php esc_html_e( 'Updates', 'ondaweb-security' ); ?></h1>
 			<a class="page-title-action" data-owum-busy="<?php esc_attr_e( 'Checking for updates on WordPress.org, GitHub and paid plugins…', 'ondaweb-security' ); ?>" href="<?php echo esc_url( self::action_url( 'owum_refresh' ) ); ?>"><?php esc_html_e( 'Check for updates now', 'ondaweb-security' ); ?></a>
 			<a class="page-title-action" target="_blank" href="<?php echo esc_url( self::action_url( 'owum_report', array( 'month' => current_time( 'Y-m' ) ) ) ); ?>"><?php esc_html_e( 'Report / PDF', 'ondaweb-security' ); ?></a>
@@ -576,7 +595,7 @@ class OWUM_Admin {
 		$first  = strtotime( current_time( 'Y-m-01' ) . ' 12:00:00' );
 		self::styles();
 		?>
-		<div class="wrap">
+		<div class="wrap owum-ui"><?php OWUM_Admin::brand_bar(); ?>
 			<h1 class="wp-heading-inline"><?php esc_html_e( 'Update history', 'ondaweb-security' ); ?></h1>
 			<?php if ( 'all' !== $ym ) : ?>
 				<a class="page-title-action" target="_blank" href="<?php echo esc_url( self::action_url( 'owum_report', array( 'month' => $ym ) ) ); ?>"><?php esc_html_e( 'This month\'s report / PDF', 'ondaweb-security' ); ?></a>
@@ -640,7 +659,7 @@ class OWUM_Admin {
 		);
 		$prev  = OWUM_Mailer::previous_month();
 		?>
-		<div class="wrap">
+		<div class="wrap owum-ui"><?php OWUM_Admin::brand_bar(); ?>
 			<h1><?php esc_html_e( 'Settings', 'ondaweb-security' ); ?></h1>
 			<?php self::notice(); ?>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" data-owum-busy="<?php esc_attr_e( 'Saving settings…', 'ondaweb-security' ); ?>">
@@ -924,7 +943,7 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // <?php esc_html_e( 'turns reCAPTCHA off
 			.owum-err tr.is-new td:first-child{box-shadow:inset 3px 0 0 #d63638}
 			.owum-err pre{white-space:pre-wrap;font-size:11px;background:#f6f7f7;border:1px solid #dcdcde;padding:8px;max-height:260px;overflow:auto}
 		</style>
-		<div class="wrap">
+		<div class="wrap owum-ui"><?php OWUM_Admin::brand_bar(); ?>
 			<h1 class="wp-heading-inline"><?php esc_html_e( 'Error log', 'ondaweb-security' ); ?></h1>
 			<a class="page-title-action" href="<?php echo esc_url( self::action_url( 'owum_err_export' ) ); ?>"><?php esc_html_e( 'Download (.txt)', 'ondaweb-security' ); ?></a>
 			<a class="page-title-action" data-owum-busy="<?php esc_attr_e( 'Sending test email…', 'ondaweb-security' ); ?>" href="<?php echo esc_url( self::action_url( 'owum_err_test' ) ); ?>"><?php esc_html_e( 'Send test email', 'ondaweb-security' ); ?></a>
