@@ -234,7 +234,7 @@ class OWUM_Collector {
 		);
 	}
 
-	/** Paid plugins whose license is provided by the agency (initial classification; set per install). */
+	/** Paid plugins whose license is provided by Ondaweb (initial classification; set per install). */
 	public static function ondaweb_defaults() {
 		$s = owum_settings();
 		return apply_filters( 'owum_ondaweb_licensed', (array) $s['agency_licensed'] );
@@ -244,8 +244,8 @@ class OWUM_Collector {
 		$brand  = owum_brand();
 		$labels = array(
 			'gratuito'      => __( 'Free', 'ondaweb-security' ),
-			/* translators: %s: agency / support provider name */
-			'ondaweb'       => $brand ? sprintf( __( '%s license', 'ondaweb-security' ), $brand ) : __( 'Agency license', 'ondaweb-security' ),
+			/* translators: %s: brand name (Ondaweb) */
+			'ondaweb'       => sprintf( __( '%s license', 'ondaweb-security' ), $brand ),
 			'pago'          => __( 'Paid (client)', 'ondaweb-security' ),
 			'personalizado' => __( 'Custom', 'ondaweb-security' ),
 		);

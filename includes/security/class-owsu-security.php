@@ -404,12 +404,16 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 	/* Running                                                             */
 	/* ------------------------------------------------------------------ */
 
-	private static function r( $status, $detail, $items = array() ) {
-		return array(
+	private static function r( $status, $detail, $items = array(), $data = array() ) {
+		$r = array(
 			'status' => $status,
 			'detail' => $detail,
 			'items'  => array_values( (array) $items ),
 		);
+		if ( $data ) {
+			$r['data'] = $data; // language-neutral values used by the client report
+		}
+		return $r;
 	}
 
 	public static function run_all() {
@@ -789,7 +793,7 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 			}
 		}
 		if ( ! $items ) {
-			return self::r( 'ok', sprintf( /* translators: %s: number of files */ __( 'No PHP file found in uploads (%s files checked).', 'ondaweb-security' ), number_format_i18n( $n ) ) );
+			return self::r( 'ok', sprintf( /* translators: %s: number of files */ __( 'No PHP file found in uploads (%s files checked).', 'ondaweb-security' ), number_format_i18n( $n ) ), array(), array( 'files' => $n ) );
 		}
 		return self::r( 'crit', __( 'PHP files found in the uploads folder. Check them immediately.', 'ondaweb-security' ), $items );
 	}
@@ -1014,7 +1018,7 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 		if ( false !== strpos( $body, 'system.multicall' ) || false !== strpos( $body, 'wp.getUsersBlogs' ) ) {
 			return self::r( 'warn', __( 'XML-RPC active and accepting login methods.', 'ondaweb-security' ) . ( $jetpack ? ' ' . __( 'Note: Jetpack is active and depends on XML-RPC.', 'ondaweb-security' ) : '' ) );
 		}
-		return self::r( 'ok', sprintf( /* translators: %d: HTTP status code */ __( 'XML-RPC blocked (HTTP %d).', 'ondaweb-security' ), (int) wp_remote_retrieve_response_code( $r ) ) . ( self::is_on( 'xmlrpc' ) ? ' ' . __( 'Disabled by the plugin.', 'ondaweb-security' ) : '' ) );
+		return self::r( 'ok', sprintf( /* translators: %d: HTTP status code */ __( 'XML-RPC blocked (HTTP %d).', 'ondaweb-security' ), (int) wp_remote_retrieve_response_code( $r ) ) . ( self::is_on( 'xmlrpc' ) ? ' ' . __( 'Disabled by the plugin.', 'ondaweb-security' ) : '' ), array(), array( 'http' => (int) wp_remote_retrieve_response_code( $r ) ) );
 	}
 
 	private static function check_user_enum() {
@@ -1180,7 +1184,7 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 		if ( $items ) {
 			return self::r( 'warn', sprintf( /* translators: %s: login path */ __( 'Address set (%s), but there are problems.', 'ondaweb-security' ), '/' . $slug ), $items );
 		}
-		return self::r( 'ok', sprintf( /* translators: %s: login path */ __( 'Login at %s; /wp-login.php and /wp-admin do not reveal the form to visitors.', 'ondaweb-security' ), '/' . $slug ) );
+		return self::r( 'ok', sprintf( /* translators: %s: login path */ __( 'Login at %s; /wp-login.php and /wp-admin do not reveal the form to visitors.', 'ondaweb-security' ), '/' . $slug ), array(), array( 'http' => $old ? (int) wp_remote_retrieve_response_code( $old ) : 0 ) );
 	}
 
 	private static function check_login_captcha() {
@@ -1253,17 +1257,18 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 		$to     = (int) $cert['validTo_time_t'];
 		$days   = (int) floor( ( $to - time() ) / DAY_IN_SECONDS );
 		$issuer = isset( $cert['issuer']['O'] ) ? $cert['issuer']['O'] : ( isset( $cert['issuer']['CN'] ) ? $cert['issuer']['CN'] : '' );
+		$data   = array( 'until' => $to, 'issuer' => $issuer );
 		$txt    = $issuer ? sprintf( /* translators: 1: date, 2: certificate issuer */ __( 'Valid until %1$s (issued by %2$s).', 'ondaweb-security' ), owum_date_ts( $to ), $issuer ) : sprintf( /* translators: %s: date */ __( 'Valid until %s.', 'ondaweb-security' ), owum_date_ts( $to ) );
 		if ( $days < 0 ) {
-			return self::r( 'crit', __( 'Certificate EXPIRED.', 'ondaweb-security' ) . ' ' . $txt );
+			return self::r( 'crit', __( 'Certificate EXPIRED.', 'ondaweb-security' ) . ' ' . $txt, array(), $data );
 		}
 		if ( $days < 7 ) {
-			return self::r( 'crit', sprintf( /* translators: %d: number of days */ __( 'Expires in %d day(s).', 'ondaweb-security' ), $days ) . ' ' . $txt );
+			return self::r( 'crit', sprintf( /* translators: %d: number of days */ __( 'Expires in %d day(s).', 'ondaweb-security' ), $days ) . ' ' . $txt, array(), $data );
 		}
 		if ( $days < 20 ) {
-			return self::r( 'warn', sprintf( /* translators: %d: number of days */ __( 'Expires in %d days. Confirm that automatic renewal is on.', 'ondaweb-security' ), $days ) . ' ' . $txt );
+			return self::r( 'warn', sprintf( /* translators: %d: number of days */ __( 'Expires in %d days. Confirm that automatic renewal is on.', 'ondaweb-security' ), $days ) . ' ' . $txt, array(), $data );
 		}
-		return self::r( 'ok', $txt . ' ' . sprintf( /* translators: %d: number of days */ __( '%d days left.', 'ondaweb-security' ), $days ) );
+		return self::r( 'ok', $txt . ' ' . sprintf( /* translators: %d: number of days */ __( '%d days left.', 'ondaweb-security' ), $days ), array(), $data );
 	}
 
 	private static function check_php_version() {
@@ -1284,17 +1289,18 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 			if ( version_compare( $branch, '7.4', '<' ) ) {
 				return self::r( 'crit', sprintf( /* translators: %s: PHP version */ __( 'PHP %s has been unsupported for years.', 'ondaweb-security' ), PHP_VERSION ) . $extra );
 			}
-			return self::r( 'ok', 'PHP ' . PHP_VERSION . '.' . $extra );
+			return self::r( 'ok', 'PHP ' . PHP_VERSION . '.' . $extra, array(), array( 'php' => PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION ) );
 		}
-		$end = strtotime( $eol[ $branch ] );
+		$end  = strtotime( $eol[ $branch ] );
+		$data = array( 'php' => $branch, 'until' => $end );
 		$txt = sprintf( $end < time() ? /* translators: 1: PHP version, 2: date */ __( 'PHP %1$s — security support ended on %2$s.', 'ondaweb-security' ) : /* translators: 1: PHP version, 2: date */ __( 'PHP %1$s — security support until %2$s.', 'ondaweb-security' ), PHP_VERSION, owum_date_ts( $end ) );
 		if ( $end < time() ) {
-			return self::r( 'crit', $txt . $extra );
+			return self::r( 'crit', $txt . $extra, array(), $data );
 		}
 		if ( $end < strtotime( '+180 days' ) ) {
-			return self::r( 'warn', $txt . ' ' . __( 'Plan the upgrade.', 'ondaweb-security' ) . $extra );
+			return self::r( 'warn', $txt . ' ' . __( 'Plan the upgrade.', 'ondaweb-security' ) . $extra, array(), $data );
 		}
-		return self::r( 'ok', $txt . $extra );
+		return self::r( 'ok', $txt . $extra, array(), $data );
 	}
 
 	/* ------------------------------------------------------------------ */

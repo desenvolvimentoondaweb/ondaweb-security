@@ -22,6 +22,8 @@ define( 'OWUM_VERSION', '1.5.0' );
 define( 'OWUM_FILE', __FILE__ );
 define( 'OWUM_DIR', plugin_dir_path( __FILE__ ) );
 define( 'OWUM_PRODUCT', 'Ondaweb Security Updater' );
+define( 'OWUM_BRAND', 'Ondaweb' );          // fixed: the plugin is sold under the Ondaweb brand
+define( 'OWUM_BRAND_URL', 'https://ondaweb.com.br' );
 
 require_once OWUM_DIR . 'includes/class-owum-errorlog.php';
 OWUM_ErrorLog::boot();
@@ -33,6 +35,7 @@ require_once OWUM_DIR . 'includes/class-owum-mailer.php';
 require_once OWUM_DIR . 'includes/class-owum-admin.php';
 require_once OWUM_DIR . 'includes/class-owum-updater.php';
 require_once OWUM_DIR . 'includes/security/class-owsu-security.php';
+require_once OWUM_DIR . 'includes/security/class-owsu-areas.php';
 require_once OWUM_DIR . 'includes/security/class-owsu-hardening.php';
 require_once OWUM_DIR . 'includes/security/class-owsu-vulns.php';
 require_once OWUM_DIR . 'includes/security/class-owsu-admin.php';
@@ -82,8 +85,9 @@ add_action(
 /**
  * Plugin settings with defaults.
  *
- * New installs start neutral (no agency branding, emails go to the site admin).
- * Installs that existed before white-labelling keep the Ondaweb branding (see OWUM_Installer::migrate_brand()).
+ * New installs send the emails to the site admin. Installs that existed before 1.5.0
+ * keep their previous recipients (see OWUM_Installer::migrate_brand()).
+ * The Ondaweb name and logo are fixed and cannot be changed in the settings.
  */
 function owum_settings() {
 	$admin    = is_multisite() ? get_site_option( 'admin_email' ) : get_option( 'admin_email' );
@@ -93,11 +97,7 @@ function owum_settings() {
 		'day'          => 1,
 		'client_name'  => is_multisite() ? get_site_option( 'site_name' ) : get_bloginfo( 'name' ),
 		'logo_client'  => 0,
-		'logo_ondaweb' => 0,  // agency (support) logo — key kept for compatibility
-		'brand_name'   => '', // agency / support provider shown in reports
-		'brand_url'    => '',
-		'brand_logo_default' => 0, // 1 = use the Ondaweb logo bundled with the plugin (legacy installs)
-		'agency_licensed'    => array(), // items classified as "agency license" by default
+		'agency_licensed' => array(), // items classified as "Ondaweb license" by default
 		'wf_key'       => '',
 		'login_slug'   => '',
 		'rc_version'   => '',
@@ -112,23 +112,25 @@ function owum_settings() {
 	return wp_parse_args( (array) get_site_option( 'owum_settings', array() ), $defaults );
 }
 
-/** Agency / support provider name ('' when not configured). */
+/** Brand shown in reports and emails (fixed). */
 function owum_brand() {
-	$s = owum_settings();
-	return trim( (string) $s['brand_name'] );
+	return OWUM_BRAND;
 }
 
 /**
  * Logo data (image from the main site's media library).
  *
- * @param string $which 'client' or 'ondaweb' (agency).
+ * @param string $which 'client' or 'ondaweb' (fixed Ondaweb logo bundled with the plugin).
  * @return array|null [url, path, mime]
  */
 function owum_logo( $which ) {
+	if ( 'ondaweb' === $which ) {
+		return owum_default_logo();
+	}
 	$s  = owum_settings();
 	$id = (int) ( isset( $s[ 'logo_' . $which ] ) ? $s[ 'logo_' . $which ] : 0 );
 	if ( ! $id ) {
-		return ( 'ondaweb' === $which && ! empty( $s['brand_logo_default'] ) ) ? owum_default_logo() : null;
+		return null;
 	}
 	$switched = false;
 	if ( is_multisite() && ! is_main_site() ) {
@@ -144,7 +146,7 @@ function owum_logo( $which ) {
 	return $url ? array( 'url' => $url, 'path' => $path, 'mime' => $mime ) : null;
 }
 
-/** Ondaweb logo bundled with the plugin (used by installs branded as Ondaweb). */
+/** Ondaweb logo bundled with the plugin. */
 function owum_default_logo() {
 	return array(
 		'url'     => plugins_url( 'assets/logo-ondaweb.png', OWUM_FILE ),

@@ -1,9 +1,12 @@
 # Histórico de versões
 
 ## 1.5.0
+- **Novo layout do relatório do cliente** (e-mail e PDF), no padrão visual da Ondaweb: capa com a nota de segurança, resumo com indicadores, "Como a verificação foi feita", as 9 áreas cobertas, cartões de "Medidas implementadas e verificadas" (ações, risco reduzido e resultado verificado), quadro geral de resultados, atualizações, inventário, datas de referência (validade do certificado HTTPS e fim do suporte do PHP) e observação final.
+- No PDF, cada página tem o logo da Ondaweb no topo e rodapé com "Página X de Y" (Chrome/Edge).
+- Itens ainda pendentes aparecem como "Em tratamento pela equipe Ondaweb", sem detalhes técnicos.
+- **Nome e logo da Ondaweb fixos:** não podem mais ser alterados nas Configurações. O cliente continua podendo ter o próprio logo no relatório.
 - **Versão internacional:** o plugin agora é escrito em inglês e traduzido para português do Brasil (arquivos em `/languages`). Sites em português continuam vendo tudo em português; sites em outros idiomas veem em inglês. Datas seguem o formato do idioma do site.
-- **Marca da agência configurável (white label):** nova seção "Sua agência (suporte)" em Configurações, com nome, site e logo de quem presta o suporte. Sem nome preenchido, o relatório usa "a equipe de suporte".
-- Instalações existentes mantêm automaticamente a marca Ondaweb (nome, logo, Elementor Pro como licença da agência e os mesmos e-mails). Instalações novas começam neutras, com os e-mails do administrador do site.
+- Instalações existentes mantêm os mesmos destinatários de e-mail e o Elementor Pro como licença Ondaweb. Instalações novas começam com os e-mails do administrador do site.
 - O aviso de erro do painel de Segurança não depende mais do idioma da mensagem.
 
 ## 1.4.0

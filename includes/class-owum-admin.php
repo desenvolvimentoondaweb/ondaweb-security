@@ -56,13 +56,11 @@ class OWUM_Admin {
 		$l  = owum_logo( $which );
 		?>
 		<tr><th scope="row"><?php echo esc_html( $label ); ?></th>
-			<td class="owum-logo" data-which="<?php echo esc_attr( $which ); ?>" data-default="<?php echo ( 'ondaweb' === $which && ! empty( $s['brand_logo_default'] ) ) ? esc_url( owum_default_logo()['url'] ) : ''; ?>">
+			<td class="owum-logo" data-which="<?php echo esc_attr( $which ); ?>" data-default="">
 				<input type="hidden" name="logo_<?php echo esc_attr( $which ); ?>" value="<?php echo (int) $id; ?>">
 				<div class="owum-logo-preview" style="margin-bottom:8px;min-height:20px;"><?php if ( $l ) : ?><img src="<?php echo esc_url( $l['url'] ); ?>" style="max-height:60px;max-width:240px;background:#fff;padding:6px;border:1px solid #dcdcde;border-radius:4px;"><?php endif; ?></div>
 				<button type="button" class="button owum-logo-pick"><?php esc_html_e( 'Choose image', 'ondaweb-security' ); ?></button>
-				<?php $legacy = 'ondaweb' === $which && ! empty( $s['brand_logo_default'] ); ?>
-				<button type="button" class="button-link owum-logo-remove" style="margin-left:8px;color:#b32d2e;<?php echo $id ? '' : 'display:none;'; ?>"><?php echo $legacy ? esc_html__( 'Back to the default logo', 'ondaweb-security' ) : esc_html__( 'Remove', 'ondaweb-security' ); ?></button>
-				<?php if ( $legacy && ! $id ) : ?><span class="description" style="margin-left:8px"><?php esc_html_e( 'Using the default logo bundled with the plugin.', 'ondaweb-security' ); ?></span><?php endif; ?>
+				<button type="button" class="button-link owum-logo-remove" style="margin-left:8px;color:#b32d2e;<?php echo $id ? '' : 'display:none;'; ?>"><?php esc_html_e( 'Remove', 'ondaweb-security' ); ?></button>
 				<p class="description"><?php echo esc_html( $help ); ?></p>
 			</td></tr>
 		<?php
@@ -525,22 +523,19 @@ class OWUM_Admin {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?php echo esc_html( $title ); ?></title>
 <style>
-	body{margin:0;background:#f3f4f6;}
-	.page{background:#fff;max-width:960px;margin:24px auto;padding:36px 40px;box-shadow:0 1px 3px rgba(0,0,0,.08);}
-	.bar{position:sticky;top:0;background:#0b3b5c;color:#fff;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font:14px -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;}
+	body{margin:0;background:#eceeef;}
+	.page{background:#fff;max-width:900px;margin:24px auto;padding:40px 44px;box-shadow:0 1px 3px rgba(0,0,0,.08);border-radius:6px;}
+	.bar{position:sticky;top:0;z-index:2;background:#000;color:#fff;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;font:14px -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;}
 	.bar select,.bar button,.bar a{font:inherit;padding:6px 12px;border-radius:4px;border:0;}
-	.bar button{background:#fff;color:#0b3b5c;font-weight:600;cursor:pointer;}
+	.bar button{background:#f58634;color:#fff;font-weight:600;cursor:pointer;}
 	.bar a{color:#fff;text-decoration:underline;background:none;}
 	.bar .hint{opacity:.8;font-size:12px;margin-left:auto;}
 	@media print{
-		@page{size:A4;margin:14mm 12mm;}
 		body{background:#fff;}
 		.bar{display:none;}
-		.page{box-shadow:none;margin:0;padding:0;max-width:none;}
-		tr,td{page-break-inside:avoid;}
-		h2{page-break-after:avoid;}
-		*{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+		.page{box-shadow:none;margin:0;padding:0;max-width:none;border-radius:0;}
 	}
+	<?php echo OWUM_Report::print_css(); // phpcs:ignore -- built from escaped values ?>
 </style>
 </head>
 <body>
@@ -651,21 +646,11 @@ class OWUM_Admin {
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" data-owum-busy="<?php esc_attr_e( 'Saving settings…', 'ondaweb-security' ); ?>">
 				<input type="hidden" name="action" value="owum_save_settings">
 				<?php wp_nonce_field( 'owum_save_settings' ); ?>
-				<h2 id="owum-brand"><?php esc_html_e( 'Your agency (support provider)', 'ondaweb-security' ); ?></h2>
-				<p class="description"><?php esc_html_e( 'Shown to the client in the report and in the emails. Leave the name blank to use neutral wording such as "the support team".', 'ondaweb-security' ); ?></p>
-				<table class="form-table" role="presentation">
-					<tr><th scope="row"><label for="owum-brand-name"><?php esc_html_e( 'Agency name', 'ondaweb-security' ); ?></label></th>
-						<td><input id="owum-brand-name" type="text" class="regular-text" name="brand_name" value="<?php echo esc_attr( $s['brand_name'] ); ?>" placeholder="<?php esc_attr_e( 'e.g. Acme Web Studio', 'ondaweb-security' ); ?>"></td></tr>
-					<tr><th scope="row"><label for="owum-brand-url"><?php esc_html_e( 'Agency website', 'ondaweb-security' ); ?></label></th>
-						<td><input id="owum-brand-url" type="url" class="regular-text" name="brand_url" value="<?php echo esc_attr( $s['brand_url'] ); ?>" placeholder="https://"></td></tr>
-					<?php self::logo_field( 'ondaweb', __( 'Agency logo', 'ondaweb-security' ), __( 'Shown at the top right of the report, as technical support. Use PNG or JPG.', 'ondaweb-security' ) ); ?>
-				</table>
-
 				<h2><?php esc_html_e( 'Report', 'ondaweb-security' ); ?></h2>
 				<table class="form-table" role="presentation">
 					<tr><th scope="row"><label for="owum-client"><?php esc_html_e( 'Client name in the report', 'ondaweb-security' ); ?></label></th>
 						<td><input id="owum-client" type="text" class="regular-text" name="client_name" value="<?php echo esc_attr( $s['client_name'] ); ?>"></td></tr>
-					<?php self::logo_field( 'client', __( 'Client logo', 'ondaweb-security' ), __( 'Shown at the top left of the report. Use PNG or JPG (SVG does not show in Gmail/Outlook).', 'ondaweb-security' ) ); ?>
+					<?php self::logo_field( 'client', __( 'Client logo', 'ondaweb-security' ), __( 'Shown at the top of the report, next to the Ondaweb logo. Use PNG or JPG (SVG does not show in Gmail/Outlook).', 'ondaweb-security' ) ); ?>
 					<tr><th scope="row"><label for="owum-emails"><?php esc_html_e( 'Recipients', 'ondaweb-security' ); ?></label></th>
 						<td><input id="owum-emails" type="text" class="large-text" name="emails" value="<?php echo esc_attr( $s['emails'] ); ?>">
 						<p class="description"><?php esc_html_e( 'Separate multiple emails with commas.', 'ondaweb-security' ); ?></p></td></tr>
@@ -1049,9 +1034,6 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // <?php esc_html_e( 'turns reCAPTCHA off
 				'enabled'     => empty( $_POST['enabled'] ) ? 0 : 1,
 				'day'         => isset( $_POST['day'] ) ? max( 1, min( 28, (int) $_POST['day'] ) ) : 1,
 				'logo_client' => isset( $_POST['logo_client'] ) ? absint( $_POST['logo_client'] ) : 0,
-				'logo_ondaweb'=> isset( $_POST['logo_ondaweb'] ) ? absint( $_POST['logo_ondaweb'] ) : 0,
-				'brand_name'  => isset( $_POST['brand_name'] ) ? sanitize_text_field( wp_unslash( $_POST['brand_name'] ) ) : $old['brand_name'],
-				'brand_url'   => isset( $_POST['brand_url'] ) ? esc_url_raw( wp_unslash( $_POST['brand_url'] ) ) : $old['brand_url'],
 				'wf_key'      => isset( $_POST['wf_key'] ) ? preg_replace( '/[^A-Za-z0-9_\-.]/', '', wp_unslash( $_POST['wf_key'] ) ) : '',
 				'rc_version'  => isset( $_POST['rc_version'] ) && in_array( $_POST['rc_version'], array( 'v2', 'v3' ), true ) ? $_POST['rc_version'] : '', // phpcs:ignore
 				'rc_site'     => isset( $_POST['rc_site'] ) ? preg_replace( '/[^A-Za-z0-9_\-]/', '', wp_unslash( $_POST['rc_site'] ) ) : '',

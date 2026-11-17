@@ -11,7 +11,7 @@ class OWUM_Installer {
 	}
 
 	public static function activate() {
-		// Brand-new install (never activated before): starts neutral, without the Ondaweb branding.
+		// Brand-new install (never activated before): emails go to the site admin.
 		if ( false === get_site_option( 'owum_db_version' ) && ! get_site_option( 'owum_mig_brand' ) ) {
 			update_site_option( 'owum_mig_brand', 'fresh' );
 		}
@@ -101,17 +101,13 @@ class OWUM_Installer {
 	}
 
 	/**
-	 * 1.5.0: branding became configurable (white label). Installs that existed before keep
-	 * exactly what they had: Ondaweb name and bundled logo, Elementor Pro as agency license,
-	 * and the same email recipients.
+	 * 1.5.0: installs that existed before keep exactly what they had: Elementor Pro as
+	 * Ondaweb license and the same email recipients (new installs use the site admin email).
 	 */
 	public static function migrate_brand() {
 		$saved = get_site_option( 'owum_settings' );
 		$saved = is_array( $saved ) ? $saved : array();
 		$keep  = array(
-			'brand_name'         => 'Ondaweb',
-			'brand_url'          => 'https://ondaweb.com.br',
-			'brand_logo_default' => 1,
 			'agency_licensed'    => array( 'plugin:elementor-pro/elementor-pro.php' ),
 			'emails'             => 'suporte@ondaweb.com.br',
 			'err_email'          => 'desenvolvimento.ondaweb@gmail.com',
@@ -121,6 +117,7 @@ class OWUM_Installer {
 				$saved[ $k ] = $v;
 			}
 		}
+		unset( $saved['brand_name'], $saved['brand_url'], $saved['brand_logo_default'], $saved['logo_ondaweb'] );
 		update_site_option( 'owum_settings', $saved );
 		update_site_option( 'owum_mig_brand', 'legacy' );
 	}

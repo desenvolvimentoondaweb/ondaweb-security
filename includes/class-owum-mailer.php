@@ -52,7 +52,7 @@ class OWUM_Mailer {
 			/* translators: 1: client / site name, 2: month and year */
 			$subject = sprintf( __( '[%1$s] Updates and security report – %2$s', 'ondaweb-security' ), $s['client_name'], OWUM_Report::month_label( $ym ) );
 			// Logos by URL (work with any email/SMTP plugin).
-			$body = '<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:24px;background:#ffffff;">' . OWUM_Report::html( $ym, 'print' ) . '</body></html>';
+			$body = '<!doctype html><html><head><meta charset="utf-8"></head><body style="margin:0;padding:24px;background:#ffffff;">' . OWUM_Report::html( $ym, 'email' ) . '</body></html>';
 
 			$embed = array( __CLASS__, 'embed_logos' );
 			add_action( 'phpmailer_init', $embed );
@@ -82,9 +82,9 @@ class OWUM_Mailer {
 	}
 
 	/**
-	 * Quando o envio usa o PHPMailer do WordPress, embute os logos na mensagem
-	 * (aparecem mesmo com imagens externas bloqueadas). Com outros plugins de
-	 * mail plugins, logos keep loading from the image URL.
+	 * When the email goes through WordPress' PHPMailer, embeds the logos in the message
+	 * (they show even when external images are blocked). With other mail plugins,
+	 * logos keep loading from the image URL.
 	 */
 	public static function embed_logos( $phpmailer ) {
 		if ( ! is_object( $phpmailer ) || ! method_exists( $phpmailer, 'addEmbeddedImage' ) || ! property_exists( $phpmailer, 'Body' ) ) {

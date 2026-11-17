@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Ondaweb Security Updater 1.5.0\n"
 "Report-Msgid-Bugs-To: https://github.com/desenvolvimentoondaweb/ondaweb-security/issues\n"
-"POT-Creation-Date: 2026-11-12T12:37:30+00:00\n"
+"POT-Creation-Date: 2026-11-17T09:50:22+00:00\n"
 "PO-Revision-Date: 2026-11-12 12:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Português do Brasil\n"
@@ -53,17 +53,18 @@ msgstr "https://ondaweb.com.br"
 msgid "You are not allowed to do this."
 msgstr "Sem permissão."
 
-#: includes/class-owum-admin.php:39 includes/class-owum-admin.php:276
+#: includes/class-owum-admin.php:39 includes/class-owum-admin.php:274
+#: includes/class-owum-report.php:542
 msgid "Updates"
 msgstr "Atualizações"
 
-#: includes/class-owum-admin.php:40 includes/class-owum-admin.php:603
-#: includes/class-owum-logger.php:178 includes/class-owum-report.php:104
+#: includes/class-owum-admin.php:40 includes/class-owum-admin.php:598
+#: includes/class-owum-logger.php:178
 #: includes/security/class-owsu-admin.php:260
 msgid "Security"
 msgstr "Segurança"
 
-#: includes/class-owum-admin.php:41 includes/class-owum-admin.php:585
+#: includes/class-owum-admin.php:41 includes/class-owum-admin.php:580
 msgid "Update history"
 msgstr "Histórico de atualizações"
 
@@ -72,13 +73,13 @@ msgid "History"
 msgstr "Histórico"
 
 #. translators: %s: plugin name
-#: includes/class-owum-admin.php:43 includes/class-owum-admin.php:943
-#: includes/class-owum-admin.php:1032
+#: includes/class-owum-admin.php:43 includes/class-owum-admin.php:928
+#: includes/class-owum-admin.php:1017
 msgid "Error log"
 msgstr "Registro de erros"
 
 #. translators: %s: link to the Settings screen
-#: includes/class-owum-admin.php:44 includes/class-owum-admin.php:649
+#: includes/class-owum-admin.php:44 includes/class-owum-admin.php:644
 #: includes/security/class-owsu-admin.php:279
 msgid "Settings"
 msgstr "Configurações"
@@ -87,112 +88,104 @@ msgstr "Configurações"
 msgid "Choose image"
 msgstr "Escolher imagem"
 
-#: includes/class-owum-admin.php:64
-msgid "Back to the default logo"
-msgstr "Voltar ao logo padrão"
-
-#: includes/class-owum-admin.php:64
+#: includes/class-owum-admin.php:63
 msgid "Remove"
 msgstr "Remover"
 
-#: includes/class-owum-admin.php:65
-msgid "Using the default logo bundled with the plugin."
-msgstr "Usando o logo padrão que acompanha o plugin."
-
-#: includes/class-owum-admin.php:85 includes/class-owum-admin.php:131
+#: includes/class-owum-admin.php:83 includes/class-owum-admin.php:129
 msgid "Do not close this page."
 msgstr "Não feche esta página."
 
-#: includes/class-owum-admin.php:86
+#: includes/class-owum-admin.php:84
 msgid "Please wait"
 msgstr "Aguarde"
 
-#: includes/class-owum-admin.php:87
+#: includes/class-owum-admin.php:85
 msgid "Processing…"
 msgstr "Processando…"
 
-#: includes/class-owum-admin.php:88
+#: includes/class-owum-admin.php:86
 msgid "This may take a few seconds. Do not close this page."
 msgstr "Isso pode levar alguns segundos. Não feche esta página."
 
-#: includes/class-owum-admin.php:89
+#: includes/class-owum-admin.php:87
 msgid "server error"
 msgstr "erro no servidor"
 
-#: includes/class-owum-admin.php:90
+#: includes/class-owum-admin.php:88
 msgid "timed out"
 msgstr "tempo esgotado"
 
-#: includes/class-owum-admin.php:91
+#: includes/class-owum-admin.php:89
 msgid "no response from the server"
 msgstr "sem resposta do servidor"
 
-#: includes/class-owum-admin.php:92
+#: includes/class-owum-admin.php:90
 msgid "Checking the site's security"
 msgstr "Verificando a segurança do site"
 
-#: includes/class-owum-admin.php:93
+#: includes/class-owum-admin.php:91
 msgid "Each item is tested in turn. Do not close this page."
 msgstr "Cada item é testado em sequência. Não feche esta página."
 
-#: includes/class-owum-admin.php:94
+#: includes/class-owum-admin.php:92
 msgid "Cancelled."
 msgstr "Cancelado."
 
-#: includes/class-owum-admin.php:95
+#: includes/class-owum-admin.php:93
 msgid "Calculating the grade…"
 msgstr "Calculando a nota…"
 
 #. translators: %s: number of seconds (JavaScript placeholder)
-#: includes/class-owum-admin.php:97
+#: includes/class-owum-admin.php:95
 msgid "≈ %s s left"
 msgstr "faltam ≈ %s s"
 
-#: includes/class-owum-admin.php:98
+#: includes/class-owum-admin.php:96
 msgid "No response"
 msgstr "Sem resposta"
 
-#: includes/class-owum-admin.php:99
+#: includes/class-owum-admin.php:97
 msgid "Could not continue:"
 msgstr "Não foi possível continuar:"
 
-#: includes/class-owum-admin.php:100
+#: includes/class-owum-admin.php:98
 msgid "Close"
 msgstr "Fechar"
 
-#: includes/class-owum-admin.php:130
+#: includes/class-owum-admin.php:128
 msgid "Working…"
 msgstr "Trabalhando…"
 
-#: includes/class-owum-admin.php:133
+#: includes/class-owum-admin.php:131
 msgid "Preparing…"
 msgstr "Preparando…"
 
-#: includes/class-owum-admin.php:136
+#: includes/class-owum-admin.php:134
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: includes/class-owum-admin.php:188
+#: includes/class-owum-admin.php:186
 msgid "Open dashboard"
 msgstr "Abrir painel"
 
-#: includes/class-owum-admin.php:247
+#: includes/class-owum-admin.php:245
 msgid "Classifications saved."
 msgstr "Classificações salvas."
 
-#: includes/class-owum-admin.php:248
+#: includes/class-owum-admin.php:246
 msgid "Update check finished."
 msgstr "Verificação de atualizações concluída."
 
-#: includes/class-owum-admin.php:249
+#: includes/class-owum-admin.php:247
 msgid "Settings saved."
 msgstr "Configurações salvas."
 
-#: includes/class-owum-admin.php:250
+#: includes/class-owum-admin.php:248
 msgid "Report sent by email."
 msgstr "Relatório enviado por e-mail."
 
-#: includes/class-owum-admin.php:251
+#: includes/class-owum-admin.php:249
 msgid ""
 "The email could not be sent. The reason is shown below, under \"Last sent\","
 " and in the Error log."
@@ -200,82 +193,80 @@ msgstr ""
 "Não foi possível enviar o e-mail. O motivo aparece abaixo, em \"Último "
 "envio\", e no Registro de erros."
 
-#: includes/class-owum-admin.php:277
+#: includes/class-owum-admin.php:275
 msgid "Checking for updates on WordPress.org, GitHub and paid plugins…"
 msgstr "Consultando atualizações no WordPress.org, GitHub e plugins pagos…"
 
-#: includes/class-owum-admin.php:277
+#: includes/class-owum-admin.php:275
 msgid "Check for updates now"
 msgstr "Verificar atualizações agora"
 
-#: includes/class-owum-admin.php:278
+#: includes/class-owum-admin.php:276
 msgid "Report / PDF"
 msgstr "Relatório / PDF"
 
 #. translators: %s: version number (in bold)
-#. translators: %s: version number
-#: includes/class-owum-admin.php:285 includes/class-owum-report.php:226
+#: includes/class-owum-admin.php:283
 msgid "Available: %s"
 msgstr "Disponível: %s"
 
 #. translators: %s: version number (in bold)
-#: includes/class-owum-admin.php:285
+#: includes/class-owum-admin.php:283
 msgid "update"
 msgstr "atualizar"
 
 #. translators: %s: version number (in bold)
-#. translators: %s: version number
-#: includes/class-owum-admin.php:285 includes/class-owum-report.php:226
+#: includes/class-owum-admin.php:283
 msgid "Latest version"
 msgstr "Versão mais recente"
 
-#: includes/class-owum-admin.php:288
+#: includes/class-owum-admin.php:286
 msgid "Sites in the network"
 msgstr "Sites na rede"
 
 #. translators: 1: number of plugins, 2: number of themes
-#: includes/class-owum-admin.php:288
+#: includes/class-owum-admin.php:286
 msgid "%1$d plugins · %2$d themes"
 msgstr "%1$d plugins · %2$d temas"
 
-#: includes/class-owum-admin.php:290
+#: includes/class-owum-admin.php:288
 msgid "Installed plugins"
 msgstr "Plugins instalados"
 
 #. translators: %d: number of themes
-#: includes/class-owum-admin.php:290
+#: includes/class-owum-admin.php:288
 msgid "%d theme"
 msgid_plural "%d themes"
 msgstr[0] "%d tema"
 msgstr[1] "%d temas"
 
-#: includes/class-owum-admin.php:292 includes/class-owum-report.php:228
+#: includes/class-owum-admin.php:290
 msgid "Pending (team)"
 msgstr "Pendentes (equipe)"
 
 #. translators: %s: "Agency license" type label
-#: includes/class-owum-admin.php:292
+#: includes/class-owum-admin.php:290
 msgid "free + %s"
 msgstr "gratuitos + %s"
 
 #. translators: %s: "Agency license" type label
-#: includes/class-owum-admin.php:293 includes/class-owum-report.php:229
+#: includes/class-owum-admin.php:291
 msgid "Pending (paid)"
 msgstr "Pendentes (pagos)"
 
 #. translators: %s: "Agency license" type label
-#: includes/class-owum-admin.php:293
+#: includes/class-owum-admin.php:291
 msgid "ask the client"
 msgstr "solicitar ao cliente"
 
 #. translators: %s: date and time
-#: includes/class-owum-admin.php:297
+#: includes/class-owum-admin.php:295
 #: includes/security/class-owsu-admin.php:302
 msgid "Last check: %s."
 msgstr "Última verificação: %s."
 
 #. translators: 1: "Paid (client)" type label, 2: "Agency license" type label
-#: includes/class-owum-admin.php:299
+#: includes/class-owum-admin.php:297
 msgid ""
 "Items not from wordpress.org are suggested as %1$s; mark the ones whose "
 "license you provide as %2$s, and save."
@@ -283,312 +274,278 @@ msgstr ""
 "Itens que não são do wordpress.org são sugeridos como %1$s; marque como %2$s"
 " os que têm licença fornecida por você e salve."
 
-#: includes/class-owum-admin.php:310
+#: includes/class-owum-admin.php:308
 msgid "Save classifications"
 msgstr "Salvar classificações"
 
 #. translators: 1: visible rows, 2: total rows (JavaScript placeholders)
-#: includes/class-owum-admin.php:315
+#: includes/class-owum-admin.php:313
 msgid "Showing %1$s of %2$s"
 msgstr "Mostrando %1$s de %2$s"
 
-#: includes/class-owum-admin.php:395 includes/class-owum-admin.php:601
+#: includes/class-owum-admin.php:393 includes/class-owum-admin.php:596
 msgid "Plugins"
 msgstr "Plugins"
 
-#: includes/class-owum-admin.php:395 includes/class-owum-admin.php:602
+#: includes/class-owum-admin.php:393 includes/class-owum-admin.php:597
 msgid "Themes"
 msgstr "Temas"
 
-#: includes/class-owum-admin.php:406
+#: includes/class-owum-admin.php:404
 msgid "Search"
 msgstr "Buscar"
 
-#: includes/class-owum-admin.php:406
+#: includes/class-owum-admin.php:404
 msgid "Plugin name"
 msgstr "Nome do plugin"
 
-#: includes/class-owum-admin.php:406
+#: includes/class-owum-admin.php:404
 msgid "Theme name"
 msgstr "Nome do tema"
 
-#: includes/class-owum-admin.php:407 includes/class-owum-admin.php:438
-#: includes/class-owum-report.php:303
+#: includes/class-owum-admin.php:405 includes/class-owum-admin.php:436
+#: includes/class-owum-report.php:614
 msgid "Status"
 msgstr "Situação"
 
 #. translators: %d: count
-#: includes/class-owum-admin.php:408 includes/class-owum-admin.php:958
+#: includes/class-owum-admin.php:406 includes/class-owum-admin.php:943
 msgid "All (%d)"
 msgstr "Todos (%d)"
 
-#: includes/class-owum-admin.php:413 includes/class-owum-admin.php:438
-#: includes/class-owum-admin.php:609 includes/class-owum-report.php:303
+#: includes/class-owum-admin.php:411 includes/class-owum-admin.php:436
+#: includes/class-owum-admin.php:604 includes/class-owum-report.php:614
 msgid "Type"
 msgstr "Tipo"
 
-#: includes/class-owum-admin.php:414 includes/class-owum-admin.php:420
+#: includes/class-owum-admin.php:412 includes/class-owum-admin.php:418
 #: includes/security/class-owsu-admin.php:312
 msgid "All"
 msgstr "Todos"
 
-#: includes/class-owum-admin.php:419 includes/class-owum-admin.php:438
-#: includes/class-owum-report.php:246
+#: includes/class-owum-admin.php:417 includes/class-owum-admin.php:436
+#: includes/class-owum-report.php:555
 msgid "Usage"
 msgstr "Uso"
 
 #. translators: %d: count
-#: includes/class-owum-admin.php:421
+#: includes/class-owum-admin.php:419
 msgid "Active network-wide (%d)"
 msgstr "Ativo na rede (%d)"
 
 #. translators: %d: count
-#: includes/class-owum-admin.php:422
+#: includes/class-owum-admin.php:420
 msgid "Active on some sites (%d)"
 msgstr "Ativo em alguns sites (%d)"
 
 #. translators: %d: count
-#: includes/class-owum-admin.php:422
+#: includes/class-owum-admin.php:420
 msgid "Active (%d)"
 msgstr "Ativo (%d)"
 
 #. translators: %d: count
-#: includes/class-owum-admin.php:423
+#: includes/class-owum-admin.php:421
 msgid "Inactive everywhere (%d)"
 msgstr "Inativo em todos (%d)"
 
 #. translators: %d: count
-#: includes/class-owum-admin.php:423
+#: includes/class-owum-admin.php:421
 msgid "Inactive (%d)"
 msgstr "Inativo (%d)"
 
-#: includes/class-owum-admin.php:426
+#: includes/class-owum-admin.php:424
 msgid "Active on site"
 msgstr "Ativo no site"
 
-#: includes/class-owum-admin.php:427
+#: includes/class-owum-admin.php:425
 msgid "Any site"
 msgstr "Qualquer site"
 
-#: includes/class-owum-admin.php:433
+#: includes/class-owum-admin.php:431
 msgid "Clear filters"
 msgstr "Limpar filtros"
 
-#: includes/class-owum-admin.php:438 includes/class-owum-report.php:303
+#: includes/class-owum-admin.php:436 includes/class-owum-report.php:614
 msgid "Name"
 msgstr "Nome"
 
-#: includes/class-owum-admin.php:438 includes/class-owum-logger.php:163
-#: includes/class-owum-report.php:244
+#: includes/class-owum-admin.php:436 includes/class-owum-logger.php:163
+#: includes/class-owum-report.php:553
 #: includes/security/class-owsu-admin.php:410
 msgid "Installed"
 msgstr "Instalada"
 
-#: includes/class-owum-admin.php:438 includes/class-owum-report.php:245
+#: includes/class-owum-admin.php:436 includes/class-owum-report.php:554
 msgid "Available"
 msgstr "Disponível"
 
-#: includes/class-owum-admin.php:438
+#: includes/class-owum-admin.php:436
 msgid "Notes / license / vendor"
 msgstr "Observação / licença / fornecedor"
 
-#: includes/class-owum-admin.php:438
+#: includes/class-owum-admin.php:436
 msgid "For paid plugins that do not announce updates on their own"
 msgstr "Para plugins pagos que não avisam atualizações sozinhos"
 
-#: includes/class-owum-admin.php:438
+#: includes/class-owum-admin.php:436
 msgid "Latest known version"
 msgstr "Última versão conhecida"
 
-#: includes/class-owum-admin.php:448
+#: includes/class-owum-admin.php:446
 msgid "manual"
 msgstr "manual"
 
-#: includes/class-owum-admin.php:456
+#: includes/class-owum-admin.php:454
 msgid "automatic suggestion"
 msgstr "sugestão automática"
 
-#: includes/class-owum-admin.php:465
+#: includes/class-owum-admin.php:463
 msgid "E.g. license expires 03/2027 – client account"
 msgstr "Ex.: licença vence em 03/2027 – conta do cliente"
 
-#: includes/class-owum-admin.php:466
+#: includes/class-owum-admin.php:464
 msgid "e.g. 2.4.1"
 msgstr "ex.: 2.4.1"
 
-#: includes/class-owum-admin.php:517
+#: includes/class-owum-admin.php:515
 msgid "Updates report"
 msgstr "Relatório de atualizações"
 
-#: includes/class-owum-admin.php:550
+#: includes/class-owum-admin.php:545
 msgid "History month:"
 msgstr "Mês do histórico:"
 
-#: includes/class-owum-admin.php:557
+#: includes/class-owum-admin.php:552
 #: includes/security/class-owsu-admin.php:455
 msgid "Save as PDF / Print"
 msgstr "Salvar como PDF / Imprimir"
 
-#: includes/class-owum-admin.php:558
+#: includes/class-owum-admin.php:553
 msgid "Back to the dashboard"
 msgstr "Voltar ao painel"
 
-#: includes/class-owum-admin.php:559
+#: includes/class-owum-admin.php:554
 msgid "In the print window, choose “Save as PDF”."
 msgstr "Na janela de impressão, escolha “Salvar como PDF”."
 
-#: includes/class-owum-admin.php:587
+#: includes/class-owum-admin.php:582
 msgid "This month's report / PDF"
 msgstr "Relatório / PDF deste mês"
 
-#: includes/class-owum-admin.php:593
+#: includes/class-owum-admin.php:588
 msgid "All time"
 msgstr "Todo o período"
 
-#: includes/class-owum-admin.php:599
+#: includes/class-owum-admin.php:594
 msgid "All types"
 msgstr "Todos os tipos"
 
-#: includes/class-owum-admin.php:605
+#: includes/class-owum-admin.php:600
 msgid "Filter"
 msgstr "Filtrar"
 
 #. translators: %d: number of entries
-#: includes/class-owum-admin.php:606
+#: includes/class-owum-admin.php:601
 msgid "%d entry"
 msgid_plural "%d entries"
 msgstr[0] "%d registro"
 msgstr[1] "%d registros"
 
-#: includes/class-owum-admin.php:609 includes/class-owum-report.php:282
+#: includes/class-owum-admin.php:604 includes/class-owum-report.php:431
+#: includes/class-owum-report.php:590
 msgid "Date"
 msgstr "Data"
 
-#: includes/class-owum-admin.php:609 includes/class-owum-report.php:243
+#: includes/class-owum-admin.php:604 includes/class-owum-report.php:552
 #: includes/security/class-owsu-admin.php:410
 #: includes/security/class-owsu-admin.php:506
 msgid "Item"
 msgstr "Item"
 
-#: includes/class-owum-admin.php:609 includes/class-owum-report.php:282
+#: includes/class-owum-admin.php:604 includes/class-owum-report.php:590
 msgid "Action"
 msgstr "Ação"
 
-#: includes/class-owum-admin.php:609
+#: includes/class-owum-admin.php:604
 msgid "From"
 msgstr "De"
 
-#: includes/class-owum-admin.php:609
+#: includes/class-owum-admin.php:604
 msgid "To"
 msgstr "Para"
 
-#: includes/class-owum-admin.php:609 includes/class-owum-report.php:282
+#: includes/class-owum-admin.php:604 includes/class-owum-report.php:590
 msgid "Source"
 msgstr "Origem"
 
-#: includes/class-owum-admin.php:609 includes/class-owum-errorlog.php:279
+#: includes/class-owum-admin.php:604 includes/class-owum-errorlog.php:279
 msgid "User"
 msgstr "Usuário"
 
-#: includes/class-owum-admin.php:609
+#: includes/class-owum-admin.php:604
 msgid "Notes"
 msgstr "Observações"
 
-#: includes/class-owum-admin.php:612
+#: includes/class-owum-admin.php:607
 msgid "No entries in this period."
 msgstr "Nenhum registro no período."
 
-#: includes/class-owum-admin.php:651
+#: includes/class-owum-admin.php:646
 msgid "Saving settings…"
 msgstr "Salvando configurações…"
 
-#: includes/class-owum-admin.php:654
-msgid "Your agency (support provider)"
-msgstr "Sua agência (suporte)"
-
-#: includes/class-owum-admin.php:655
-msgid ""
-"Shown to the client in the report and in the emails. Leave the name blank to"
-" use neutral wording such as \"the support team\"."
-msgstr ""
-"Aparece para o cliente no relatório e nos e-mails. Deixe o nome em branco "
-"para usar um texto neutro, como \"a equipe de suporte\"."
-
-#: includes/class-owum-admin.php:657
-msgid "Agency name"
-msgstr "Nome da agência"
-
-#: includes/class-owum-admin.php:658
-msgid "e.g. Acme Web Studio"
-msgstr "ex.: Agência Exemplo"
-
-#: includes/class-owum-admin.php:659
-msgid "Agency website"
-msgstr "Site da agência"
-
-#: includes/class-owum-admin.php:661
-msgid "Agency logo"
-msgstr "Logo da agência"
-
-#: includes/class-owum-admin.php:661
-msgid ""
-"Shown at the top right of the report, as technical support. Use PNG or JPG."
-msgstr ""
-"Aparece no canto superior direito do relatório, como suporte técnico. Use "
-"PNG ou JPG."
-
-#: includes/class-owum-admin.php:664
+#: includes/class-owum-admin.php:649
 msgid "Report"
 msgstr "Relatório"
 
-#: includes/class-owum-admin.php:666
+#: includes/class-owum-admin.php:651
 msgid "Client name in the report"
 msgstr "Nome do cliente no relatório"
 
-#: includes/class-owum-admin.php:668 includes/class-owum-report.php:197
+#: includes/class-owum-admin.php:653
 msgid "Client logo"
 msgstr "Logo do cliente"
 
-#: includes/class-owum-admin.php:668
+#: includes/class-owum-admin.php:653
 msgid ""
-"Shown at the top left of the report. Use PNG or JPG (SVG does not show in "
-"Gmail/Outlook)."
+"Shown at the top of the report, next to the Ondaweb logo. Use PNG or JPG "
+"(SVG does not show in Gmail/Outlook)."
 msgstr ""
-"Aparece no canto superior esquerdo do relatório. Use PNG ou JPG (SVG não "
-"aparece no Gmail/Outlook)."
+"Aparece no topo do relatório, junto ao logo da Ondaweb. Use PNG ou JPG (SVG "
+"não aparece no Gmail/Outlook)."
 
-#: includes/class-owum-admin.php:669
+#: includes/class-owum-admin.php:654
 msgid "Recipients"
 msgstr "Destinatários"
 
-#: includes/class-owum-admin.php:671
+#: includes/class-owum-admin.php:656
 msgid "Separate multiple emails with commas."
 msgstr "Separe vários e-mails por vírgula."
 
-#: includes/class-owum-admin.php:672
+#: includes/class-owum-admin.php:657
 msgid "Monthly email"
 msgstr "E-mail mensal"
 
-#: includes/class-owum-admin.php:673
+#: includes/class-owum-admin.php:658
 msgid "Automatically send the previous month's report"
 msgstr "Enviar automaticamente o relatório do mês anterior"
 
-#: includes/class-owum-admin.php:674
+#: includes/class-owum-admin.php:659
 msgid "Day of the month"
 msgstr "Dia do mês"
 
 #. translators: %s: date and time, or "not scheduled"
-#: includes/class-owum-admin.php:678
+#: includes/class-owum-admin.php:663
 msgid "Next run of the daily routine: %s."
 msgstr "Próxima execução da rotina diária: %s."
 
 #. translators: %s: date and time, or "not scheduled"
-#: includes/class-owum-admin.php:678
+#: includes/class-owum-admin.php:663
 msgid "not scheduled"
 msgstr "não agendada"
 
 #. translators: %s: wp-cron.php address
-#: includes/class-owum-admin.php:680
+#: includes/class-owum-admin.php:665
 msgid ""
 "WP-Cron depends on site visits; to guarantee the time, set up a real server "
 "cron calling %s."
@@ -596,20 +553,20 @@ msgstr ""
 "O WP-Cron depende de visitas ao site; para garantir o horário, configure um "
 "cron real no servidor chamando %s."
 
-#: includes/class-owum-admin.php:684
+#: includes/class-owum-admin.php:669
 msgid "Vulnerabilities"
 msgstr "Vulnerabilidades"
 
-#: includes/class-owum-admin.php:686
+#: includes/class-owum-admin.php:671
 msgid "Wordfence Intelligence API key"
 msgstr "Chave da API Wordfence Intelligence"
 
-#: includes/class-owum-admin.php:688 includes/class-owum-admin.php:822
+#: includes/class-owum-admin.php:673 includes/class-owum-admin.php:807
 msgid "Show"
 msgstr "Mostrar"
 
 #. translators: %s: link to wordfence.com
-#: includes/class-owum-admin.php:691
+#: includes/class-owum-admin.php:676
 msgid ""
 "Free. Create it at %s (Wordfence account → Wordfence Intelligence → API "
 "key). Used to check for known vulnerabilities once a day."
@@ -617,28 +574,28 @@ msgstr ""
 "Gratuita. Crie em %s (conta Wordfence → Wordfence Intelligence → API key). "
 "Usada para verificar vulnerabilidades conhecidas uma vez por dia."
 
-#: includes/class-owum-admin.php:695
+#: includes/class-owum-admin.php:680
 msgid "Error alerts"
 msgstr "Alertas de erro"
 
-#: includes/class-owum-admin.php:697
+#: includes/class-owum-admin.php:682
 msgid "Developer email"
 msgstr "E-mail do desenvolvedor"
 
-#: includes/class-owum-admin.php:699
+#: includes/class-owum-admin.php:684
 msgid "Receives the error alerts. Separate multiple emails with commas."
 msgstr "Recebe os alertas de erro. Separe vários e-mails por vírgula."
 
-#: includes/class-owum-admin.php:700
+#: includes/class-owum-admin.php:685
 msgid "Alerts"
 msgstr "Alertas"
 
-#: includes/class-owum-admin.php:701
+#: includes/class-owum-admin.php:686
 msgid ""
 "Send an email right away when a fatal error or a plugin failure happens"
 msgstr "Enviar e-mail na hora quando ocorrer erro fatal ou falha do plugin"
 
-#: includes/class-owum-admin.php:702
+#: includes/class-owum-admin.php:687
 msgid ""
 "The same error sends at most one email every 6 hours (and at most 10 emails "
 "per hour overall)."
@@ -646,78 +603,78 @@ msgstr ""
 "O mesmo erro envia no máximo um e-mail a cada 6 horas (e no máximo 10 "
 "e-mails por hora no total)."
 
-#: includes/class-owum-admin.php:703
+#: includes/class-owum-admin.php:688
 msgid "Also record fatal errors from other plugins, the theme and WordPress"
 msgstr ""
 "Registrar também erros fatais de outros plugins, do tema e do WordPress"
 
-#: includes/class-owum-admin.php:704
+#: includes/class-owum-admin.php:689
 msgid "Unchecked, only this plugin's errors are recorded."
 msgstr "Desmarcado, só os erros deste plugin são registrados."
 
-#: includes/class-owum-admin.php:708
+#: includes/class-owum-admin.php:693
 msgid "Save settings"
 msgstr "Salvar configurações"
 
-#: includes/class-owum-admin.php:712
+#: includes/class-owum-admin.php:697
 msgid "Media library unavailable."
 msgstr "Biblioteca de mídia indisponível."
 
-#: includes/class-owum-admin.php:712
+#: includes/class-owum-admin.php:697
 msgid "Choose logo"
 msgstr "Escolher logo"
 
-#: includes/class-owum-admin.php:712
+#: includes/class-owum-admin.php:697
 msgid "Use this image"
 msgstr "Usar esta imagem"
 
-#: includes/class-owum-admin.php:729
+#: includes/class-owum-admin.php:714
 msgid "Send now"
 msgstr "Enviar agora"
 
 #. translators: %s: month and year
-#: includes/class-owum-admin.php:731 includes/class-owum-admin.php:732
+#: includes/class-owum-admin.php:716 includes/class-owum-admin.php:717
 msgid "Building and sending the report…"
 msgstr "Montando e enviando o relatório…"
 
 #. translators: %s: month and year
-#: includes/class-owum-admin.php:731
+#: includes/class-owum-admin.php:716
 msgid "Send the %s report"
 msgstr "Enviar o relatório de %s"
 
 #. translators: %s: month and year
-#: includes/class-owum-admin.php:732
+#: includes/class-owum-admin.php:717
 msgid "Send this month's report (partial)"
 msgstr "Enviar o relatório deste mês (parcial)"
 
 #. translators: 1: date and time, 2: month and year, 3: recipients
-#: includes/class-owum-admin.php:739
+#: includes/class-owum-admin.php:724
 msgid "Last sent: %1$s — %2$s to %3$s"
 msgstr "Último envio: %1$s — %2$s para %3$s"
 
-#: includes/class-owum-admin.php:744
+#: includes/class-owum-admin.php:729
 msgid "sent"
 msgstr "enviado"
 
-#: includes/class-owum-admin.php:744
+#: includes/class-owum-admin.php:729
 msgid "failed"
 msgstr "falhou"
 
-#: includes/class-owum-admin.php:766
+#: includes/class-owum-admin.php:751
 msgid "Login protection"
 msgstr "Proteção do login"
 
-#: includes/class-owum-admin.php:768
+#: includes/class-owum-admin.php:753
 msgid "The WPS Hide Login plugin is active"
 msgstr "O plugin WPS Hide Login está ativo"
 
 #. translators: %s: current login address
-#: includes/class-owum-admin.php:768
+#: includes/class-owum-admin.php:753
 msgid "current address: %s"
 msgstr "endereço atual: %s"
 
 #. translators: %s: current login address
-#: includes/class-owum-admin.php:768
+#: includes/class-owum-admin.php:753
 msgid ""
 "To use this plugin's feature instead: save the same address below, then "
 "deactivate WPS Hide Login — the login stays at the same address, with no "
@@ -727,37 +684,37 @@ msgstr ""
 "abaixo e depois desative o WPS Hide Login — o login continua no mesmo "
 "endereço, sem interrupção."
 
-#: includes/class-owum-admin.php:771
+#: includes/class-owum-admin.php:756
 msgid "Login address"
 msgstr "Endereço de login"
 
-#: includes/class-owum-admin.php:773
+#: includes/class-owum-admin.php:758
 msgid "e.g. private-access"
 msgstr "ex.: acesso-restrito"
 
-#: includes/class-owum-admin.php:775
+#: includes/class-owum-admin.php:760
 msgid "Active:"
 msgstr "Ativo:"
 
-#: includes/class-owum-admin.php:776
+#: includes/class-owum-admin.php:761
 msgid "Copied"
 msgstr "Copiado"
 
-#: includes/class-owum-admin.php:776
+#: includes/class-owum-admin.php:761
 msgid "Copy"
 msgstr "Copiar"
 
-#: includes/class-owum-admin.php:778
-#: includes/security/class-owsu-security.php:1159
+#: includes/class-owum-admin.php:763
+#: includes/security/class-owsu-security.php:1163
 msgid "Turned off by the OWSU_LOGIN_SLUG_OFF constant in wp-config.php."
 msgstr "Desligado pela constante OWSU_LOGIN_SLUG_OFF no wp-config.php."
 
-#: includes/class-owum-admin.php:778
+#: includes/class-owum-admin.php:763
 msgid "Remove the constant to turn it back on."
 msgstr "Remova a constante para religar."
 
 #. translators: 1: /wp-login.php, 2: /wp-admin
-#: includes/class-owum-admin.php:782
+#: includes/class-owum-admin.php:767
 msgid ""
 "Replaces %1$s, which starts answering \"page not found\", as does %2$s for "
 "anyone not logged in. Leave blank to use the default address."
@@ -766,18 +723,18 @@ msgstr ""
 "como o %2$s para quem não está logado. Deixe em branco para usar o endereço "
 "padrão."
 
-#: includes/class-owum-admin.php:783
+#: includes/class-owum-admin.php:768
 msgid "Applies to every site in the network, each under its own path."
 msgstr "Vale para todos os sites da rede, cada um no seu próprio caminho."
 
-#: includes/class-owum-admin.php:784
+#: includes/class-owum-admin.php:769
 msgid "When saved, the new address is emailed to the report recipients."
 msgstr ""
 "Ao salvar, o novo endereço é enviado por e-mail aos destinatários do "
 "relatório."
 
 #. translators: 1: "login", 2: "admin"
-#: includes/class-owum-admin.php:788
+#: includes/class-owum-admin.php:773
 msgid ""
 "Use letters, numbers and hyphens (at least 4 characters). Avoid obvious "
 "names such as %1$s or %2$s."
@@ -785,36 +742,36 @@ msgstr ""
 "Use letras, números e hífen (mínimo de 4 caracteres). Evite nomes óbvios "
 "como %1$s ou %2$s."
 
-#: includes/class-owum-admin.php:791
+#: includes/class-owum-admin.php:776 includes/security/class-owsu-areas.php:40
 msgid "reCAPTCHA on login"
 msgstr "reCAPTCHA no login"
 
-#: includes/class-owum-admin.php:794
+#: includes/class-owum-admin.php:779
 msgid "Off"
 msgstr "Desligado"
 
-#: includes/class-owum-admin.php:795
+#: includes/class-owum-admin.php:780
 msgid "v2 — \"I'm not a robot\" checkbox"
 msgstr "v2 — caixa \"Não sou um robô\""
 
-#: includes/class-owum-admin.php:796
+#: includes/class-owum-admin.php:781
 msgid "v3 — invisible (score based)"
 msgstr "v3 — invisível (por pontuação)"
 
-#: includes/class-owum-admin.php:800
+#: includes/class-owum-admin.php:785
 msgid "Active on login, lost password and registration."
 msgstr "Ativo no login, senha perdida e cadastro."
 
-#: includes/class-owum-admin.php:802
+#: includes/class-owum-admin.php:787
 msgid "Turned off by the OWSU_RECAPTCHA_OFF constant."
 msgstr "Desligado pela constante OWSU_RECAPTCHA_OFF."
 
-#: includes/class-owum-admin.php:804
+#: includes/class-owum-admin.php:789
 msgid "Waiting for the test — run the test below to turn it on."
 msgstr "Aguardando teste — faça o teste abaixo para ativar."
 
 #. translators: 1: link to the Google reCAPTCHA admin, 2: domain name
-#: includes/class-owum-admin.php:810
+#: includes/class-owum-admin.php:795
 msgid ""
 "Create the keys at %1$s: choose the same type selected here (v2 and v3 keys "
 "are different) and register the domain %2$s"
@@ -822,40 +779,40 @@ msgstr ""
 "Crie as chaves em %1$s: escolha o mesmo tipo selecionado aqui (as chaves v2 "
 "e v3 são diferentes) e cadastre o domínio %2$s"
 
-#: includes/class-owum-admin.php:814
+#: includes/class-owum-admin.php:799
 msgid "and every domain used by the network"
 msgstr "e todos os domínios usados pela rede"
 
-#: includes/class-owum-admin.php:818
+#: includes/class-owum-admin.php:803
 msgid "Site key"
 msgstr "Chave do site"
 
-#: includes/class-owum-admin.php:820
+#: includes/class-owum-admin.php:805
 msgid "Secret key"
 msgstr "Chave secreta"
 
-#: includes/class-owum-admin.php:823
+#: includes/class-owum-admin.php:808
 msgid "Minimum score (v3)"
 msgstr "Pontuação mínima (v3)"
 
-#: includes/class-owum-admin.php:826
+#: includes/class-owum-admin.php:811
 msgid "0.3 (more lenient)"
 msgstr "0.3 (mais tolerante)"
 
-#: includes/class-owum-admin.php:827
+#: includes/class-owum-admin.php:812
 msgid "0.5 (recommended)"
 msgstr "0.5 (recomendado)"
 
-#: includes/class-owum-admin.php:828
+#: includes/class-owum-admin.php:813
 msgid "0.7 (stricter)"
 msgstr "0.7 (mais rigoroso)"
 
-#: includes/class-owum-admin.php:834
+#: includes/class-owum-admin.php:819
 msgid "Google gives every login a score from 0 (robot) to 1 (human)."
 msgstr "O Google dá a cada login uma nota de 0 (robô) a 1 (humano)."
 
 #. translators: 1: date and time, 2: error message
-#: includes/class-owum-admin.php:837
+#: includes/class-owum-admin.php:822
 msgid ""
 "Last communication failure with Google: %1$s — %2$s. During such failures "
 "the login is allowed so access is never locked."
@@ -863,24 +820,24 @@ msgstr ""
 "Última falha de comunicação com o Google: %1$s — %2$s. Durante falhas assim "
 "o login é liberado para o acesso nunca ficar travado."
 
-#: includes/class-owum-admin.php:839
+#: includes/class-owum-admin.php:824
 msgid "Access recovery (if you cannot log in)"
 msgstr "Recuperação de acesso (se não conseguir entrar)"
 
 #. translators: %s: wp-config.php
-#: includes/class-owum-admin.php:842
+#: includes/class-owum-admin.php:827
 msgid "Add to %s, above the line \"That's all, stop editing\":"
 msgstr "Adicione ao %s, acima da linha \"That's all, stop editing\":"
 
-#: includes/class-owum-admin.php:844
+#: includes/class-owum-admin.php:829
 msgid "login back at /wp-login.php"
 msgstr "login volta ao /wp-login.php"
 
-#: includes/class-owum-admin.php:846
+#: includes/class-owum-admin.php:831
 msgid "turns reCAPTCHA off"
 msgstr "desliga o reCAPTCHA"
 
-#: includes/class-owum-admin.php:847
+#: includes/class-owum-admin.php:832
 msgid ""
 "Or rename the plugin folder over FTP. Once logged in, fix the settings and "
 "remove the lines."
@@ -888,11 +845,11 @@ msgstr ""
 "Ou renomeie a pasta do plugin por FTP. Depois de entrar, corrija as "
 "configurações e remova as linhas."
 
-#: includes/class-owum-admin.php:863
+#: includes/class-owum-admin.php:848
 msgid "Test and turn on reCAPTCHA"
 msgstr "Testar e ativar o reCAPTCHA"
 
-#: includes/class-owum-admin.php:864
+#: includes/class-owum-admin.php:849
 msgid ""
 "So that wrong keys never lock you out, reCAPTCHA only starts applying to the"
 " login after this test."
@@ -900,21 +857,21 @@ msgstr ""
 "Para que chaves erradas nunca bloqueiem o acesso, o reCAPTCHA só passa a "
 "valer no login depois deste teste."
 
-#: includes/class-owum-admin.php:866 includes/class-owum-admin.php:878
+#: includes/class-owum-admin.php:851 includes/class-owum-admin.php:863
 msgid "Test and turn on"
 msgstr "Testar e ativar"
 
 #. translators: %s: "Test and turn on" button label
-#: includes/class-owum-admin.php:868
+#: includes/class-owum-admin.php:853
 msgid "Tick the box below and click %s."
 msgstr "Marque a caixa abaixo e clique em %s."
 
 #. translators: %s: "Test and turn on" button label
-#: includes/class-owum-admin.php:868
+#: includes/class-owum-admin.php:853
 msgid "Click %s (v3 is invisible)."
 msgstr "Clique em %s (a v3 é invisível)."
 
-#: includes/class-owum-admin.php:880
+#: includes/class-owum-admin.php:865
 msgid ""
 "If Google's box shows \"Invalid key\" or \"Invalid domain\", check the keys "
 "and the registered domains."
@@ -922,7 +879,7 @@ msgstr ""
 "Se a caixa do Google mostrar \"Chave inválida\" ou \"Domínio inválido\", "
 "confira as chaves e os domínios cadastrados."
 
-#: includes/class-owum-admin.php:896
+#: includes/class-owum-admin.php:881
 msgid ""
 "The test got no answer from reCAPTCHA. Tick the box (v2) or check whether "
 "Google's script loaded on this page."
@@ -930,36 +887,36 @@ msgstr ""
 "O teste não recebeu resposta do reCAPTCHA. Marque a caixa (v2) ou verifique "
 "se o script do Google carregou nesta página."
 
-#: includes/class-owum-admin.php:902
+#: includes/class-owum-admin.php:887
 msgid "Test failed:"
 msgstr "Teste falhou:"
 
 #. translators: %s: reCAPTCHA version label
-#: includes/class-owum-admin.php:909
+#: includes/class-owum-admin.php:894
 msgid "Test passed: %s turned on for login, lost password and registration."
 msgstr "Teste aprovado: %s ativado no login, senha perdida e cadastro."
 
-#: includes/class-owum-admin.php:944
+#: includes/class-owum-admin.php:929
 msgid "Download (.txt)"
 msgstr "Baixar (.txt)"
 
-#: includes/class-owum-admin.php:945
+#: includes/class-owum-admin.php:930
 msgid "Sending test email…"
 msgstr "Enviando e-mail de teste…"
 
-#: includes/class-owum-admin.php:945
+#: includes/class-owum-admin.php:930
 msgid "Send test email"
 msgstr "Enviar e-mail de teste"
 
-#: includes/class-owum-admin.php:947
+#: includes/class-owum-admin.php:932
 msgid "Delete the whole error log?"
 msgstr "Apagar todo o registro de erros?"
 
-#: includes/class-owum-admin.php:947
+#: includes/class-owum-admin.php:932
 msgid "Clear log"
 msgstr "Limpar registro"
 
-#: includes/class-owum-admin.php:952
+#: includes/class-owum-admin.php:937
 msgid ""
 "Fatal errors (this plugin only), PHP warnings raised by this plugin and "
 "failed operations (fixes, emails, vulnerability database, checks). Identical"
@@ -969,7 +926,7 @@ msgstr ""
 "operações que falharam (correções, e-mails, base de vulnerabilidades, "
 "verificações). Erros iguais são agrupados."
 
-#: includes/class-owum-admin.php:952
+#: includes/class-owum-admin.php:937
 msgid ""
 "Fatal errors of the site, PHP warnings raised by this plugin and failed "
 "operations (fixes, emails, vulnerability database, checks). Identical errors"
@@ -979,117 +936,117 @@ msgstr ""
 "falharam (correções, e-mails, base de vulnerabilidades, verificações). Erros"
 " iguais são agrupados."
 
-#: includes/class-owum-admin.php:953
+#: includes/class-owum-admin.php:938
 msgid "Email alerts:"
 msgstr "Alertas por e-mail:"
 
-#: includes/class-owum-admin.php:953
+#: includes/class-owum-admin.php:938
 msgid "off"
 msgstr "desligados"
 
-#: includes/class-owum-admin.php:954
+#: includes/class-owum-admin.php:939
 msgid "change"
 msgstr "alterar"
 
-#: includes/class-owum-admin.php:968 includes/class-owum-errorlog.php:273
+#: includes/class-owum-admin.php:953 includes/class-owum-errorlog.php:273
 msgid "Level"
 msgstr "Nível"
 
-#: includes/class-owum-admin.php:968 includes/class-owum-errorlog.php:275
+#: includes/class-owum-admin.php:953 includes/class-owum-errorlog.php:275
 msgid "Message"
 msgstr "Mensagem"
 
-#: includes/class-owum-admin.php:968 includes/class-owum-errorlog.php:274
+#: includes/class-owum-admin.php:953 includes/class-owum-errorlog.php:274
 msgid "Origin"
 msgstr "Origem"
 
-#: includes/class-owum-admin.php:968
+#: includes/class-owum-admin.php:953
 msgid "Last time"
 msgstr "Última vez"
 
-#: includes/class-owum-admin.php:968
+#: includes/class-owum-admin.php:953
 msgid "Times"
 msgstr "Vezes"
 
-#: includes/class-owum-admin.php:971
+#: includes/class-owum-admin.php:956
 msgid "No errors recorded."
 msgstr "Nenhum erro registrado."
 
 #. translators: %s: date and time
-#: includes/class-owum-admin.php:982
+#: includes/class-owum-admin.php:967
 msgid "Alert sent on %s"
 msgstr "Alerta enviado em %s"
 
-#: includes/class-owum-admin.php:985 includes/class-owum-errorlog.php:286
+#: includes/class-owum-admin.php:970 includes/class-owum-errorlog.php:286
 msgid "Stack trace"
 msgstr "Rastreamento (stack trace)"
 
 #. translators: %s: date and time
-#: includes/class-owum-admin.php:989
+#: includes/class-owum-admin.php:974
 msgid "since %s"
 msgstr "desde %s"
 
 #. translators: %d: maximum number of entries
-#: includes/class-owum-admin.php:995
+#: includes/class-owum-admin.php:980
 msgid "Keeps the %d most recent errors."
 msgstr "Mantém os %d erros mais recentes."
 
-#: includes/class-owum-admin.php:1003
+#: includes/class-owum-admin.php:988
 msgid "Error log cleared."
 msgstr "Registro de erros apagado."
 
 #. translators: 1: site address, 2: date and time
-#: includes/class-owum-admin.php:1010
+#: includes/class-owum-admin.php:995
 msgid "Error log — %1$s — generated on %2$s"
 msgstr "Registro de erros — %1$s — gerado em %2$s"
 
-#: includes/class-owum-admin.php:1017
+#: includes/class-owum-admin.php:1002
 msgid "errors"
 msgstr "erros"
 
-#: includes/class-owum-admin.php:1027
+#: includes/class-owum-admin.php:1012
 msgid "No developer email is configured."
 msgstr "Nenhum e-mail de desenvolvedor configurado."
 
 #. translators: %s: plugin name
-#: includes/class-owum-admin.php:1032
+#: includes/class-owum-admin.php:1017
 msgid "This is a test of the %s error alerts."
 msgstr "Este é um teste dos alertas de erro do %s."
 
 #. translators: %s: plugin name
-#: includes/class-owum-admin.php:1032 includes/class-owum-errorlog.php:285
-#: includes/class-owum-report.php:269
+#: includes/class-owum-admin.php:1017 includes/class-owum-errorlog.php:285
+#: includes/class-owum-report.php:577
 msgid "Site"
 msgstr "Site"
 
-#: includes/class-owum-admin.php:1033
+#: includes/class-owum-admin.php:1018
 msgid "Error alerts test"
 msgstr "Teste dos alertas de erro"
 
 #. translators: %s: email addresses
-#: includes/class-owum-admin.php:1035
+#: includes/class-owum-admin.php:1020
 msgid "Test email sent to %s."
 msgstr "E-mail de teste enviado para %s."
 
 #. translators: %s: email addresses
-#: includes/class-owum-admin.php:1035
+#: includes/class-owum-admin.php:1020
 msgid "The test email could not be sent. See the log below."
 msgstr "Não foi possível enviar o e-mail de teste. Veja o registro abaixo."
 
-#: includes/class-owum-admin.php:1071
+#: includes/class-owum-admin.php:1053
 msgid "The previous address was kept."
 msgstr "O endereço anterior foi mantido."
 
-#: includes/class-owum-admin.php:1080
+#: includes/class-owum-admin.php:1062
 msgid "The previous key was kept."
 msgstr "A chave anterior foi mantida."
 
 #. translators: %s: new login address
-#: includes/class-owum-admin.php:1092
+#: includes/class-owum-admin.php:1074
 msgid "New login address: %s (emailed to the recipients)."
 msgstr "Novo endereço de login: %s (enviado por e-mail aos destinatários)."
 
-#: includes/class-owum-admin.php:1099
+#: includes/class-owum-admin.php:1081
 msgid "The reCAPTCHA keys changed: run the test again to turn it back on."
 msgstr "As chaves do reCAPTCHA mudaram: faça o teste de novo para reativar."
 
@@ -1097,15 +1054,10 @@ msgstr "As chaves do reCAPTCHA mudaram: faça o teste de novo para reativar."
 msgid "Free"
 msgstr "Gratuito"
 
-#. translators: %s: agency / support provider name
+#. translators: %s: brand name (Ondaweb)
 #: includes/class-owum-collector.php:248
 msgid "%s license"
 msgstr "Licença %s"
-
-#. translators: %s: agency / support provider name
-#: includes/class-owum-collector.php:248
-msgid "Agency license"
-msgstr "Licença da agência"
 
 #: includes/class-owum-collector.php:249
 msgid "Paid (client)"
@@ -1115,7 +1067,7 @@ msgstr "Pago (cliente)"
 msgid "Custom"
 msgstr "Personalizado"
 
-#: includes/class-owum-collector.php:258 includes/class-owum-report.php:269
+#: includes/class-owum-collector.php:258 includes/class-owum-report.php:577
 msgid "Network (all sites)"
 msgstr "Rede (todos os sites)"
 
@@ -1267,12 +1219,12 @@ msgid "Security fix undone"
 msgstr "Correção de segurança desfeita"
 
 #: includes/class-owum-logger.php:176
-#: includes/security/class-owsu-security.php:636
+#: includes/security/class-owsu-security.php:640
 msgid "Plugin"
 msgstr "Plugin"
 
 #: includes/class-owum-logger.php:177
-#: includes/security/class-owsu-security.php:643
+#: includes/security/class-owsu-security.php:647
 msgid "Theme"
 msgstr "Tema"
 
@@ -1311,75 +1263,260 @@ msgid "Could not embed the logo in the email"
 msgstr "Não foi possível incorporar o logo no e-mail"
 
 #. translators: 1: month name, 2: year
-#: includes/class-owum-report.php:35
+#: includes/class-owum-report.php:46
 msgctxt "month name and year"
 msgid "%1$s %2$s"
 msgstr "%1$s de %2$s"
 
-#. translators: %s: agency / support provider name
-#: includes/class-owum-report.php:42
-msgid "applied by %s"
-msgstr "aplicadas pela %s"
+#: includes/class-owum-report.php:96 includes/class-owum-report.php:291
+msgid "Verified"
+msgstr "Verificado"
 
-#. translators: %s: agency / support provider name
-#: includes/class-owum-report.php:42
-msgid "applied by the support team"
-msgstr "aplicadas pela equipe de suporte"
-
-#: includes/class-owum-report.php:85 includes/class-owum-report.php:124
-msgid "Security fix"
-msgstr "Correção de segurança"
-
-#. translators: %s: date of the last security check
-#: includes/class-owum-report.php:106
-msgid "Status as of the check on %s."
-msgstr "Situação na verificação de %s."
-
-#. translators: %s: agency / support provider name
-#: includes/class-owum-report.php:108
-msgid "Technical details are kept by the %s team."
-msgstr "Os detalhes técnicos ficam com a equipe %s."
-
-#. translators: %s: agency / support provider name
-#: includes/class-owum-report.php:108
-msgid "Technical details are kept by the support team."
-msgstr "Os detalhes técnicos ficam com a equipe de suporte."
-
-#: includes/class-owum-report.php:111
-msgid "Security grade"
-msgstr "Nota de segurança"
-
-#. translators: %d: score from 0 to 100
-#: includes/class-owum-report.php:111
-msgid "%d out of 100"
-msgstr "%d de 100"
-
-#: includes/class-owum-report.php:113
-msgid "Points checked"
-msgstr "Pontos verificados"
-
-#: includes/class-owum-report.php:113
-msgid "in this analysis"
-msgstr "nesta análise"
-
-#: includes/class-owum-report.php:114
-msgid "Compliant"
-msgstr "Em conformidade"
-
-#: includes/class-owum-report.php:114
-msgid "no action needed"
-msgstr "sem ação necessária"
-
-#: includes/class-owum-report.php:115
+#: includes/class-owum-report.php:96 includes/class-owum-report.php:320
 msgid "Being handled"
 msgstr "Em tratamento"
 
-#: includes/class-owum-report.php:115
-msgid "followed up by the team"
-msgstr "acompanhados pela equipe"
+#: includes/class-owum-report.php:161 includes/class-owum-report.php:485
+msgid "Security fix"
+msgstr "Correção de segurança"
+
+#. translators: 1: certificate issuer (e.g. Let's Encrypt), 2: date
+#: includes/class-owum-report.php:174
+msgid ""
+"%1$s certificate, valid until %2$s, which keeps the connection between the "
+"visitor and the site encrypted."
+msgstr ""
+"certificado %1$s, válido até %2$s, que garante a conexão criptografada entre"
+" o visitante e o site."
+
+#. translators: %s: date
+#: includes/class-owum-report.php:176
+msgid ""
+"certificate valid until %s, which keeps the connection between the visitor "
+"and the site encrypted."
+msgstr ""
+"certificado válido até %s, que garante a conexão criptografada entre o "
+"visitante e o site."
+
+#: includes/class-owum-report.php:178
+msgid ""
+"the certificate in use is valid and keeps the connection between the visitor"
+" and the site encrypted."
+msgstr ""
+"o certificado em uso é válido e garante a conexão criptografada entre o "
+"visitante e o site."
+
+#. translators: %s: date
+#: includes/class-owum-report.php:184
+msgid "version with security support until %s, so it keeps receiving fixes."
+msgstr ""
+"versão com suporte de segurança até %s, ou seja, que continua recebendo "
+"correções."
+
+#: includes/class-owum-report.php:185 includes/class-owum-report.php:187
+msgid "version with security support, so it keeps receiving fixes."
+msgstr ""
+"versão com suporte de segurança, ou seja, que continua recebendo correções."
+
+#. translators: %s: brand (Ondaweb)
+#: includes/class-owum-report.php:235
+msgid "Being handled by the %s team."
+msgstr "Em tratamento pela equipe %s."
+
+#. translators: 1: measures confirmed, 2: total measures, 3: brand (Ondaweb)
+#: includes/class-owum-report.php:239
+msgid ""
+"%1$d of %2$d measures confirmed; the others are being handled by the %3$s "
+"team."
+msgstr ""
+"%1$d de %2$d medidas confirmadas; as demais estão em tratamento pela equipe "
+"%3$s."
+
+#: includes/class-owum-report.php:246
+msgid "Present in the site's responses."
+msgstr "Presentes nas respostas do site."
+
+#. translators: %d: HTTP status code
+#: includes/class-owum-report.php:251
+msgid "<code>/wp-login.php</code> returns %d"
+msgstr "<code>/wp-login.php</code> retorna %d"
+
+#: includes/class-owum-report.php:254
+msgid "reCAPTCHA active on login"
+msgstr "reCAPTCHA ativo no login"
+
+#: includes/class-owum-report.php:256 includes/class-owum-report.php:268
+#: includes/class-owum-report.php:270
+msgid "Confirmed in the automatic check."
+msgstr "Confirmado na verificação automática."
+
+#: includes/class-owum-report.php:258
+msgid "Listing blocked for visitors; authors sitemap removed."
+msgstr "Listagem bloqueada para visitantes; sitemap de autores removido."
+
+#. translators: %d: HTTP status code
+#: includes/class-owum-report.php:261
+msgid "Returns %d."
+msgstr "Retorna %d."
+
+#. translators: %d: HTTP status code
+#: includes/class-owum-report.php:261
+msgid "Blocked."
+msgstr "Bloqueado."
+
+#: includes/class-owum-report.php:263
+msgid "No version exposed on the home page."
+msgstr "Nenhuma versão exposta na página inicial."
+
+#. translators: %s: number of files
+#: includes/class-owum-report.php:267
+msgid "Sensitive files blocked; no PHP file in uploads (%s files checked)."
+msgstr ""
+"Arquivos sensíveis bloqueados; nenhum arquivo PHP em uploads (%s arquivos "
+"verificados)."
+
+#: includes/class-owum-report.php:272
+msgid "Confirmed."
+msgstr "Confirmado."
+
+#. translators: %d: number of actions
+#: includes/class-owum-report.php:277
+msgid "%d action"
+msgid_plural "%d actions"
+msgstr[0] "%d ação"
+msgstr[1] "%d ações"
+
+#. translators: %d: number of items
+#: includes/class-owum-report.php:291
+msgid "%d being handled"
+msgstr "%d em tratamento"
+
+#: includes/class-owum-report.php:314
+msgid "Implemented actions"
+msgstr "Ações implementadas"
+
+#. translators: %s: brand (Ondaweb)
+#: includes/class-owum-report.php:323
+msgid "being handled by the %s team."
+msgstr "em tratamento pela equipe %s."
+
+#: includes/class-owum-report.php:328
+msgid "Risk reduced"
+msgstr "Risco reduzido"
+
+#: includes/class-owum-report.php:330 includes/class-owum-report.php:533
+msgid "Verified result"
+msgstr "Resultado verificado"
+
+#: includes/class-owum-report.php:408 includes/class-owum-report.php:697
+msgid "WordPress updates and security"
+msgstr "Atualizações e segurança WordPress"
+
+#. translators: %s: client name
+#: includes/class-owum-report.php:419
+msgid "Client %s"
+msgstr "Cliente %s"
+
+#. translators: 1: report name, 2: site address, 3: date, 4: brand
+#: includes/class-owum-report.php:420 includes/class-owum-report.php:667
+#: includes/class-owum-report.php:696
+msgid "Updates and security report"
+msgstr "Relatório de atualizações e segurança"
+
+#. translators: %s: grade (A-E)
+#: includes/class-owum-report.php:427
+msgid "Grade %s"
+msgstr "Nota %s"
+
+#: includes/class-owum-report.php:432
+msgid "Period"
+msgstr "Período"
+
+#: includes/class-owum-report.php:433
+msgid "Prepared by"
+msgstr "Preparado por"
+
+#: includes/class-owum-report.php:434
+msgid "Scope"
+msgstr "Escopo"
+
+#: includes/class-owum-report.php:434
+msgid "WordPress and published site"
+msgstr "WordPress e site publicado"
+
+#: includes/class-owum-report.php:445
+msgid "Summary"
+msgstr "Resumo"
+
+#. translators: 1: number of tests, 2: score, 3: grade
+#: includes/class-owum-report.php:450
+msgid "The automatic security check (%1$d tests) resulted in %2$s"
+msgstr "A verificação automática de segurança (%1$d testes) resultou em %2$s"
+
+#. translators: 1: score, 2: grade
+#: includes/class-owum-report.php:452
+msgid "grade %1$d/100 (%2$s)"
+msgstr "nota %1$d/100 (%2$s)"
+
+#. translators: %d: number of items
+#: includes/class-owum-report.php:455
+msgid "with %s being handled by the team."
+msgstr "com %s em tratamento pela equipe."
+
+#. translators: %d: number of items
+#: includes/class-owum-report.php:455
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] "%d item"
+msgstr[1] "%d itens"
+
+#: includes/class-owum-report.php:456
+msgid "with no critical or warning items."
+msgstr "sem itens críticos ou de atenção."
+
+#. translators: %s: date
+#: includes/class-owum-report.php:458
+msgid ""
+"The tests, run on %s directly against the published site, confirmed the "
+"protections described in this report."
+msgstr ""
+"Os testes, feitos em %s diretamente no site publicado, confirmaram as "
+"proteções descritas neste relatório."
+
+#. translators: 1: number of improvements, 2: month and year
+#: includes/class-owum-report.php:461
+msgid "%1$d security improvement was applied in %2$s."
+msgid_plural "%1$d security improvements were applied in %2$s."
+msgstr[0] "%1$d melhoria de segurança foi aplicada em %2$s."
+msgstr[1] "%1$d melhorias de segurança foram aplicadas em %2$s."
+
+#. translators: 1: month and year, 2: number of updates
+#: includes/class-owum-report.php:465
+msgid "In %1$s, %2$d update was recorded."
+msgid_plural "In %1$s, %2$d updates were recorded."
+msgstr[0] "Em %1$s, %2$d atualização foi registrada."
+msgstr[1] "Em %1$s, %2$d atualizações foram registradas."
+
+#. translators: %s: grade
+#: includes/class-owum-report.php:471
+msgid "Grade %s in the automatic check"
+msgstr "Nota %s na verificação automática"
+
+#. translators: %s: grade
+#: includes/class-owum-report.php:472
+msgid "Automatic tests run"
+msgstr "Testes automáticos executados"
+
+#: includes/class-owum-report.php:473
+msgid "Critical or warning items"
+msgstr "Itens críticos ou de atenção"
+
+#: includes/class-owum-report.php:474
+msgid "Areas with measures implemented and verified"
+msgstr "Áreas com medidas implementadas e verificadas"
 
 #. translators: 1: number of components (in bold), 2: "Security fix" tag
-#: includes/class-owum-report.php:127
+#: includes/class-owum-report.php:488
 msgid ""
 "Known security flaws were found in %1$s installed component. The updates "
 "that fix them are marked with %2$s in the tables below and should be "
@@ -1397,57 +1534,103 @@ msgstr[1] ""
 "instalados. As atualizações que as corrigem estão marcadas com %2$s nas "
 "tabelas abaixo e devem ser priorizadas."
 
-#: includes/class-owum-report.php:132
-msgid "No known security flaws in the installed versions."
-msgstr "Nenhuma falha de segurança conhecida nas versões instaladas."
+#: includes/class-owum-report.php:496
+msgid "How the check was done"
+msgstr "Como a verificação foi feita"
 
-#. translators: %s: month and year
-#: includes/class-owum-report.php:151
-msgid "Security improvements applied in %s:"
-msgstr "Melhorias de segurança aplicadas em %s:"
+#: includes/class-owum-report.php:498
+msgid "Automatic check"
+msgstr "Verificação automática"
 
-#: includes/class-owum-report.php:197 includes/class-owum-report.php:205
-msgid "Technical support"
-msgstr "Suporte técnico"
+#. translators: 1: number of tests, 2: score, 3: grade
+#: includes/class-owum-report.php:498
+msgid ""
+"%1$d configuration tests run on the site's WordPress, with a final grade of "
+"%2$d/100 (%3$s)."
+msgstr ""
+"%1$d testes de configuração executados no WordPress do site, com nota final "
+"%2$d/100 (%3$s)."
 
-#: includes/class-owum-report.php:211
-msgid "Updates and security report"
-msgstr "Relatório de atualizações e segurança"
+#. translators: 1: number of tests, 2: score, 3: grade
+#: includes/class-owum-report.php:499
+msgid "Tests on the published site"
+msgstr "Testes no site publicado"
 
-#. translators: %s: month and year (in bold)
-#: includes/class-owum-report.php:216
-msgid "Period: %s"
-msgstr "Período: %s"
+#. translators: %s: date
+#: includes/class-owum-report.php:499
+msgid ""
+"Requests made on %s directly to the published site, the way a visitor or a "
+"bot would access it."
+msgstr ""
+"Requisições feitas em %s diretamente ao site publicado, da forma como um "
+"visitante ou um robô o acessaria."
 
-#. translators: %s: date and time
-#: includes/class-owum-report.php:218
-msgid "Versions as of %s"
-msgstr "Situação das versões em %s"
+#: includes/class-owum-report.php:510
+msgid "Areas covered"
+msgstr "Áreas cobertas"
 
-#. translators: %d: number of sites in the network
-#: includes/class-owum-report.php:220
-msgid "%d site in the network"
-msgid_plural "%d sites in the network"
-msgstr[0] "%d site na rede"
-msgstr[1] "%d sites na rede"
+#. translators: 1: number of areas, 2: number of actions
+#: includes/class-owum-report.php:514
+msgid ""
+"The work was organized in %1$d areas, adding up to %2$d implemented actions."
+" The table below shows what each area covers; the actions, the risk reduced "
+"and the verified result are detailed in the next section."
+msgstr ""
+"O trabalho foi organizado em %1$d áreas, que somam %2$d ações implementadas."
+" O quadro abaixo indica o que cada área abrange; o detalhamento das ações, "
+"do risco reduzido e do resultado verificado está na seção seguinte."
 
-#: includes/class-owum-report.php:227
-msgid "Updates this period"
-msgstr "Atualizações no período"
+#. translators: %s: date
+#: includes/class-owum-report.php:522
+msgid ""
+"The scope is limited to the WordPress configuration and the behavior of the "
+"published site on %s."
+msgstr ""
+"O escopo se limita à configuração do WordPress e ao comportamento do site "
+"publicado em %s."
 
-#: includes/class-owum-report.php:227
-msgid "recorded in the history"
-msgstr "registradas no histórico"
+#: includes/class-owum-report.php:526
+msgid "Measures implemented and verified"
+msgstr "Medidas implementadas e verificadas"
 
-#: includes/class-owum-report.php:229
-msgid "need approval"
-msgstr "precisam de aprovação"
+#: includes/class-owum-report.php:532
+msgid "Overview of results"
+msgstr "Quadro geral de resultados"
 
-#: includes/class-owum-report.php:249
+#: includes/class-owum-report.php:533
+msgid "Area"
+msgstr "Área"
+
+#. translators: %s: version number
+#: includes/class-owum-report.php:545
+msgid "WordPress — %s available"
+msgstr "WordPress — %s disponível"
+
+#. translators: %s: version number
+#: includes/class-owum-report.php:545
+msgid "WordPress — latest version"
+msgstr "WordPress — versão mais recente"
+
+#. translators: %s: version number
+#: includes/class-owum-report.php:546
+msgid "Updates recorded in the period"
+msgstr "Atualizações registradas no período"
+
+#. translators: %s: brand (Ondaweb)
+#: includes/class-owum-report.php:547
+msgid "Pending, to be applied by %s"
+msgstr "Pendentes, aplicadas pela %s"
+
+#. translators: %s: brand (Ondaweb)
+#: includes/class-owum-report.php:548
+msgid "Pending, need the client's approval"
+msgstr "Pendentes, dependem de aprovação do cliente"
+
+#: includes/class-owum-report.php:558
 msgid "Updates that need the client's approval"
 msgstr "Atualizações que dependem de aprovação do cliente"
 
-#: includes/class-owum-report.php:249
+#: includes/class-owum-report.php:559
 msgid ""
 "Paid plugins/themes with a new version. Updating depends on an active "
 "license or a purchase/renewal."
@@ -1455,87 +1638,124 @@ msgstr ""
 "Plugins/temas pagos com nova versão. A atualização depende de licença ativa "
 "ou de compra/renovação."
 
-#: includes/class-owum-report.php:250
+#: includes/class-owum-report.php:560
 msgid "Notes / license"
 msgstr "Observação / licença"
 
-#: includes/class-owum-report.php:252
+#: includes/class-owum-report.php:562
 msgid "No paid updates pending."
 msgstr "Nenhuma atualização paga pendente."
 
-#: includes/class-owum-report.php:255
+#: includes/class-owum-report.php:565
 msgid "entered manually"
 msgstr "informada manualmente"
 
-#. translators: %s: agency / support provider name
-#: includes/class-owum-report.php:263
+#. translators: %s: brand (Ondaweb)
+#: includes/class-owum-report.php:572
 msgid "Available updates – applied by %s"
 msgstr "Atualizações disponíveis – aplicadas pela %s"
 
-#. translators: %s: agency / support provider name
-#: includes/class-owum-report.php:263
-msgid "Available updates – applied by the support team"
-msgstr "Atualizações disponíveis – aplicadas pela equipe de suporte"
-
-#. translators: %s: agency / support provider name
-#: includes/class-owum-report.php:265
+#. translators: %s: brand (Ondaweb)
+#: includes/class-owum-report.php:574
 msgid ""
 "Free plugins and plugins licensed by %s. No action needed from the client."
 msgstr "Plugins gratuitos e com licença da %s. Não exigem ação do cliente."
 
-#. translators: %s: agency / support provider name
-#: includes/class-owum-report.php:265
-msgid ""
-"Free plugins and plugins licensed by the support team. No action needed from"
-" the client."
-msgstr ""
-"Plugins gratuitos e com licença da equipe de suporte. Não exigem ação do "
-"cliente."
-
-#: includes/class-owum-report.php:272
+#: includes/class-owum-report.php:580
 msgid "Everything is up to date."
 msgstr "Tudo atualizado."
 
 #. translators: %s: month and year
-#: includes/class-owum-report.php:281
+#: includes/class-owum-report.php:589
 msgid "Updates made in %s"
 msgstr "Atualizações realizadas em %s"
 
-#: includes/class-owum-report.php:282 includes/class-owum-report.php:303
+#: includes/class-owum-report.php:590 includes/class-owum-report.php:614
 #: includes/security/class-owsu-admin.php:506
 msgid "Version"
 msgstr "Versão"
 
-#: includes/class-owum-report.php:284
+#: includes/class-owum-report.php:592
 msgid "No changes recorded in this period."
 msgstr "Nenhuma alteração registrada no período."
 
-#: includes/class-owum-report.php:293
+#: includes/class-owum-report.php:601
 msgid "Plugin inventory"
 msgstr "Inventário de plugins"
 
-#: includes/class-owum-report.php:293
+#: includes/class-owum-report.php:601
 msgid "Theme inventory"
 msgstr "Inventário de temas"
 
 #. translators: %d: number of items
-#: includes/class-owum-report.php:299
+#: includes/class-owum-report.php:608
 msgid "%d installed in the network."
 msgid_plural "%d installed in the network."
 msgstr[0] "%d instalado na rede."
 msgstr[1] "%d instalados na rede."
 
 #. translators: %d: number of items
-#: includes/class-owum-report.php:301
+#: includes/class-owum-report.php:610
 msgid "%d installed."
 msgid_plural "%d installed."
 msgstr[0] "%d instalado."
 msgstr[1] "%d instalados."
 
-#. translators: 1: plugin name, 2: site address
-#: includes/class-owum-report.php:311
-msgid "Report generated automatically by %1$s · %2$s"
-msgstr "Relatório gerado automaticamente pelo %1$s · %2$s"
+#: includes/class-owum-report.php:630
+msgid "HTTPS certificate"
+msgstr "Certificado HTTPS"
+
+#. translators: %s: certificate issuer
+#: includes/class-owum-report.php:633
+msgid "Validity of the %s certificate in use on the site."
+msgstr "Validade do certificado %s em uso no site."
+
+#: includes/class-owum-report.php:634
+msgid "Validity of the certificate in use on the site."
+msgstr "Validade do certificado em uso no site."
+
+#: includes/class-owum-report.php:639
+msgid "End of security support for the version in use on the server."
+msgstr "Fim do suporte de segurança da versão em uso no servidor."
+
+#: includes/class-owum-report.php:643
+msgid "Reference dates"
+msgstr "Datas de referência"
+
+#: includes/class-owum-report.php:647
+msgid "until"
+msgstr "até"
+
+#: includes/class-owum-report.php:658
+msgid "Note:"
+msgstr "Observação:"
+
+#. translators: %s: date
+#: includes/class-owum-report.php:661
+msgid ""
+"this report describes the state verified on %s. The tests are configuration "
+"tests run against the published site; they do not replace a full penetration"
+" test."
+msgstr ""
+"este relatório descreve o estado verificado em %s. Os testes são de "
+"configuração, feitos no site publicado; não substituem um teste de intrusão "
+"completo."
+
+#. translators: %s: date
+#: includes/class-owum-report.php:663
+msgid "this report describes the state on %s."
+msgstr "este relatório descreve a situação em %s."
+
+#. translators: 1: report name, 2: site address, 3: date, 4: brand
+#: includes/class-owum-report.php:667
+msgid "%1$s · %2$s · %3$s · %4$s"
+msgstr "%1$s · %2$s · %3$s · %4$s"
+
+#. translators: 1: current page number, 2: total pages — keep the %1$s and
+#. %2$s
+#: includes/class-owum-report.php:685
+msgid "Page %1$s of %2$s"
+msgstr "Página %1$s de %2$s"
 
 #: includes/class-owum-updater.php:126
 msgid ""
@@ -1875,6 +2095,600 @@ msgstr "Recomendação"
 msgid "Source: Wordfence Intelligence (Defiant, Inc.)."
 msgstr "Fonte: Wordfence Intelligence (Defiant, Inc.)."
 
+#: includes/security/class-owsu-areas.php:18
+msgid "Security headers"
+msgstr "Cabeçalhos de segurança"
+
+#: includes/security/class-owsu-areas.php:19
+msgid ""
+"Instructions the server sends to the browser: mandatory HTTPS, blocking "
+"display inside third-party pages and rules for loading content."
+msgstr ""
+"Instruções que o servidor envia ao navegador: uso obrigatório de HTTPS, "
+"bloqueio de exibição em páginas de terceiros e regras para o carregamento de"
+" conteúdo."
+
+#: includes/security/class-owsu-areas.php:20
+msgid ""
+"Instructions sent by the server with every response, telling the visitor's "
+"browser to treat the site more safely."
+msgstr ""
+"Instruções enviadas pelo servidor em cada resposta, que orientam o navegador"
+" do visitante a tratar o site de forma mais segura."
+
+#: includes/security/class-owsu-areas.php:21
+msgid ""
+"Interception of data in transit, use of the site inside fake pages and "
+"execution of unauthorized content in the visitor's browser."
+msgstr ""
+"Interceptação de dados em trânsito, uso do site dentro de páginas falsas e "
+"execução de conteúdo não autorizado no navegador do visitante."
+
+#: includes/security/class-owsu-areas.php:23
+msgid "HSTS (mandatory HTTPS)"
+msgstr "HSTS (HTTPS obrigatório)"
+
+#: includes/security/class-owsu-areas.php:23
+msgid ""
+"the browser only accesses the site over an encrypted connection, even if the"
+" visitor types the address without https."
+msgstr ""
+"o navegador passa a acessar o site somente por conexão criptografada, mesmo "
+"que o visitante digite o endereço sem https."
+
+#: includes/security/class-owsu-areas.php:24
+msgid "Clickjacking protection"
+msgstr "Proteção contra clickjacking"
+
+#: includes/security/class-owsu-areas.php:24
+msgid ""
+"prevents the site from being shown inside third-party pages to trick "
+"visitors into clicking without noticing."
+msgstr ""
+"impede que o site seja exibido dentro de páginas de terceiros para induzir "
+"cliques sem que o visitante perceba."
+
+#: includes/security/class-owsu-areas.php:25
+msgid "Nosniff"
+msgstr "Nosniff"
+
+#: includes/security/class-owsu-areas.php:25
+msgid ""
+"the browser respects the file type stated by the server and does not try to "
+"interpret a file as another format."
+msgstr ""
+"o navegador respeita o tipo de arquivo informado pelo servidor e não tenta "
+"interpretar um arquivo como outro formato."
+
+#: includes/security/class-owsu-areas.php:26
+msgid "Referrer policy"
+msgstr "Política de referência"
+
+#: includes/security/class-owsu-areas.php:26
+msgid ""
+"limits the browsing information passed on to other sites when the visitor "
+"clicks an external link."
+msgstr ""
+"limita as informações de navegação repassadas a outros sites quando o "
+"visitante clica em um link externo."
+
+#: includes/security/class-owsu-areas.php:27
+msgid "Permissions policy"
+msgstr "Política de permissões"
+
+#: includes/security/class-owsu-areas.php:27
+msgid "restricts the use of browser features by the site's pages."
+msgstr "restringe o uso de recursos do navegador pelas páginas do site."
+
+#: includes/security/class-owsu-areas.php:28
+msgid "Structural Content Security Policy (CSP)"
+msgstr "Política de segurança de conteúdo (CSP) estrutural"
+
+#: includes/security/class-owsu-areas.php:28
+msgid ""
+"sets rules for the content the page can load, reducing the room for code "
+"injection."
+msgstr ""
+"define regras para o conteúdo que a página pode carregar, reduzindo o espaço"
+" para injeção de código."
+
+#: includes/security/class-owsu-areas.php:33
+msgid "Administrative access"
+msgstr "Acesso administrativo"
+
+#: includes/security/class-owsu-areas.php:34
+msgid ""
+"WordPress login screen and dashboard: access address, barriers against bots,"
+" attempt limit and a second authentication step."
+msgstr ""
+"Tela de login e painel do WordPress: endereço de acesso, barreiras contra "
+"robôs, limite de tentativas e segunda etapa de autenticação."
+
+#: includes/security/class-owsu-areas.php:35
+msgid ""
+"Layers of protection around the WordPress dashboard, the most targeted point"
+" in automated intrusion attempts."
+msgstr ""
+"Camadas de proteção em torno do painel do WordPress, o ponto mais visado em "
+"tentativas automáticas de invasão."
+
+#: includes/security/class-owsu-areas.php:36
+msgid ""
+"Improper access to the dashboard through brute force, leaked passwords or "
+"automation against the default login address."
+msgstr ""
+"Acesso indevido ao painel por força bruta, por senhas vazadas ou por "
+"automação contra o endereço padrão de login."
+
+#: includes/security/class-owsu-areas.php:38
+#: includes/security/class-owsu-security.php:351
+msgid "Custom login address"
+msgstr "Endereço de login personalizado"
+
+#: includes/security/class-owsu-areas.php:38
+msgid ""
+"the access screen is no longer at the default WordPress address, the first "
+"target of bots."
+msgstr ""
+"a tela de acesso deixa de estar no endereço padrão do WordPress, que é o "
+"primeiro alvo de robôs."
+
+#: includes/security/class-owsu-areas.php:39
+msgid ""
+"<code>/wp-login.php</code> and <code>/wp-admin</code> blocked for visitors"
+msgstr ""
+"Bloqueio de <code>/wp-login.php</code> e <code>/wp-admin</code> para "
+"visitantes"
+
+#: includes/security/class-owsu-areas.php:39
+msgid "the default addresses do not answer anyone who is not logged in."
+msgstr "os endereços padrão não respondem para quem não está autenticado."
+
+#: includes/security/class-owsu-areas.php:40
+msgid "makes access attempts by automated scripts harder."
+msgstr "dificulta tentativas de acesso feitas por scripts automatizados."
+
+#: includes/security/class-owsu-areas.php:41
+msgid "Attempt limit"
+msgstr "Limite de tentativas"
+
+#: includes/security/class-owsu-areas.php:41
+msgid "stops sequences of password trial and error (brute force)."
+msgstr "interrompe sequências de tentativa e erro de senha (força bruta)."
+
+#: includes/security/class-owsu-areas.php:42
+msgid "Two-factor authentication"
+msgstr "Autenticação em dois fatores"
+
+#: includes/security/class-owsu-areas.php:42
+msgid ""
+"besides the password, access requires a second confirmation; a leaked "
+"password alone does not open the dashboard."
+msgstr ""
+"além da senha, o acesso exige uma segunda confirmação; uma senha vazada, "
+"sozinha, não abre o painel."
+
+#: includes/security/class-owsu-areas.php:43
+msgid "Dashboard over HTTPS only"
+msgstr "Painel somente em HTTPS"
+
+#: includes/security/class-owsu-areas.php:43
+msgid "username and password always travel encrypted."
+msgstr "usuário e senha sempre trafegam criptografados."
+
+#: includes/security/class-owsu-areas.php:44
+msgid "No predictable login"
+msgstr "Sem login previsível"
+
+#: includes/security/class-owsu-areas.php:44
+msgid ""
+"there is no administrator with the \"admin\" login, the first one tried by "
+"bots."
+msgstr "não há administrador com o login \"admin\", o primeiro testado por robôs."
+
+#: includes/security/class-owsu-areas.php:49
+msgid "Protection against user enumeration"
+msgstr "Proteção contra enumeração de usuários"
+
+#: includes/security/class-owsu-areas.php:50
+msgid ""
+"Points of the site that could reveal login names: REST API, author lookup "
+"and sitemaps."
+msgstr ""
+"Pontos do site que poderiam revelar nomes de login: API REST, consulta por "
+"autor e sitemaps."
+
+#: includes/security/class-owsu-areas.php:51
+msgid ""
+"Enumerating users means discovering a site's login names. With the name in "
+"hand, the attacker already has half of the credential."
+msgstr ""
+"Enumerar usuários é descobrir os nomes de login de um site. Com o nome em "
+"mãos, o atacante já tem metade da credencial."
+
+#: includes/security/class-owsu-areas.php:52
+msgid ""
+"Collection of usernames to aim password attacks and phishing attempts at the"
+" team."
+msgstr ""
+"Coleta de nomes de usuário para direcionar ataques de senha e tentativas de "
+"phishing contra a equipe."
+
+#: includes/security/class-owsu-areas.php:54
+msgid "REST API"
+msgstr "API REST"
+
+#: includes/security/class-owsu-areas.php:54
+msgid "the user listing was blocked in the WordPress data interface."
+msgstr ""
+"a listagem de usuários foi bloqueada na interface de dados do WordPress."
+
+#: includes/security/class-owsu-areas.php:55
+msgid "<code>?author=</code> address"
+msgstr "Endereço <code>?author=</code>"
+
+#: includes/security/class-owsu-areas.php:55
+msgid ""
+"the lookup that revealed the login name from the author number no longer "
+"answers."
+msgstr ""
+"a consulta que revelava o nome de login pelo número do autor não responde "
+"mais."
+
+#: includes/security/class-owsu-areas.php:56
+msgid "Sitemaps"
+msgstr "Sitemaps"
+
+#: includes/security/class-owsu-areas.php:56
+msgid "the authors sitemap was removed."
+msgstr "o sitemap de autores foi removido."
+
+#: includes/security/class-owsu-areas.php:61
+#: includes/security/class-owsu-security.php:303
+msgid "XML-RPC"
+msgstr "XML-RPC"
+
+#: includes/security/class-owsu-areas.php:62
+msgid ""
+"Old WordPress remote communication interface, disabled because it is a "
+"channel widely used in password attacks."
+msgstr ""
+"Interface antiga de comunicação remota do WordPress, desativada por ser um "
+"canal muito usado em ataques de senha."
+
+#: includes/security/class-owsu-areas.php:63
+msgid ""
+"Old WordPress remote communication interface, rarely used today and often "
+"exploited."
+msgstr ""
+"Interface antiga de comunicação remota do WordPress, hoje pouco utilizada e "
+"frequentemente explorada."
+
+#: includes/security/class-owsu-areas.php:64
+msgid "Mass brute force and abuse of the channel for overload attacks."
+msgstr "Força bruta em massa e abuso do canal para ataques de sobrecarga."
+
+#: includes/security/class-owsu-areas.php:66
+msgid "Interface disabled"
+msgstr "Interface desativada"
+
+#: includes/security/class-owsu-areas.php:66
+msgid ""
+"the site no longer accepts requests through this channel, which allows "
+"testing many passwords in a single call and can be used to overload the "
+"site."
+msgstr ""
+"o site deixa de aceitar requisições por esse canal, que permite testar "
+"muitas senhas em uma única chamada e pode ser usado para sobrecarregar o "
+"site."
+
+#: includes/security/class-owsu-areas.php:71
+msgid "Less exposed information"
+msgstr "Redução de informações expostas"
+
+#: includes/security/class-owsu-areas.php:72
+msgid ""
+"Technical data visible to any visitor: WordPress version and server "
+"technology."
+msgstr ""
+"Dados técnicos visíveis a qualquer visitante: versão do WordPress e "
+"tecnologia do servidor."
+
+#: includes/security/class-owsu-areas.php:73
+msgid ""
+"The less the site reveals about what is installed, the harder it is to look "
+"for known flaws of a specific version."
+msgstr ""
+"Quanto menos o site revela sobre o que está instalado, mais difícil é "
+"procurar falhas conhecidas para uma versão específica."
+
+#: includes/security/class-owsu-areas.php:74
+msgid ""
+"Mapping of the environment by scanning tools, which match exposed versions "
+"against public flaws."
+msgstr ""
+"Mapeamento do ambiente por ferramentas de varredura, que cruzam versões "
+"expostas com falhas públicas."
+
+#: includes/security/class-owsu-areas.php:76
+msgid "WordPress version removed from the page source"
+msgstr "Versão do WordPress removida do código-fonte"
+
+#: includes/security/class-owsu-areas.php:76
+msgid ""
+"the generator meta tag, which stated the exact version, was removed from the"
+" pages."
+msgstr ""
+"foi retirado das páginas o meta generator, que informava a versão exata."
+
+#: includes/security/class-owsu-areas.php:77
+msgid "<code>X-Powered-By</code> header removed"
+msgstr "Cabeçalho <code>X-Powered-By</code> removido"
+
+#: includes/security/class-owsu-areas.php:77
+msgid "the server no longer states the technology in use."
+msgstr "o servidor não informa mais a tecnologia utilizada."
+
+#: includes/security/class-owsu-areas.php:82
+msgid "Files and folders"
+msgstr "Arquivos e pastas"
+
+#: includes/security/class-owsu-areas.php:83
+msgid ""
+"Uploads folder, directory listing, sensitive files and permissions of the "
+"configuration file."
+msgstr ""
+"Pasta de uploads, listagem de diretórios, arquivos sensíveis e permissões do"
+" arquivo de configuração."
+
+#: includes/security/class-owsu-areas.php:84
+msgid ""
+"Server rules that prevent running and reading files that should not be "
+"reachable from the internet."
+msgstr ""
+"Regras no servidor que impedem a execução e a leitura de arquivos que não "
+"deveriam estar acessíveis pela internet."
+
+#: includes/security/class-owsu-areas.php:85
+msgid ""
+"Execution of code sent by upload, leakage of credentials, backups and "
+"internal information about the environment."
+msgstr ""
+"Execução de código enviado por upload, vazamento de credenciais, de backups "
+"e de informações internas do ambiente."
+
+#: includes/security/class-owsu-areas.php:87
+msgid "PHP execution blocked in uploads"
+msgstr "Execução de PHP bloqueada em uploads"
+
+#: includes/security/class-owsu-areas.php:87
+msgid ""
+"even if a malicious file is sent to the media folder, it is not executed."
+msgstr ""
+"mesmo que um arquivo malicioso seja enviado à pasta de mídia, ele não é "
+"executado."
+
+#: includes/security/class-owsu-areas.php:88
+msgid "Directory listing disabled"
+msgstr "Listagem de diretórios desativada"
+
+#: includes/security/class-owsu-areas.php:88
+msgid "the content of the folders cannot be browsed through the address."
+msgstr "o conteúdo das pastas não pode ser navegado pelo endereço."
+
+#: includes/security/class-owsu-areas.php:89
+msgid "Sensitive files blocked"
+msgstr "Arquivos sensíveis bloqueados"
+
+#: includes/security/class-owsu-areas.php:89
+msgid ""
+"<code>.env</code>, <code>.git</code>, backups, logs, readme and license are "
+"not delivered to visitors."
+msgstr ""
+"<code>.env</code>, <code>.git</code>, backups, logs, readme e license não "
+"são entregues a visitantes."
+
+#: includes/security/class-owsu-areas.php:90
+msgid "Restricted permission on <code>wp-config.php</code>"
+msgstr "Permissão restrita no <code>wp-config.php</code>"
+
+#: includes/security/class-owsu-areas.php:90
+msgid ""
+"the file with the database credentials is limited to the owner and group on "
+"the server."
+msgstr ""
+"o arquivo com as credenciais do banco de dados fica restrito ao dono e ao "
+"grupo do servidor."
+
+#: includes/security/class-owsu-areas.php:91
+msgid "No world-writable permissions"
+msgstr "Sem permissões de escrita liberadas para todos"
+
+#: includes/security/class-owsu-areas.php:91
+msgid "folders and files cannot be changed by other processes on the server."
+msgstr ""
+"pastas e arquivos não podem ser alterados por outros processos do servidor."
+
+#: includes/security/class-owsu-areas.php:92
+msgid "Uploads folder free of scripts"
+msgstr "Pasta de uploads sem scripts"
+
+#: includes/security/class-owsu-areas.php:92
+msgid "a full scan confirms there are no PHP files among the uploaded files."
+msgstr ""
+"a varredura completa confirma que não há arquivos PHP entre os arquivos "
+"enviados."
+
+#: includes/security/class-owsu-areas.php:97
+#: includes/security/class-owsu-security.php:85
+msgid "WordPress configuration"
+msgstr "Configuração do WordPress"
+
+#: includes/security/class-owsu-areas.php:98
+msgid ""
+"Internal system settings: file editor, error display, security keys and "
+"automatic updates."
+msgstr ""
+"Ajustes internos do sistema: editor de arquivos, exibição de erros, chaves "
+"de segurança e atualizações automáticas."
+
+#: includes/security/class-owsu-areas.php:99
+msgid ""
+"Internal settings that limit the damage of a compromised account and keep "
+"the system core up to date."
+msgstr ""
+"Ajustes internos que limitam o estrago de uma conta comprometida e mantêm o "
+"núcleo do sistema atualizado."
+
+#: includes/security/class-owsu-areas.php:100
+msgid ""
+"Code changed from a hijacked account, exposure of internal details and flaws"
+" that were already fixed staying in place."
+msgstr ""
+"Alteração de código a partir de uma conta invadida, exposição de detalhes "
+"internos e permanência de falhas já corrigidas."
+
+#: includes/security/class-owsu-areas.php:102
+msgid "Dashboard file editor disabled"
+msgstr "Editor de arquivos do painel desativado"
+
+#: includes/security/class-owsu-areas.php:102
+msgid ""
+"the code of themes and plugins cannot be changed from inside the dashboard."
+msgstr ""
+"o código de temas e plugins não pode ser alterado por dentro do painel."
+
+#: includes/security/class-owsu-areas.php:103
+msgid "Error display disabled"
+msgstr "Exibição de erros desativada"
+
+#: includes/security/class-owsu-areas.php:103
+msgid ""
+"technical messages, which reveal paths and internal details, are not shown "
+"to visitors."
+msgstr ""
+"mensagens técnicas, que revelam caminhos e detalhes internos, não aparecem "
+"para visitantes."
+
+#: includes/security/class-owsu-areas.php:104
+msgid "Strong security keys"
+msgstr "Chaves de segurança fortes"
+
+#: includes/security/class-owsu-areas.php:104
+msgid "they protect sessions and login cookies."
+msgstr "protegem as sessões e os cookies de login."
+
+#: includes/security/class-owsu-areas.php:105
+msgid "Automatic core security updates on"
+msgstr "Atualizações automáticas de segurança do core ativas"
+
+#: includes/security/class-owsu-areas.php:105
+msgid ""
+"WordPress security fixes are applied without depending on manual action."
+msgstr ""
+"correções de segurança do WordPress são aplicadas sem depender de ação "
+"manual."
+
+#: includes/security/class-owsu-areas.php:110
+msgid "Server"
+msgstr "Servidor"
+
+#: includes/security/class-owsu-areas.php:111
+msgid ""
+"Environment the site runs on: HTTPS certificate and PHP version with "
+"security support."
+msgstr ""
+"Ambiente em que o site roda: certificado HTTPS e versão do PHP com suporte "
+"de segurança."
+
+#: includes/security/class-owsu-areas.php:112
+msgid ""
+"The base the site runs on: encrypted connection and a PHP version with "
+"active support."
+msgstr ""
+"Base em que o site roda: conexão criptografada e versão de PHP com suporte "
+"ativo."
+
+#: includes/security/class-owsu-areas.php:113
+msgid ""
+"\"Not secure\" warnings in the browser and exposure to flaws of PHP versions"
+" without support."
+msgstr ""
+"Avisos de site inseguro no navegador e exposição a falhas de versões de PHP "
+"sem suporte."
+
+#: includes/security/class-owsu-areas.php:115
+#: includes/security/class-owsu-security.php:377
+msgid "Site on HTTPS"
+msgstr "Site em HTTPS"
+
+#: includes/security/class-owsu-areas.php:115
+msgid "every access to the site uses an encrypted connection."
+msgstr "todo o acesso ao site usa conexão criptografada."
+
+#: includes/security/class-owsu-areas.php:116
+msgid "HTTPS with a valid certificate"
+msgstr "HTTPS com certificado válido"
+
+#: includes/security/class-owsu-areas.php:117
+msgid "PHP with security support"
+msgstr "PHP com suporte de segurança"
+
+#: includes/security/class-owsu-areas.php:122
+msgid "Plugins and themes"
+msgstr "Plugins e temas"
+
+#: includes/security/class-owsu-areas.php:123
+msgid ""
+"Components installed in WordPress: maintenance status of each item and "
+"presence of unused items."
+msgstr ""
+"Componentes instalados no WordPress: situação de manutenção de cada item e "
+"presença de itens sem uso."
+
+#: includes/security/class-owsu-areas.php:124
+msgid ""
+"Each installed plugin or theme is more code to maintain. Unmaintained or "
+"unused items widen the exposure without any benefit."
+msgstr ""
+"Cada plugin ou tema instalado é código a mais para manter. Itens sem "
+"manutenção ou sem uso ampliam a exposição sem trazer benefício."
+
+#: includes/security/class-owsu-areas.php:125
+msgid "Exploitation of flaws in components that no longer receive fixes."
+msgstr "Exploração de falhas em componentes que não recebem mais correções."
+
+#: includes/security/class-owsu-areas.php:127
+msgid "No known vulnerabilities"
+msgstr "Sem vulnerabilidades conhecidas"
+
+#: includes/security/class-owsu-areas.php:127
+msgid ""
+"the installed versions were checked against the Wordfence Intelligence "
+"database."
+msgstr ""
+"as versões instaladas foram comparadas com a base Wordfence Intelligence."
+
+#: includes/security/class-owsu-areas.php:128
+msgid "No removed or abandoned plugins"
+msgstr "Sem plugins removidos ou abandonados"
+
+#: includes/security/class-owsu-areas.php:128
+msgid ""
+"no installed item stopped being maintained or was taken out of the "
+"repository."
+msgstr ""
+"nenhum item instalado deixou de receber manutenção ou foi retirado do "
+"repositório."
+
+#: includes/security/class-owsu-areas.php:129
+msgid "No installed but unused items"
+msgstr "Sem itens instalados e não utilizados"
+
+#: includes/security/class-owsu-areas.php:129
+msgid "there are no idle plugins or themes in the environment."
+msgstr "não há plugins ou temas parados no ambiente."
+
 #: includes/security/class-owsu-captcha.php:53
 msgid "reCAPTCHA v3 (invisible)"
 msgstr "reCAPTCHA v3 (invisível)"
@@ -2014,10 +2828,6 @@ msgstr "Cabeçalhos de segurança (HTTP)"
 #: includes/security/class-owsu-security.php:84
 msgid "Files, folders and permissions"
 msgstr "Arquivos, pastas e permissões"
-
-#: includes/security/class-owsu-security.php:85
-msgid "WordPress configuration"
-msgstr "Configuração do WordPress"
 
 #: includes/security/class-owsu-security.php:86
 msgid "Information exposure"
@@ -2528,10 +3338,6 @@ msgstr ""
 "<code>AUTOMATIC_UPDATER_DISABLED</code> e <code>WP_AUTO_UPDATE_CORE = "
 "false</code>, ou use:</p>"
 
-#: includes/security/class-owsu-security.php:303
-msgid "XML-RPC"
-msgstr "XML-RPC"
-
 #: includes/security/class-owsu-security.php:304
 msgid "Legacy interface used in password attacks disabled"
 msgstr "Desativação de interface antiga usada em ataques de senha"
@@ -2668,10 +3474,6 @@ msgstr ""
 " ou o plugin <strong>Two-Factor</strong>. Ative ao menos para "
 "administradores.</p>"
 
-#: includes/security/class-owsu-security.php:351
-msgid "Custom login address"
-msgstr "Endereço de login personalizado"
-
 #: includes/security/class-owsu-security.php:352
 msgid "Custom dashboard access address"
 msgstr "Endereço de acesso ao painel personalizado"
@@ -2745,10 +3547,6 @@ msgstr ""
 "ativar o <em>Fail2Ban</em> com o filtro do WordPress (WordPress "
 "Toolkit).</p>"
 
-#: includes/security/class-owsu-security.php:377
-msgid "Site on HTTPS"
-msgstr "Site em HTTPS"
-
 #: includes/security/class-owsu-security.php:378
 msgid "Secure connection (HTTPS)"
 msgstr "Conexão segura (HTTPS)"
@@ -2816,23 +3614,23 @@ msgstr ""
 "ambiente de homologação ou com backup, principalmente os plugins pagos.</p>"
 
 #. translators: %s: check id
-#: includes/security/class-owsu-security.php:439
+#: includes/security/class-owsu-security.php:443
 msgid "Check \"%s\" did not finish"
 msgstr "Verificação \"%s\" não concluída"
 
 #. translators: %s: check id
-#: includes/security/class-owsu-security.php:440
+#: includes/security/class-owsu-security.php:444
 msgid "Could not check:"
 msgstr "Não foi possível verificar:"
 
-#: includes/security/class-owsu-security.php:555
+#: includes/security/class-owsu-security.php:559
 msgid ""
 "Set the Wordfence Intelligence API key in Settings to enable this check."
 msgstr ""
 "Configure a chave da API Wordfence Intelligence em Configurações para ativar"
 " esta verificação."
 
-#: includes/security/class-owsu-security.php:558
+#: includes/security/class-owsu-security.php:562
 msgid ""
 "The vulnerability database has not been downloaded yet. Click \"Update "
 "vulnerability database\"."
@@ -2840,88 +3638,88 @@ msgstr ""
 "A base de vulnerabilidades ainda não foi baixada. Clique em \"Atualizar base"
 " de vulnerabilidades\"."
 
-#: includes/security/class-owsu-security.php:563
+#: includes/security/class-owsu-security.php:567
 msgid "unrated"
 msgstr "sem classificação"
 
 #. translators: %s: version
-#: includes/security/class-owsu-security.php:564
+#: includes/security/class-owsu-security.php:568
 msgid "fixed in %s"
 msgstr "corrigido em %s"
 
 #. translators: %s: version
-#: includes/security/class-owsu-security.php:564
+#: includes/security/class-owsu-security.php:568
 msgid "no fix available"
 msgstr "sem correção disponível"
 
-#: includes/security/class-owsu-security.php:572
+#: includes/security/class-owsu-security.php:576
 msgid "The last update attempt failed:"
 msgstr "Última tentativa de atualização falhou:"
 
 #. translators: %s: date of the database
-#: includes/security/class-owsu-security.php:577
+#: includes/security/class-owsu-security.php:581
 msgid "No known vulnerabilities in the installed versions (database of %s)."
 msgstr ""
 "Nenhuma vulnerabilidade conhecida nas versões instaladas (base de %s)."
 
 #. translators: 1: count, 2: date of the database
-#: includes/security/class-owsu-security.php:579
+#: includes/security/class-owsu-security.php:583
 msgid ""
 "%1$d known vulnerability(ies) in the installed versions (database of %2$s)."
 msgstr ""
 "%1$d vulnerabilidade(s) conhecida(s) nas versões instaladas (base de %2$s)."
 
-#: includes/security/class-owsu-security.php:612
+#: includes/security/class-owsu-security.php:616
 msgid "removed from wordpress.org (closed)"
 msgstr "removido do wordpress.org (fechado)"
 
 #. translators: %s: month and year
-#: includes/security/class-owsu-security.php:617
+#: includes/security/class-owsu-security.php:621
 msgid "not updated since %s"
 msgstr "sem atualização desde %s"
 
 #. translators: PHP date format: month and year
-#: includes/security/class-owsu-security.php:617
+#: includes/security/class-owsu-security.php:621
 msgctxt "month and year"
 msgid "m/Y"
 msgstr "m/Y"
 
-#: includes/security/class-owsu-security.php:622
+#: includes/security/class-owsu-security.php:626
 msgid "Could not reach wordpress.org from the server."
 msgstr "Não foi possível consultar o wordpress.org a partir do servidor."
 
-#: includes/security/class-owsu-security.php:625
+#: includes/security/class-owsu-security.php:629
 msgid "No closed or abandoned plugin found."
 msgstr "Nenhum plugin fechado ou abandonado encontrado."
 
 #. translators: %d: count
-#: includes/security/class-owsu-security.php:627
+#: includes/security/class-owsu-security.php:631
 msgid "%d plugin(s) need attention."
 msgstr "%d plugin(s) exigem atenção."
 
-#: includes/security/class-owsu-security.php:647
+#: includes/security/class-owsu-security.php:651
 msgid "All installed plugins and themes are in use."
 msgstr "Todos os plugins e temas instalados estão em uso."
 
 #. translators: %d: count
-#: includes/security/class-owsu-security.php:649
+#: includes/security/class-owsu-security.php:653
 msgid "%d installed item(s) not used on any site."
 msgstr "%d item(ns) instalado(s) sem uso em nenhum site."
 
-#: includes/security/class-owsu-security.php:659
-#: includes/security/class-owsu-security.php:708
+#: includes/security/class-owsu-security.php:663
+#: includes/security/class-owsu-security.php:712
 msgid "Could not open the home page to read the headers."
 msgstr "Não foi possível acessar a página inicial para ler os cabeçalhos."
 
-#: includes/security/class-owsu-security.php:662
+#: includes/security/class-owsu-security.php:666
 msgid "Enabled by the plugin"
 msgstr "Ativado pelo plugin"
 
-#: includes/security/class-owsu-security.php:662
+#: includes/security/class-owsu-security.php:666
 msgid "Present"
 msgstr "Presente"
 
-#: includes/security/class-owsu-security.php:665
+#: includes/security/class-owsu-security.php:669
 msgid ""
 "Fix active, but the header does not show on the home page (probably page "
 "cache). Configure it on the server."
@@ -2930,36 +3728,36 @@ msgstr ""
 "cache de página). Configure no servidor."
 
 #. translators: %s: header name
-#: includes/security/class-owsu-security.php:667
+#: includes/security/class-owsu-security.php:671
 msgid "Header %s missing."
 msgstr "Cabeçalho %s ausente."
 
-#: includes/security/class-owsu-security.php:672
-#: includes/security/class-owsu-security.php:974
-#: includes/security/class-owsu-security.php:1226
+#: includes/security/class-owsu-security.php:676
+#: includes/security/class-owsu-security.php:978
+#: includes/security/class-owsu-security.php:1230
 msgid "Not applicable: the site is not on HTTPS."
 msgstr "Não se aplica: o site não está em HTTPS."
 
-#: includes/security/class-owsu-security.php:684
+#: includes/security/class-owsu-security.php:688
 msgid ""
 "Protected by the frame-ancestors directive of the Content-Security-Policy."
 msgstr "Protegido pela diretiva frame-ancestors da Content-Security-Policy."
 
-#: includes/security/class-owsu-security.php:700
+#: includes/security/class-owsu-security.php:704
 msgid "No Content-Security-Policy defined."
 msgstr "Nenhuma Content-Security-Policy definida."
 
 #. translators: %s: value of the Server header
-#: includes/security/class-owsu-security.php:711
+#: includes/security/class-owsu-security.php:715
 msgid "The Server header also reveals a version: %s."
 msgstr "O cabeçalho Server também informa versão: %s."
 
-#: includes/security/class-owsu-security.php:713
+#: includes/security/class-owsu-security.php:717
 msgid "X-Powered-By not exposed."
 msgstr "X-Powered-By não exposto."
 
 #. translators: %s: header and value
-#: includes/security/class-owsu-security.php:716
+#: includes/security/class-owsu-security.php:720
 msgid ""
 "The plugin already removes the PHP header, but the server still sends: %s. "
 "See \"How to fix\"."
@@ -2968,23 +3766,23 @@ msgstr ""
 "\"Como corrigir\"."
 
 #. translators: %s: header and value
-#: includes/security/class-owsu-security.php:718
+#: includes/security/class-owsu-security.php:722
 msgid "Exposed: %s."
 msgstr "Exposto: %s."
 
-#: includes/security/class-owsu-security.php:730
+#: includes/security/class-owsu-security.php:734
 msgid "Could not create the test file in the uploads folder."
 msgstr "Não foi possível criar o arquivo de teste na pasta uploads."
 
-#: includes/security/class-owsu-security.php:735
+#: includes/security/class-owsu-security.php:739
 msgid "The server did not answer the test (local request blocked)."
 msgstr "O servidor não respondeu ao teste (requisição local bloqueada)."
 
-#: includes/security/class-owsu-security.php:739
+#: includes/security/class-owsu-security.php:743
 msgid "A PHP file uploaded to uploads is executed by the server."
 msgstr "Um arquivo PHP enviado para uploads é executado pelo servidor."
 
-#: includes/security/class-owsu-security.php:741
+#: includes/security/class-owsu-security.php:745
 msgid ""
 "The .htaccess rule has already been applied, but the server ignores it "
 "(nginx/PHP-FPM directly). Apply the nginx directive shown in \"How to fix\"."
@@ -2993,104 +3791,104 @@ msgstr ""
 "FPM direto). Aplique a diretiva do nginx indicada em \"Como corrigir\"."
 
 #. translators: %d: HTTP status code
-#: includes/security/class-owsu-security.php:745
+#: includes/security/class-owsu-security.php:749
 msgid "PHP is not executed in uploads (HTTP response %d)."
 msgstr "PHP não é executado em uploads (resposta HTTP %d)."
 
 #. translators: %d: HTTP status code
-#: includes/security/class-owsu-security.php:745
+#: includes/security/class-owsu-security.php:749
 msgid "Rule applied by the plugin."
 msgstr "Regra aplicada pelo plugin."
 
-#: includes/security/class-owsu-security.php:752
+#: includes/security/class-owsu-security.php:756
 msgid "The server did not answer the test."
 msgstr "O servidor não respondeu ao teste."
 
-#: includes/security/class-owsu-security.php:756
+#: includes/security/class-owsu-security.php:760
 msgid "The uploads folder lists every file when opened in the browser."
 msgstr ""
 "A pasta uploads lista todos os arquivos ao ser acessada pelo navegador."
 
-#: includes/security/class-owsu-security.php:756
+#: includes/security/class-owsu-security.php:760
 msgid "The .htaccess rule is applied, but the server ignores it."
 msgstr "A regra .htaccess está aplicada, mas o servidor não a respeita."
 
-#: includes/security/class-owsu-security.php:758
+#: includes/security/class-owsu-security.php:762
 msgid "Directory listing blocked."
 msgstr "Listagem de diretório bloqueada."
 
-#: includes/security/class-owsu-security.php:767
+#: includes/security/class-owsu-security.php:771
 msgid "Uploads folder not found."
 msgstr "Pasta uploads não encontrada."
 
-#: includes/security/class-owsu-security.php:772
+#: includes/security/class-owsu-security.php:776
 msgid "scan stopped by time/quantity limit"
 msgstr "varredura interrompida por limite de tempo/quantidade"
 
-#: includes/security/class-owsu-security.php:787
+#: includes/security/class-owsu-security.php:791
 msgid "list limited to 100 files"
 msgstr "lista limitada a 100 arquivos"
 
 #. translators: %s: number of files
-#: includes/security/class-owsu-security.php:792
+#: includes/security/class-owsu-security.php:796
 msgid "No PHP file found in uploads (%s files checked)."
 msgstr "Nenhum arquivo PHP encontrado em uploads (%s arquivos verificados)."
 
-#: includes/security/class-owsu-security.php:794
+#: includes/security/class-owsu-security.php:798
 msgid "PHP files found in the uploads folder. Check them immediately."
 msgstr "Arquivos PHP encontrados na pasta uploads. Verifique imediatamente."
 
-#: includes/security/class-owsu-security.php:818
+#: includes/security/class-owsu-security.php:822
 msgid "wp-config.php not found."
 msgstr "wp-config.php não localizado."
 
 #. translators: %s: file permission, e.g. 0644
-#: includes/security/class-owsu-security.php:822
+#: includes/security/class-owsu-security.php:826
 msgid "Current permission: %s."
 msgstr "Permissão atual: %s."
 
-#: includes/security/class-owsu-security.php:824
+#: includes/security/class-owsu-security.php:828
 msgid "The file can be changed by other users."
 msgstr "O arquivo pode ser alterado por outros usuários."
 
-#: includes/security/class-owsu-security.php:827
+#: includes/security/class-owsu-security.php:831
 msgid "Readable by any user on the server; 640 recommended."
 msgstr "Legível por qualquer usuário do servidor; recomendado 640."
 
-#: includes/security/class-owsu-security.php:827
+#: includes/security/class-owsu-security.php:831
 msgid "(The plugin cannot fix it: PHP does not own the file.)"
 msgstr "(O plugin não pode corrigir: o PHP não é o dono do arquivo.)"
 
-#: includes/security/class-owsu-security.php:859
+#: includes/security/class-owsu-security.php:863
 msgid "No folder or file writable by everyone."
 msgstr "Nenhuma pasta ou arquivo com escrita liberada para todos."
 
 #. translators: %d: count
-#: includes/security/class-owsu-security.php:865
+#: includes/security/class-owsu-security.php:869
 msgid "%d item(s) writable by everyone."
 msgstr "%d item(ns) com permissão de escrita para todos."
 
-#: includes/security/class-owsu-security.php:905
+#: includes/security/class-owsu-security.php:909
 msgid "publicly accessible"
 msgstr "acessível publicamente"
 
-#: includes/security/class-owsu-security.php:912
+#: includes/security/class-owsu-security.php:916
 msgid "blocked, but removing/moving the file is recommended"
 msgstr "bloqueado, mas recomenda-se remover/mover o arquivo"
 
-#: includes/security/class-owsu-security.php:919
+#: includes/security/class-owsu-security.php:923
 msgid "No sensitive file accessible."
 msgstr "Nenhum arquivo sensível acessível."
 
-#: includes/security/class-owsu-security.php:919
+#: includes/security/class-owsu-security.php:923
 msgid "Block applied by the plugin."
 msgstr "Bloqueio aplicado pelo plugin."
 
-#: includes/security/class-owsu-security.php:921
+#: includes/security/class-owsu-security.php:925
 msgid "Sensitive files found."
 msgstr "Arquivos sensíveis encontrados."
 
-#: includes/security/class-owsu-security.php:923
+#: includes/security/class-owsu-security.php:927
 msgid ""
 "The .htaccess block is applied, but the server delivers these files directly"
 " (nginx). See \"How to fix\"."
@@ -3098,29 +3896,29 @@ msgstr ""
 "O bloqueio .htaccess está aplicado, mas o servidor entrega estes arquivos "
 "diretamente (nginx). Veja \"Como corrigir\"."
 
-#: includes/security/class-owsu-security.php:934
+#: includes/security/class-owsu-security.php:938
 msgid "Disabled in wp-config.php (DISALLOW_FILE_EDIT)."
 msgstr "Desativado no wp-config.php (DISALLOW_FILE_EDIT)."
 
 #. translators: %d: HTTP status code
-#: includes/security/class-owsu-security.php:937
-#: includes/security/class-owsu-security.php:1017
+#: includes/security/class-owsu-security.php:941
+#: includes/security/class-owsu-security.php:1021
 msgid "Disabled by the plugin."
 msgstr "Desativado pelo plugin."
 
-#: includes/security/class-owsu-security.php:939
+#: includes/security/class-owsu-security.php:943
 msgid "Administrators can edit plugin and theme code from the dashboard."
 msgstr "Administradores podem editar o código de plugins e temas pelo painel."
 
-#: includes/security/class-owsu-security.php:949
+#: includes/security/class-owsu-security.php:953
 msgid "PHP errors are displayed on screen to visitors."
 msgstr "Erros do PHP são exibidos na tela para os visitantes."
 
-#: includes/security/class-owsu-security.php:949
+#: includes/security/class-owsu-security.php:953
 msgid "WP_DEBUG is on."
 msgstr "WP_DEBUG está ativo."
 
-#: includes/security/class-owsu-security.php:952
+#: includes/security/class-owsu-security.php:956
 msgid ""
 "WP_DEBUG is on in production (errors hidden by the plugin). Turn it off in "
 "wp-config.php."
@@ -3128,183 +3926,183 @@ msgstr ""
 "WP_DEBUG está ativo em produção (erros ocultos pelo plugin). Desative no wp-"
 "config.php."
 
-#: includes/security/class-owsu-security.php:952
+#: includes/security/class-owsu-security.php:956
 msgid ""
 "WP_DEBUG is on in production (errors hidden). Turn it off in wp-config.php."
 msgstr ""
 "WP_DEBUG está ativo em produção (erros ocultos). Desative no wp-config.php."
 
-#: includes/security/class-owsu-security.php:954
+#: includes/security/class-owsu-security.php:958
 msgid "Errors are not displayed to visitors."
 msgstr "Erros não são exibidos aos visitantes."
 
-#: includes/security/class-owsu-security.php:954
+#: includes/security/class-owsu-security.php:958
 msgid "(reinforced by the plugin)"
 msgstr "(reforçado pelo plugin)"
 
-#: includes/security/class-owsu-security.php:961
+#: includes/security/class-owsu-security.php:965
 msgid "not defined"
 msgstr "não definida"
 
-#: includes/security/class-owsu-security.php:963
+#: includes/security/class-owsu-security.php:967
 msgid "default or weak"
 msgstr "padrão ou fraca"
 
-#: includes/security/class-owsu-security.php:967
+#: includes/security/class-owsu-security.php:971
 msgid "All 8 keys are defined and strong."
 msgstr "As 8 chaves estão definidas e são fortes."
 
-#: includes/security/class-owsu-security.php:969
+#: includes/security/class-owsu-security.php:973
 msgid "Missing or weak security keys in wp-config.php."
 msgstr "Chaves de segurança ausentes ou fracas no wp-config.php."
 
-#: includes/security/class-owsu-security.php:977
+#: includes/security/class-owsu-security.php:981
 msgid "FORCE_SSL_ADMIN on in wp-config.php."
 msgstr "FORCE_SSL_ADMIN ativo no wp-config.php."
 
-#: includes/security/class-owsu-security.php:980
+#: includes/security/class-owsu-security.php:984
 msgid "Dashboard forced to HTTPS by the plugin."
 msgstr "Painel forçado em HTTPS pelo plugin."
 
-#: includes/security/class-owsu-security.php:982
+#: includes/security/class-owsu-security.php:986
 msgid "The dashboard can be accessed over HTTP."
 msgstr "O painel pode ser acessado por HTTP."
 
-#: includes/security/class-owsu-security.php:987
+#: includes/security/class-owsu-security.php:991
 msgid "All automatic updates are disabled (AUTOMATIC_UPDATER_DISABLED)."
 msgstr ""
 "Todas as atualizações automáticas estão desativadas "
 "(AUTOMATIC_UPDATER_DISABLED)."
 
-#: includes/security/class-owsu-security.php:990
+#: includes/security/class-owsu-security.php:994
 msgid ""
 "WordPress automatic security updates disabled (WP_AUTO_UPDATE_CORE = false)."
 msgstr ""
 "Atualizações automáticas de segurança do WordPress desativadas "
 "(WP_AUTO_UPDATE_CORE = false)."
 
-#: includes/security/class-owsu-security.php:992
+#: includes/security/class-owsu-security.php:996
 msgid "WordPress security updates are applied automatically."
 msgstr "Atualizações de segurança do WordPress são aplicadas automaticamente."
 
-#: includes/security/class-owsu-security.php:1011
+#: includes/security/class-owsu-security.php:1015
 msgid "Could not test xmlrpc.php."
 msgstr "Não foi possível testar o xmlrpc.php."
 
-#: includes/security/class-owsu-security.php:1015
+#: includes/security/class-owsu-security.php:1019
 msgid "XML-RPC active and accepting login methods."
 msgstr "XML-RPC ativo e aceitando métodos de login."
 
-#: includes/security/class-owsu-security.php:1015
+#: includes/security/class-owsu-security.php:1019
 msgid "Note: Jetpack is active and depends on XML-RPC."
 msgstr "Atenção: o Jetpack está ativo e depende do XML-RPC."
 
 #. translators: %d: HTTP status code
-#: includes/security/class-owsu-security.php:1017
+#: includes/security/class-owsu-security.php:1021
 msgid "XML-RPC blocked (HTTP %d)."
 msgstr "XML-RPC bloqueado (HTTP %d)."
 
-#: includes/security/class-owsu-security.php:1029
+#: includes/security/class-owsu-security.php:1033
 msgid "REST API reveals the user:"
 msgstr "API REST revela o usuário:"
 
 #. translators: %s: URL path
-#: includes/security/class-owsu-security.php:1038
+#: includes/security/class-owsu-security.php:1042
 msgid "?author=1 redirects to %s"
 msgstr "?author=1 redireciona para %s"
 
-#: includes/security/class-owsu-security.php:1042
+#: includes/security/class-owsu-security.php:1046
 msgid "Could not test."
 msgstr "Não foi possível testar."
 
-#: includes/security/class-owsu-security.php:1045
+#: includes/security/class-owsu-security.php:1049
 msgid "Usernames are not publicly revealed."
 msgstr "Os nomes de usuário não são revelados publicamente."
 
-#: includes/security/class-owsu-security.php:1045
+#: includes/security/class-owsu-security.php:1049
 msgid "Blocked by the plugin."
 msgstr "Bloqueado pelo plugin."
 
-#: includes/security/class-owsu-security.php:1047
+#: includes/security/class-owsu-security.php:1051
 msgid "User logins can be discovered by any visitor."
 msgstr "Logins de usuários podem ser descobertos por qualquer visitante."
 
-#: includes/security/class-owsu-security.php:1053
+#: includes/security/class-owsu-security.php:1057
 msgid "Could not open the home page."
 msgstr "Não foi possível acessar a página inicial."
 
 #. translators: %s: generator tag content
-#: includes/security/class-owsu-security.php:1056
+#: includes/security/class-owsu-security.php:1060
 msgid "The home page states: %s."
 msgstr "A página inicial informa: %s."
 
-#: includes/security/class-owsu-security.php:1058
+#: includes/security/class-owsu-security.php:1062
 msgid "The WordPress version does not show in the page source."
 msgstr "A versão do WordPress não aparece no código da página."
 
-#: includes/security/class-owsu-security.php:1074
+#: includes/security/class-owsu-security.php:1078
 msgid "No administrator with a predictable login."
 msgstr "Nenhum administrador com login previsível."
 
 #. translators: %s: list of logins
-#: includes/security/class-owsu-security.php:1076
+#: includes/security/class-owsu-security.php:1080
 msgid "Administrator with a predictable login: %s."
 msgstr "Administrador com login previsível: %s."
 
-#: includes/security/class-owsu-security.php:1096
+#: includes/security/class-owsu-security.php:1100
 msgid "Main site administrator"
 msgstr "Administrador do site principal"
 
-#: includes/security/class-owsu-security.php:1096
+#: includes/security/class-owsu-security.php:1100
 msgid "Administrator"
 msgstr "Administrador"
 
 #. translators: %s: date
-#: includes/security/class-owsu-security.php:1105
+#: includes/security/class-owsu-security.php:1109
 msgid "last login %s"
 msgstr "último acesso %s"
 
-#: includes/security/class-owsu-security.php:1108
+#: includes/security/class-owsu-security.php:1112
 msgid "(more than 6 months)"
 msgstr "(mais de 6 meses)"
 
 #. translators: %s: date
-#: includes/security/class-owsu-security.php:1111
+#: includes/security/class-owsu-security.php:1115
 msgid "no login since %s"
 msgstr "sem acesso desde %s"
 
 #. translators: %s: date
-#: includes/security/class-owsu-security.php:1111
+#: includes/security/class-owsu-security.php:1115
 msgid "last login not recorded yet"
 msgstr "último acesso ainda não registrado"
 
 #. translators: 1: number of accounts, 2: number of unused accounts
-#: includes/security/class-owsu-security.php:1120
+#: includes/security/class-owsu-security.php:1124
 msgid "%1$d administrative account(s); %2$d unused for more than 6 months."
 msgstr "%1$d conta(s) administrativa(s); %2$d sem uso há mais de 6 meses."
 
 #. translators: %d: number of accounts
-#: includes/security/class-owsu-security.php:1123
+#: includes/security/class-owsu-security.php:1127
 msgid "%d administrative accounts. Check whether all of them are needed."
 msgstr "%d contas administrativas. Revise se todas são necessárias."
 
 #. translators: %d: number of accounts
-#: includes/security/class-owsu-security.php:1125
+#: includes/security/class-owsu-security.php:1129
 msgid "%d administrative account(s)."
 msgstr "%d conta(s) administrativa(s)."
 
 #. translators: %s: plugin list
-#: includes/security/class-owsu-security.php:1147
+#: includes/security/class-owsu-security.php:1151
 msgid ""
 "Plugin with 2FA active: %s. Make sure the administrators have turned 2FA on."
 msgstr ""
 "Plugin com 2FA ativo: %s. Confirme que os administradores ativaram o 2FA."
 
-#: includes/security/class-owsu-security.php:1149
+#: includes/security/class-owsu-security.php:1153
 msgid "No two-factor authentication plugin active."
 msgstr "Nenhum plugin de autenticação em dois fatores ativo."
 
-#: includes/security/class-owsu-security.php:1154
+#: includes/security/class-owsu-security.php:1158
 msgid ""
 "Login address changed by the WPS Hide Login plugin. This plugin can replace "
 "it (see Settings → Login protection)."
@@ -3312,19 +4110,19 @@ msgstr ""
 "Endereço de login alterado pelo plugin WPS Hide Login. Este plugin pode "
 "substituí-lo (veja Configurações → Proteção do login)."
 
-#: includes/security/class-owsu-security.php:1161
+#: includes/security/class-owsu-security.php:1165
 msgid "The login uses the default address /wp-login.php."
 msgstr "O login usa o endereço padrão /wp-login.php."
 
 #. translators: %s: login path
-#: includes/security/class-owsu-security.php:1168
+#: includes/security/class-owsu-security.php:1172
 msgid "Address set (%s), but it could not be tested from the server."
 msgstr ""
 "Endereço configurado (%s), mas não foi possível testá-lo a partir do "
 "servidor."
 
 #. translators: %d: HTTP status code
-#: includes/security/class-owsu-security.php:1172
+#: includes/security/class-owsu-security.php:1176
 msgid ""
 "The new address did not show the login form (HTTP %d). Check that permalinks"
 " are enabled."
@@ -3332,21 +4130,21 @@ msgstr ""
 "O novo endereço não exibiu o formulário de login (HTTP %d). Verifique se os "
 "links permanentes estão ativos."
 
-#: includes/security/class-owsu-security.php:1175
+#: includes/security/class-owsu-security.php:1179
 msgid "/wp-login.php still shows the login form."
 msgstr "/wp-login.php continua exibindo o formulário de login."
 
-#: includes/security/class-owsu-security.php:1178
+#: includes/security/class-owsu-security.php:1182
 msgid "/wp-admin redirects to the new address and reveals it."
 msgstr "/wp-admin redireciona para o novo endereço e o revela."
 
 #. translators: %s: login path
-#: includes/security/class-owsu-security.php:1181
+#: includes/security/class-owsu-security.php:1185
 msgid "Address set (%s), but there are problems."
 msgstr "Endereço configurado (%s), mas há falhas."
 
 #. translators: %s: login path
-#: includes/security/class-owsu-security.php:1183
+#: includes/security/class-owsu-security.php:1187
 msgid ""
 "Login at %s; /wp-login.php and /wp-admin do not reveal the form to visitors."
 msgstr ""
@@ -3354,17 +4152,17 @@ msgstr ""
 "visitantes."
 
 #. translators: %s: reCAPTCHA version
-#: includes/security/class-owsu-security.php:1188
+#: includes/security/class-owsu-security.php:1192
 msgid "%s active on login, lost password and registration."
 msgstr "%s ativo no login, senha perdida e cadastro."
 
-#: includes/security/class-owsu-security.php:1191
+#: includes/security/class-owsu-security.php:1195
 msgid ""
 "reCAPTCHA turned off by the OWSU_RECAPTCHA_OFF constant in wp-config.php."
 msgstr ""
 "reCAPTCHA desligado pela constante OWSU_RECAPTCHA_OFF no wp-config.php."
 
-#: includes/security/class-owsu-security.php:1194
+#: includes/security/class-owsu-security.php:1198
 msgid ""
 "reCAPTCHA configured but not tested yet. Run the test in Settings to "
 "activate it."
@@ -3373,20 +4171,20 @@ msgstr ""
 "para ativá-lo."
 
 #. translators: %s: plugin list
-#: includes/security/class-owsu-security.php:1199
+#: includes/security/class-owsu-security.php:1203
 msgid "Anti-bot protection provided by: %s."
 msgstr "Proteção anti-robô fornecida por: %s."
 
-#: includes/security/class-owsu-security.php:1201
+#: includes/security/class-owsu-security.php:1205
 msgid "The login form has no anti-bot check."
 msgstr "O formulário de login não tem verificação anti-robô."
 
 #. translators: %s: plugin list
-#: includes/security/class-owsu-security.php:1208
+#: includes/security/class-owsu-security.php:1212
 msgid "Login protection active through: %s."
 msgstr "Proteção de login ativa via: %s."
 
-#: includes/security/class-owsu-security.php:1210
+#: includes/security/class-owsu-security.php:1214
 msgid ""
 "No plugin limits login attempts (the server may still have Fail2Ban; check "
 "your hosting panel)."
@@ -3394,96 +4192,96 @@ msgstr ""
 "Nenhum plugin limita tentativas de login (o servidor ainda pode ter "
 "Fail2Ban; verifique no Plesk)."
 
-#: includes/security/class-owsu-security.php:1219
+#: includes/security/class-owsu-security.php:1223
 msgid "The main site uses HTTPS."
 msgstr "O site principal usa HTTPS."
 
-#: includes/security/class-owsu-security.php:1221
+#: includes/security/class-owsu-security.php:1225
 msgid "The site address is set without HTTPS."
 msgstr "O endereço do site está configurado sem HTTPS."
 
-#: includes/security/class-owsu-security.php:1229
+#: includes/security/class-owsu-security.php:1233
 msgid "OpenSSL extension unavailable in PHP."
 msgstr "Extensão OpenSSL indisponível no PHP."
 
 #. translators: 1: host and port, 2: error message
-#: includes/security/class-owsu-security.php:1245
+#: includes/security/class-owsu-security.php:1249
 msgid "Could not connect to %1$s (%2$s)."
 msgstr "Não foi possível conectar em %1$s (%2$s)."
 
-#: includes/security/class-owsu-security.php:1251
+#: includes/security/class-owsu-security.php:1255
 msgid "Could not read the certificate."
 msgstr "Não foi possível ler o certificado."
 
 #. translators: 1: date, 2: certificate issuer
-#: includes/security/class-owsu-security.php:1256
+#: includes/security/class-owsu-security.php:1261
 msgid "Valid until %1$s (issued by %2$s)."
 msgstr "Válido até %1$s (emitido por %2$s)."
 
 #. translators: %s: date
-#: includes/security/class-owsu-security.php:1256
+#: includes/security/class-owsu-security.php:1261
 msgid "Valid until %s."
 msgstr "Válido até %s."
 
-#: includes/security/class-owsu-security.php:1258
+#: includes/security/class-owsu-security.php:1263
 msgid "Certificate EXPIRED."
 msgstr "Certificado VENCIDO."
 
 #. translators: %d: number of days
-#: includes/security/class-owsu-security.php:1261
+#: includes/security/class-owsu-security.php:1266
 msgid "Expires in %d day(s)."
 msgstr "Vence em %d dia(s)."
 
 #. translators: %d: number of days
-#: includes/security/class-owsu-security.php:1264
+#: includes/security/class-owsu-security.php:1269
 msgid "Expires in %d days. Confirm that automatic renewal is on."
 msgstr "Vence em %d dias. Confirme a renovação automática."
 
 #. translators: %d: number of days
-#: includes/security/class-owsu-security.php:1266
+#: includes/security/class-owsu-security.php:1271
 msgid "%d days left."
 msgstr "Faltam %d dias."
 
 #. translators: %s: database server version
-#: includes/security/class-owsu-security.php:1282
+#: includes/security/class-owsu-security.php:1287
 msgid "Database: %s."
 msgstr "Banco de dados: %s."
 
 #. translators: %s: PHP version
-#: includes/security/class-owsu-security.php:1285
+#: includes/security/class-owsu-security.php:1290
 msgid "PHP %s has been unsupported for years."
 msgstr "PHP %s está sem suporte há anos."
 
 #. translators: 1: PHP version, 2: date
-#: includes/security/class-owsu-security.php:1290
+#: includes/security/class-owsu-security.php:1296
 msgid "PHP %1$s — security support ended on %2$s."
 msgstr "PHP %1$s — suporte de segurança encerrado em %2$s."
 
 #. translators: 1: PHP version, 2: date
-#: includes/security/class-owsu-security.php:1290
+#: includes/security/class-owsu-security.php:1296
 msgid "PHP %1$s — security support until %2$s."
 msgstr "PHP %1$s — suporte de segurança até %2$s."
 
-#: includes/security/class-owsu-security.php:1295
+#: includes/security/class-owsu-security.php:1301
 msgid "Plan the upgrade."
 msgstr "Planeje a atualização."
 
-#: includes/security/class-owsu-security.php:1310
+#: includes/security/class-owsu-security.php:1316
 msgid "This check has no automatic fix."
 msgstr "Esta verificação não tem correção automática."
 
-#: includes/security/class-owsu-security.php:1317
+#: includes/security/class-owsu-security.php:1323
 msgid ""
 "PHP does not own wp-config.php; change the permission through your hosting "
 "panel or SSH."
 msgstr ""
 "O PHP não é o dono do wp-config.php; altere a permissão pelo Plesk ou SSH."
 
-#: includes/security/class-owsu-security.php:1322
+#: includes/security/class-owsu-security.php:1328
 msgid "Could not change the permission."
 msgstr "Não foi possível alterar a permissão."
 
-#: includes/security/class-owsu-security.php:1333
+#: includes/security/class-owsu-security.php:1339
 msgid ""
 "No permission could be changed (PHP does not own the files). Use the command"
 " shown in \"How to fix\"."
@@ -3491,7 +4289,7 @@ msgstr ""
 "Nenhuma permissão pôde ser alterada (o PHP não é dono dos arquivos). Use o "
 "comando indicado em \"Como corrigir\"."
 
-#: includes/security/class-owsu-security.php:1348
+#: includes/security/class-owsu-security.php:1354
 msgid ""
 "The server rejected the .htaccess rule (error 500). The fix was reverted "
 "automatically; use the instructions in \"How to fix\"."
@@ -3499,7 +4297,7 @@ msgstr ""
 "O servidor rejeitou a regra .htaccess (erro 500). A correção foi revertida "
 "automaticamente; use as instruções de \"Como corrigir\"."
 
-#: includes/security/class-owsu-security.php:1481
+#: includes/security/class-owsu-security.php:1487
 msgid ""
 "Could not write the .htaccess file (no write permission). Use the "
 "instructions in \"How to fix\"."
@@ -3538,14 +4336,14 @@ msgstr "A base baixada está vazia ou em formato inesperado."
 
 #. translators: PHP date format: short date with time (see
 #. https://www.php.net/manual/datetime.format.php)
-#: ondaweb-update-manager.php:168
+#: ondaweb-update-manager.php:170
 msgctxt "short date with time"
 msgid "m/d/Y g:i a"
 msgstr "d/m/Y H:i"
 
 #. translators: PHP date format: short date (see
 #. https://www.php.net/manual/datetime.format.php)
-#: ondaweb-update-manager.php:170
+#: ondaweb-update-manager.php:172
 msgctxt "short date"
 msgid "m/d/Y"
 msgstr "d/m/Y"
