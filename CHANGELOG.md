@@ -1,5 +1,14 @@
 # Histórico de versões
 
+## 1.5.3
+- **Frequência do relatório por e-mail** (Configurações → Relatório):
+  - **Semanal:** toda segunda-feira, com a semana anterior (segunda a domingo).
+  - **Quinzenal:** dias 15 e 30 (em fevereiro, no último dia do mês), com o período desde o envio anterior.
+  - **Mensal (padrão):** no dia escolhido, com o mês anterior.
+- A tela mostra a data do próximo relatório e o período que ele vai cobrir; os botões de "Enviar agora" acompanham a frequência escolhida.
+- Se o WP-Cron atrasar, o relatório semanal ou quinzenal ainda sai em até 3 dias; envios mais antigos não se acumulam.
+- Tradução que faltava no aviso de falha ao consultar o GitHub.
+
 ## 1.5.2
 - **Correção:** em alguns servidores (hospedagem compartilhada), a consulta à API do GitHub atingia o limite de 60 consultas por hora por IP e a atualização do plugin não aparecia. Agora, se a API não responder, o plugin encontra a versão nova pela página pública de versões do GitHub, que não tem esse limite.
 - Se mesmo assim não for possível consultar o GitHub, a tela de Atualizações mostra um aviso com o motivo e o link para baixar a versão manualmente.

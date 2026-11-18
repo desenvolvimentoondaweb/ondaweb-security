@@ -36,6 +36,30 @@ class OWUM_Report {
 		return array( $start, $end );
 	}
 
+	/** A period is a month ('Y-m') or a range of days ('Y-m-d_Y-m-d'). */
+	public static function is_period( $p ) {
+		return (bool) preg_match( '/^(\d{4}-\d{2}|\d{4}-\d{2}-\d{2}_\d{4}-\d{2}-\d{2})$/', (string) $p );
+	}
+
+	/** [start, end] (MySQL datetimes) of a period. */
+	public static function period_range( $p ) {
+		if ( false === strpos( $p, '_' ) ) {
+			return self::month_range( $p );
+		}
+		list( $a, $b ) = explode( '_', $p );
+		return array( $a . ' 00:00:00', $b . ' 23:59:59' );
+	}
+
+	/** Label of a period: "October 2026" or "11/10/2026 to 11/16/2026". */
+	public static function period_label( $p ) {
+		if ( false === strpos( $p, '_' ) ) {
+			return self::month_label( $p );
+		}
+		list( $a, $b ) = explode( '_', $p );
+		/* translators: 1: start date, 2: end date */
+		return sprintf( __( '%1$s to %2$s', 'ondaweb-security' ), owum_date( $a . ' 12:00:00' ), owum_date( $b . ' 12:00:00' ) );
+	}
+
 	/** "October 2026" / "Outubro de 2026" — month names come from the WordPress translation of the site. */
 	public static function month_label( $ym ) {
 		global $wp_locale;
@@ -348,14 +372,18 @@ class OWUM_Report {
 	/**
 	 * Builds the report.
 	 *
-	 * @param string $ym   History month (Y-m).
+	 * @param string $ym   Period: month (Y-m) or range of days (Y-m-d_Y-m-d).
 	 * @param string $mode 'print' (browser / PDF) or 'email'.
 	 */
 	public static function html( $ym, $mode = 'print' ) {
 		$settings      = owum_settings();
 		$brand         = owum_brand();
 		$inv           = OWUM_Collector::inventory();
-		list( $s, $e ) = self::month_range( $ym );
+		list( $s, $e ) = self::period_range( $ym );
+		$is_month      = false === strpos( $ym, '_' );
+		$plabel        = self::period_label( $ym );
+		$pfrom         = owum_date( $s );
+		$pto           = owum_date( $e );
 		$log           = array_values(
 			array_filter(
 				OWUM_Logger::get( $s, $e ),
@@ -433,7 +461,7 @@ class OWUM_Report {
 		$o .= '</td></tr>';
 		$meta = array(
 			array( __( 'Date', 'ondaweb-security' ), $today ),
-			array( __( 'Period', 'ondaweb-security' ), self::month_label( $ym ) ),
+			array( __( 'Period', 'ondaweb-security' ), $plabel ),
 			array( __( 'Prepared by', 'ondaweb-security' ), $brand ),
 			array( __( 'Scope', 'ondaweb-security' ), __( 'WordPress and published site', 'ondaweb-security' ) ),
 		);
@@ -462,11 +490,21 @@ class OWUM_Report {
 			$sum[] = esc_html( sprintf( __( 'The tests, run on %s directly against the published site, confirmed the protections described in this report.', 'ondaweb-security' ), $sdate ) );
 			if ( $applied ) {
 				/* translators: 1: number of improvements, 2: month and year */
-				$sum[] = esc_html( sprintf( _n( '%1$d security improvement was applied in %2$s.', '%1$d security improvements were applied in %2$s.', $applied, 'ondaweb-security' ), $applied, self::month_label( $ym ) ) );
+				$sum[] = esc_html(
+					$is_month
+						? sprintf( _n( '%1$d security improvement was applied in %2$s.', '%1$d security improvements were applied in %2$s.', $applied, 'ondaweb-security' ), $applied, $plabel )
+						/* translators: 1: number of improvements, 2: start date, 3: end date */
+						: sprintf( _n( '%1$d security improvement was applied from %2$s to %3$s.', '%1$d security improvements were applied from %2$s to %3$s.', $applied, 'ondaweb-security' ), $applied, $pfrom, $pto )
+				);
 			}
 		}
 		/* translators: 1: month and year, 2: number of updates */
-		$sum[] = esc_html( sprintf( _n( 'In %1$s, %2$d update was recorded.', 'In %1$s, %2$d updates were recorded.', $updated_count, 'ondaweb-security' ), self::month_label( $ym ), $updated_count ) );
+		$sum[] = esc_html(
+			$is_month
+				? sprintf( _n( 'In %1$s, %2$d update was recorded.', 'In %1$s, %2$d updates were recorded.', $updated_count, 'ondaweb-security' ), $plabel, $updated_count )
+				/* translators: 1: start date, 2: end date, 3: number of updates */
+				: sprintf( _n( 'From %1$s to %2$s, %3$d update was recorded.', 'From %1$s to %2$s, %3$d updates were recorded.', $updated_count, 'ondaweb-security' ), $pfrom, $pto, $updated_count )
+		);
 		$o    .= self::p( implode( ' ', $sum ) );
 
 		if ( $sc ) {
@@ -590,7 +628,7 @@ class OWUM_Report {
 
 		// History of the month.
 		/* translators: %s: month and year */
-		$o .= '<div style="font-size:14.5px;font-weight:700;margin:26px 0 10px;">' . esc_html( sprintf( __( 'Updates made in %s', 'ondaweb-security' ), self::month_label( $ym ) ) ) . '</div>';
+		$o .= '<div style="font-size:14.5px;font-weight:700;margin:26px 0 10px;">' . esc_html( $is_month ? sprintf( __( 'Updates made in %s', 'ondaweb-security' ), $plabel ) : sprintf( /* translators: 1: start date, 2: end date */ __( 'Updates made from %1$s to %2$s', 'ondaweb-security' ), $pfrom, $pto ) ) . '</div>';
 		$o .= self::table_open( array( array( __( 'Date', 'ondaweb-security' ), 18 ), array( $t_item, 32 ), array( __( 'Action', 'ondaweb-security' ), 14 ), array( __( 'Version', 'ondaweb-security' ), 18 ), array( __( 'Source', 'ondaweb-security' ) ) ) );
 		if ( ! $log ) {
 			$o .= self::empty_row( 5, __( 'No changes recorded in this period.', 'ondaweb-security' ) );

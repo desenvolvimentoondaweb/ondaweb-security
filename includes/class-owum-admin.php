@@ -669,7 +669,9 @@ class OWUM_Admin {
 				$next = wp_next_scheduled( 'owum_daily' );
 			}
 		);
-		$prev  = OWUM_Mailer::previous_month();
+		$prev  = OWUM_Mailer::last_period();
+		$cur   = OWUM_Mailer::current_period();
+		$freq  = OWUM_Mailer::freq();
 		?>
 		<div class="wrap owum-ui"><?php OWUM_Admin::brand_bar(); ?>
 			<h1><?php esc_html_e( 'Settings', 'ondaweb-security' ); ?></h1>
@@ -685,17 +687,36 @@ class OWUM_Admin {
 					<tr><th scope="row"><label for="owum-emails"><?php esc_html_e( 'Recipients', 'ondaweb-security' ); ?></label></th>
 						<td><input id="owum-emails" type="text" class="large-text" name="emails" value="<?php echo esc_attr( $s['emails'] ); ?>">
 						<p class="description"><?php esc_html_e( 'Separate multiple emails with commas.', 'ondaweb-security' ); ?></p></td></tr>
-					<tr><th scope="row"><?php esc_html_e( 'Monthly email', 'ondaweb-security' ); ?></th>
-						<td><label><input type="checkbox" name="enabled" value="1" <?php checked( $s['enabled'], 1 ); ?>> <?php esc_html_e( 'Automatically send the previous month\'s report', 'ondaweb-security' ); ?></label></td></tr>
-					<tr><th scope="row"><label for="owum-day"><?php esc_html_e( 'Day of the month', 'ondaweb-security' ); ?></label></th>
-						<td><select id="owum-day" name="day"><?php for ( $d = 1; $d <= 28; $d++ ) : ?><option value="<?php echo (int) $d; ?>" <?php selected( (int) $s['day'], $d ); ?>><?php echo (int) $d; ?></option><?php endfor; ?></select>
-						<p class="description"><?php
+					<tr><th scope="row"><?php esc_html_e( 'Report email', 'ondaweb-security' ); ?></th>
+						<td><label><input type="checkbox" name="enabled" value="1" <?php checked( $s['enabled'], 1 ); ?>> <?php esc_html_e( 'Send the report automatically', 'ondaweb-security' ); ?></label></td></tr>
+					<tr><th scope="row"><label for="owum-freq"><?php esc_html_e( 'Frequency', 'ondaweb-security' ); ?></label></th>
+						<td><select id="owum-freq" name="freq">
+							<option value="weekly" <?php selected( $freq, 'weekly' ); ?>><?php esc_html_e( 'Weekly (on Mondays, covering the previous week)', 'ondaweb-security' ); ?></option>
+							<option value="biweekly" <?php selected( $freq, 'biweekly' ); ?>><?php esc_html_e( 'Biweekly (on the 15th and the 30th)', 'ondaweb-security' ); ?></option>
+							<option value="monthly" <?php selected( $freq, 'monthly' ); ?>><?php esc_html_e( 'Monthly (covering the previous month)', 'ondaweb-security' ); ?></option>
+						</select>
+						<?php if ( ! empty( $s['enabled'] ) ) : ?>
+							<p class="description"><?php
+								/* translators: 1: date, 2: period covered */
+								echo esc_html( sprintf( __( 'Next report: %1$s, covering %2$s.', 'ondaweb-security' ), owum_date( OWUM_Mailer::next_send() . ' 12:00:00' ), self::next_period_label() ) );
+							?></p>
+						<?php endif; ?>
+						<p class="description"><?php esc_html_e( 'Biweekly: in February the second report goes out on the last day of the month.', 'ondaweb-security' ); ?></p></td></tr>
+					<tr id="owum-day-row" <?php echo 'monthly' === $freq ? '' : 'style="display:none"'; ?>><th scope="row"><label for="owum-day"><?php esc_html_e( 'Day of the month', 'ondaweb-security' ); ?></label></th>
+						<td><select id="owum-day" name="day"><?php for ( $d = 1; $d <= 28; $d++ ) : ?><option value="<?php echo (int) $d; ?>" <?php selected( (int) $s['day'], $d ); ?>><?php echo (int) $d; ?></option><?php endfor; ?></select></td></tr>
+					<tr><th scope="row"><?php esc_html_e( 'Automatic routine', 'ondaweb-security' ); ?></th>
+						<td><p class="description" style="margin-top:0"><?php
 							/* translators: %s: date and time, or "not scheduled" */
 							echo sprintf( esc_html__( 'Next run of the daily routine: %s.', 'ondaweb-security' ), $next ? esc_html( owum_date_ts( $next, true ) ) : '<strong>' . esc_html__( 'not scheduled', 'ondaweb-security' ) . '</strong>' ) . ' ';
 							/* translators: %s: wp-cron.php address */
 							echo sprintf( esc_html__( 'WP-Cron depends on site visits; to guarantee the time, set up a real server cron calling %s.', 'ondaweb-security' ), '<code>' . esc_html( site_url( 'wp-cron.php' ) ) . '</code>' );
 						?></p></td></tr>
 				</table>
+				<script>
+				document.getElementById('owum-freq').addEventListener('change', function () {
+					document.getElementById('owum-day-row').style.display = this.value === 'monthly' ? '' : 'none';
+				});
+				</script>
 
 				<h2><?php esc_html_e( 'Vulnerabilities', 'ondaweb-security' ); ?></h2>
 				<table class="form-table" role="presentation">
@@ -744,8 +765,8 @@ class OWUM_Admin {
 
 			<h2><?php esc_html_e( 'Send now', 'ondaweb-security' ); ?></h2>
 			<p>
-				<a class="button" data-owum-busy="<?php esc_attr_e( 'Building and sending the report…', 'ondaweb-security' ); ?>" href="<?php echo esc_url( self::action_url( 'owum_send_now', array( 'month' => $prev ) ) ); ?>"><?php echo esc_html( sprintf( /* translators: %s: month and year */ __( 'Send the %s report', 'ondaweb-security' ), OWUM_Report::month_label( $prev ) ) ); ?></a>
-				<a class="button" data-owum-busy="<?php esc_attr_e( 'Building and sending the report…', 'ondaweb-security' ); ?>" href="<?php echo esc_url( self::action_url( 'owum_send_now', array( 'month' => current_time( 'Y-m' ) ) ) ); ?>"><?php esc_html_e( 'Send this month\'s report (partial)', 'ondaweb-security' ); ?></a>
+				<a class="button" data-owum-busy="<?php esc_attr_e( 'Building and sending the report…', 'ondaweb-security' ); ?>" href="<?php echo esc_url( self::action_url( 'owum_send_now', array( 'month' => $prev ) ) ); ?>"><?php echo esc_html( sprintf( /* translators: %s: period (month and year, or dates) */ __( 'Send the %s report', 'ondaweb-security' ), OWUM_Report::period_label( $prev ) ) ); ?></a>
+				<a class="button" data-owum-busy="<?php esc_attr_e( 'Building and sending the report…', 'ondaweb-security' ); ?>" href="<?php echo esc_url( self::action_url( 'owum_send_now', array( 'month' => $cur ) ) ); ?>"><?php echo esc_html( 'monthly' === $freq ? __( 'Send this month\'s report (partial)', 'ondaweb-security' ) : sprintf( /* translators: %s: dates */ __( 'Send the partial report (%s)', 'ondaweb-security' ), OWUM_Report::period_label( $cur ) ) ); ?></a>
 			</p>
 			<?php if ( is_array( $last ) ) : ?>
 				<p class="description"><?php
@@ -754,7 +775,7 @@ class OWUM_Admin {
 							/* translators: 1: date and time, 2: month and year, 3: recipients */
 							__( 'Last sent: %1$s — %2$s to %3$s', 'ondaweb-security' ),
 							owum_date( $last['when'], true ),
-							OWUM_Report::month_label( $last['month'] ),
+							OWUM_Report::is_period( $last['month'] ) ? OWUM_Report::period_label( $last['month'] ) : $last['month'],
 							$last['to']
 						)
 					) . ' — ' . ( $last['ok'] ? esc_html__( 'sent', 'ondaweb-security' ) : '<strong style="color:#b32d2e">' . esc_html__( 'failed', 'ondaweb-security' ) . '</strong>' . ( ! empty( $last['error'] ) ? ' — ' . esc_html( $last['error'] ) : '' ) ) . '.';
@@ -1064,6 +1085,7 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // <?php esc_html_e( 'turns reCAPTCHA off
 				'emails'      => $emails,
 				'enabled'     => empty( $_POST['enabled'] ) ? 0 : 1,
 				'day'         => isset( $_POST['day'] ) ? max( 1, min( 28, (int) $_POST['day'] ) ) : 1,
+				'freq'        => isset( $_POST['freq'] ) && in_array( $_POST['freq'], array( 'weekly', 'biweekly', 'monthly' ), true ) ? $_POST['freq'] : 'monthly', // phpcs:ignore
 				'logo_client' => isset( $_POST['logo_client'] ) ? absint( $_POST['logo_client'] ) : 0,
 				'wf_key'      => isset( $_POST['wf_key'] ) ? preg_replace( '/[^A-Za-z0-9_\-.]/', '', wp_unslash( $_POST['wf_key'] ) ) : '',
 				'rc_version'  => isset( $_POST['rc_version'] ) && in_array( $_POST['rc_version'], array( 'v2', 'v3' ), true ) ? $_POST['rc_version'] : '', // phpcs:ignore
@@ -1124,10 +1146,21 @@ define( 'OWSU_RECAPTCHA_OFF', true );  // <?php esc_html_e( 'turns reCAPTCHA off
 		exit;
 	}
 
+	/** Period the next automatic report will cover. */
+	private static function next_period_label() {
+		$f    = OWUM_Mailer::freq();
+		$next = OWUM_Mailer::next_send();
+		if ( 'monthly' === $f ) {
+			$first = strtotime( substr( $next, 0, 7 ) . '-01 12:00:00 UTC' );
+			return OWUM_Report::month_label( gmdate( 'Y-m', strtotime( '-1 month', $first ) ) );
+		}
+		return OWUM_Report::period_label( OWUM_Mailer::last_point( $f, $next )['period'] );
+	}
+
 	public static function owum_send_now() {
 		self::guard( 'owum_send_now' );
 		@set_time_limit( 180 ); // phpcs:ignore
-		$ym = isset( $_GET['month'] ) && preg_match( '/^\d{4}-\d{2}$/', $_GET['month'] ) ? $_GET['month'] : OWUM_Mailer::previous_month(); // phpcs:ignore
+		$ym = isset( $_GET['month'] ) && OWUM_Report::is_period( wp_unslash( $_GET['month'] ) ) ? wp_unslash( $_GET['month'] ) : OWUM_Mailer::last_period(); // phpcs:ignore
 		$ok = OWUM_Mailer::send( $ym );
 		wp_safe_redirect( self::page_url( 'owum-settings', array( 'owum_msg' => $ok ? 'sent' : 'notsent' ) ) );
 		exit;

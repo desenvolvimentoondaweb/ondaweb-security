@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Ondaweb Security Updater 1.5.1\n"
+"Project-Id-Version: Ondaweb Security Updater 1.5.2\n"
 "Report-Msgid-Bugs-To: https://github.com/desenvolvimentoondaweb/ondaweb-security/issues\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-18T12:08:01+00:00\n"
+"POT-Creation-Date: 2026-11-18T12:35:24+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: ondaweb-security\n"
@@ -46,7 +46,7 @@ msgstr ""
 
 #: includes/class-owum-admin.php:39
 #: includes/class-owum-admin.php:293
-#: includes/class-owum-report.php:546
+#: includes/class-owum-report.php:584
 msgid "Updates"
 msgstr ""
 
@@ -68,14 +68,14 @@ msgstr ""
 
 #. translators: %s: plugin name
 #: includes/class-owum-admin.php:43
-#: includes/class-owum-admin.php:959
-#: includes/class-owum-admin.php:1048
+#: includes/class-owum-admin.php:980
+#: includes/class-owum-admin.php:1069
 msgid "Error log"
 msgstr ""
 
 #. translators: %s: link to the Settings screen
 #: includes/class-owum-admin.php:44
-#: includes/class-owum-admin.php:675
+#: includes/class-owum-admin.php:677
 #: includes/security/class-owsu-admin.php:279
 msgid "Settings"
 msgstr ""
@@ -309,20 +309,20 @@ msgstr ""
 
 #: includes/class-owum-admin.php:436
 #: includes/class-owum-admin.php:467
-#: includes/class-owum-report.php:618
+#: includes/class-owum-report.php:656
 msgid "Status"
 msgstr ""
 
 #. translators: %d: count
 #: includes/class-owum-admin.php:437
-#: includes/class-owum-admin.php:974
+#: includes/class-owum-admin.php:995
 msgid "All (%d)"
 msgstr ""
 
 #: includes/class-owum-admin.php:442
 #: includes/class-owum-admin.php:467
 #: includes/class-owum-admin.php:635
-#: includes/class-owum-report.php:618
+#: includes/class-owum-report.php:656
 msgid "Type"
 msgstr ""
 
@@ -334,7 +334,7 @@ msgstr ""
 
 #: includes/class-owum-admin.php:448
 #: includes/class-owum-admin.php:467
-#: includes/class-owum-report.php:559
+#: includes/class-owum-report.php:597
 msgid "Usage"
 msgstr ""
 
@@ -376,19 +376,19 @@ msgid "Clear filters"
 msgstr ""
 
 #: includes/class-owum-admin.php:467
-#: includes/class-owum-report.php:618
+#: includes/class-owum-report.php:656
 msgid "Name"
 msgstr ""
 
 #: includes/class-owum-admin.php:467
 #: includes/class-owum-logger.php:163
-#: includes/class-owum-report.php:557
+#: includes/class-owum-report.php:595
 #: includes/security/class-owsu-admin.php:410
 msgid "Installed"
 msgstr ""
 
 #: includes/class-owum-admin.php:467
-#: includes/class-owum-report.php:558
+#: includes/class-owum-report.php:596
 msgid "Available"
 msgstr ""
 
@@ -464,21 +464,23 @@ msgid_plural "%d entries"
 msgstr[0] ""
 msgstr[1] ""
 
+#. translators: 1: start date, 2: end date
 #: includes/class-owum-admin.php:635
-#: includes/class-owum-report.php:435
-#: includes/class-owum-report.php:594
+#: includes/class-owum-report.php:463
+#: includes/class-owum-report.php:632
 msgid "Date"
 msgstr ""
 
 #: includes/class-owum-admin.php:635
-#: includes/class-owum-report.php:556
+#: includes/class-owum-report.php:594
 #: includes/security/class-owsu-admin.php:410
 #: includes/security/class-owsu-admin.php:506
 msgid "Item"
 msgstr ""
 
+#. translators: 1: start date, 2: end date
 #: includes/class-owum-admin.php:635
-#: includes/class-owum-report.php:594
+#: includes/class-owum-report.php:632
 msgid "Action"
 msgstr ""
 
@@ -490,8 +492,9 @@ msgstr ""
 msgid "To"
 msgstr ""
 
+#. translators: 1: start date, 2: end date
 #: includes/class-owum-admin.php:635
-#: includes/class-owum-report.php:594
+#: includes/class-owum-report.php:632
 msgid "Source"
 msgstr ""
 
@@ -508,501 +511,536 @@ msgstr ""
 msgid "No entries in this period."
 msgstr ""
 
-#: includes/class-owum-admin.php:677
+#: includes/class-owum-admin.php:679
 msgid "Saving settings…"
 msgstr ""
 
-#: includes/class-owum-admin.php:680
+#: includes/class-owum-admin.php:682
 msgid "Report"
 msgstr ""
 
-#: includes/class-owum-admin.php:682
+#: includes/class-owum-admin.php:684
 msgid "Client name in the report"
 msgstr ""
 
-#: includes/class-owum-admin.php:684
+#: includes/class-owum-admin.php:686
 msgid "Client logo"
 msgstr ""
 
-#: includes/class-owum-admin.php:684
+#: includes/class-owum-admin.php:686
 msgid "Shown at the top of the report, next to the Ondaweb logo. Use PNG or JPG (SVG does not show in Gmail/Outlook)."
 msgstr ""
 
-#: includes/class-owum-admin.php:685
+#: includes/class-owum-admin.php:687
 msgid "Recipients"
 msgstr ""
 
-#: includes/class-owum-admin.php:687
+#: includes/class-owum-admin.php:689
 msgid "Separate multiple emails with commas."
 msgstr ""
 
-#: includes/class-owum-admin.php:688
-msgid "Monthly email"
-msgstr ""
-
-#: includes/class-owum-admin.php:689
-msgid "Automatically send the previous month's report"
-msgstr ""
-
 #: includes/class-owum-admin.php:690
+#: includes/class-owum-mailer.php:184
+msgid "Report email"
+msgstr ""
+
+#: includes/class-owum-admin.php:691
+msgid "Send the report automatically"
+msgstr ""
+
+#: includes/class-owum-admin.php:692
+msgid "Frequency"
+msgstr ""
+
+#: includes/class-owum-admin.php:694
+msgid "Weekly (on Mondays, covering the previous week)"
+msgstr ""
+
+#: includes/class-owum-admin.php:695
+msgid "Biweekly (on the 15th and the 30th)"
+msgstr ""
+
+#: includes/class-owum-admin.php:696
+msgid "Monthly (covering the previous month)"
+msgstr ""
+
+#. translators: 1: date, 2: period covered
+#: includes/class-owum-admin.php:701
+msgid "Next report: %1$s, covering %2$s."
+msgstr ""
+
+#: includes/class-owum-admin.php:704
+msgid "Biweekly: in February the second report goes out on the last day of the month."
+msgstr ""
+
+#: includes/class-owum-admin.php:705
 msgid "Day of the month"
 msgstr ""
 
+#: includes/class-owum-admin.php:707
+msgid "Automatic routine"
+msgstr ""
+
 #. translators: %s: date and time, or "not scheduled"
-#: includes/class-owum-admin.php:694
+#: includes/class-owum-admin.php:710
 msgid "Next run of the daily routine: %s."
 msgstr ""
 
 #. translators: %s: date and time, or "not scheduled"
-#: includes/class-owum-admin.php:694
+#: includes/class-owum-admin.php:710
 msgid "not scheduled"
 msgstr ""
 
 #. translators: %s: wp-cron.php address
-#: includes/class-owum-admin.php:696
+#: includes/class-owum-admin.php:712
 msgid "WP-Cron depends on site visits; to guarantee the time, set up a real server cron calling %s."
 msgstr ""
 
-#: includes/class-owum-admin.php:700
+#: includes/class-owum-admin.php:721
 msgid "Vulnerabilities"
 msgstr ""
 
-#: includes/class-owum-admin.php:702
+#: includes/class-owum-admin.php:723
 msgid "Wordfence Intelligence API key"
 msgstr ""
 
-#: includes/class-owum-admin.php:704
-#: includes/class-owum-admin.php:838
+#: includes/class-owum-admin.php:725
+#: includes/class-owum-admin.php:859
 msgid "Show"
 msgstr ""
 
 #. translators: %s: link to wordfence.com
-#: includes/class-owum-admin.php:707
+#: includes/class-owum-admin.php:728
 msgid "Free. Create it at %s (Wordfence account → Wordfence Intelligence → API key). Used to check for known vulnerabilities once a day."
 msgstr ""
 
-#: includes/class-owum-admin.php:711
+#: includes/class-owum-admin.php:732
 msgid "Error alerts"
 msgstr ""
 
-#: includes/class-owum-admin.php:713
+#: includes/class-owum-admin.php:734
 msgid "Developer email"
 msgstr ""
 
-#: includes/class-owum-admin.php:715
+#: includes/class-owum-admin.php:736
 msgid "Receives the error alerts. Separate multiple emails with commas."
 msgstr ""
 
-#: includes/class-owum-admin.php:716
+#: includes/class-owum-admin.php:737
 msgid "Alerts"
 msgstr ""
 
-#: includes/class-owum-admin.php:717
+#: includes/class-owum-admin.php:738
 msgid "Send an email right away when a fatal error or a plugin failure happens"
 msgstr ""
 
-#: includes/class-owum-admin.php:718
+#: includes/class-owum-admin.php:739
 msgid "The same error sends at most one email every 6 hours (and at most 10 emails per hour overall)."
 msgstr ""
 
-#: includes/class-owum-admin.php:719
+#: includes/class-owum-admin.php:740
 msgid "Also record fatal errors from other plugins, the theme and WordPress"
 msgstr ""
 
-#: includes/class-owum-admin.php:720
+#: includes/class-owum-admin.php:741
 msgid "Unchecked, only this plugin's errors are recorded."
 msgstr ""
 
-#: includes/class-owum-admin.php:724
+#: includes/class-owum-admin.php:745
 msgid "Save settings"
 msgstr ""
 
-#: includes/class-owum-admin.php:728
+#: includes/class-owum-admin.php:749
 msgid "Media library unavailable."
 msgstr ""
 
-#: includes/class-owum-admin.php:728
+#: includes/class-owum-admin.php:749
 msgid "Choose logo"
 msgstr ""
 
-#: includes/class-owum-admin.php:728
+#: includes/class-owum-admin.php:749
 msgid "Use this image"
 msgstr ""
 
-#: includes/class-owum-admin.php:745
+#: includes/class-owum-admin.php:766
 msgid "Send now"
 msgstr ""
 
-#. translators: %s: month and year
-#: includes/class-owum-admin.php:747
-#: includes/class-owum-admin.php:748
+#. translators: %s: period (month and year, or dates)
+#: includes/class-owum-admin.php:768
+#: includes/class-owum-admin.php:769
 msgid "Building and sending the report…"
 msgstr ""
 
-#. translators: %s: month and year
-#: includes/class-owum-admin.php:747
+#. translators: %s: period (month and year, or dates)
+#: includes/class-owum-admin.php:768
 msgid "Send the %s report"
 msgstr ""
 
-#. translators: %s: month and year
-#: includes/class-owum-admin.php:748
+#. translators: %s: period (month and year, or dates)
+#: includes/class-owum-admin.php:769
 msgid "Send this month's report (partial)"
 msgstr ""
 
+#. translators: %s: dates
+#: includes/class-owum-admin.php:769
+msgid "Send the partial report (%s)"
+msgstr ""
+
 #. translators: 1: date and time, 2: month and year, 3: recipients
-#: includes/class-owum-admin.php:755
+#: includes/class-owum-admin.php:776
 msgid "Last sent: %1$s — %2$s to %3$s"
 msgstr ""
 
-#: includes/class-owum-admin.php:760
+#: includes/class-owum-admin.php:781
 msgid "sent"
 msgstr ""
 
-#: includes/class-owum-admin.php:760
+#: includes/class-owum-admin.php:781
 msgid "failed"
 msgstr ""
 
-#: includes/class-owum-admin.php:782
+#: includes/class-owum-admin.php:803
 msgid "Login protection"
 msgstr ""
 
-#: includes/class-owum-admin.php:784
+#: includes/class-owum-admin.php:805
 msgid "The WPS Hide Login plugin is active"
 msgstr ""
 
 #. translators: %s: current login address
-#: includes/class-owum-admin.php:784
+#: includes/class-owum-admin.php:805
 msgid "current address: %s"
 msgstr ""
 
 #. translators: %s: current login address
-#: includes/class-owum-admin.php:784
+#: includes/class-owum-admin.php:805
 msgid "To use this plugin's feature instead: save the same address below, then deactivate WPS Hide Login — the login stays at the same address, with no interruption."
 msgstr ""
 
-#: includes/class-owum-admin.php:787
+#: includes/class-owum-admin.php:808
 msgid "Login address"
 msgstr ""
 
-#: includes/class-owum-admin.php:789
+#: includes/class-owum-admin.php:810
 msgid "e.g. private-access"
 msgstr ""
 
-#: includes/class-owum-admin.php:791
+#: includes/class-owum-admin.php:812
 msgid "Active:"
 msgstr ""
 
-#: includes/class-owum-admin.php:792
+#: includes/class-owum-admin.php:813
 msgid "Copied"
 msgstr ""
 
-#: includes/class-owum-admin.php:792
+#: includes/class-owum-admin.php:813
 msgid "Copy"
 msgstr ""
 
-#: includes/class-owum-admin.php:794
+#: includes/class-owum-admin.php:815
 #: includes/security/class-owsu-security.php:1163
 msgid "Turned off by the OWSU_LOGIN_SLUG_OFF constant in wp-config.php."
 msgstr ""
 
-#: includes/class-owum-admin.php:794
+#: includes/class-owum-admin.php:815
 msgid "Remove the constant to turn it back on."
 msgstr ""
 
 #. translators: 1: /wp-login.php, 2: /wp-admin
-#: includes/class-owum-admin.php:798
+#: includes/class-owum-admin.php:819
 msgid "Replaces %1$s, which starts answering \"page not found\", as does %2$s for anyone not logged in. Leave blank to use the default address."
 msgstr ""
 
-#: includes/class-owum-admin.php:799
+#: includes/class-owum-admin.php:820
 msgid "Applies to every site in the network, each under its own path."
 msgstr ""
 
-#: includes/class-owum-admin.php:800
+#: includes/class-owum-admin.php:821
 msgid "When saved, the new address is emailed to the report recipients."
 msgstr ""
 
 #. translators: 1: "login", 2: "admin"
-#: includes/class-owum-admin.php:804
+#: includes/class-owum-admin.php:825
 msgid "Use letters, numbers and hyphens (at least 4 characters). Avoid obvious names such as %1$s or %2$s."
 msgstr ""
 
-#: includes/class-owum-admin.php:807
+#: includes/class-owum-admin.php:828
 #: includes/security/class-owsu-areas.php:40
 msgid "reCAPTCHA on login"
 msgstr ""
 
-#: includes/class-owum-admin.php:810
+#: includes/class-owum-admin.php:831
 msgid "Off"
 msgstr ""
 
-#: includes/class-owum-admin.php:811
+#: includes/class-owum-admin.php:832
 msgid "v2 — \"I'm not a robot\" checkbox"
 msgstr ""
 
-#: includes/class-owum-admin.php:812
+#: includes/class-owum-admin.php:833
 msgid "v3 — invisible (score based)"
 msgstr ""
 
-#: includes/class-owum-admin.php:816
+#: includes/class-owum-admin.php:837
 msgid "Active on login, lost password and registration."
 msgstr ""
 
-#: includes/class-owum-admin.php:818
+#: includes/class-owum-admin.php:839
 msgid "Turned off by the OWSU_RECAPTCHA_OFF constant."
 msgstr ""
 
-#: includes/class-owum-admin.php:820
+#: includes/class-owum-admin.php:841
 msgid "Waiting for the test — run the test below to turn it on."
 msgstr ""
 
 #. translators: 1: link to the Google reCAPTCHA admin, 2: domain name
-#: includes/class-owum-admin.php:826
+#: includes/class-owum-admin.php:847
 msgid "Create the keys at %1$s: choose the same type selected here (v2 and v3 keys are different) and register the domain %2$s"
 msgstr ""
 
-#: includes/class-owum-admin.php:830
+#: includes/class-owum-admin.php:851
 msgid "and every domain used by the network"
 msgstr ""
 
-#: includes/class-owum-admin.php:834
+#: includes/class-owum-admin.php:855
 msgid "Site key"
 msgstr ""
 
-#: includes/class-owum-admin.php:836
+#: includes/class-owum-admin.php:857
 msgid "Secret key"
 msgstr ""
 
-#: includes/class-owum-admin.php:839
+#: includes/class-owum-admin.php:860
 msgid "Minimum score (v3)"
 msgstr ""
 
-#: includes/class-owum-admin.php:842
+#: includes/class-owum-admin.php:863
 msgid "0.3 (more lenient)"
 msgstr ""
 
-#: includes/class-owum-admin.php:843
+#: includes/class-owum-admin.php:864
 msgid "0.5 (recommended)"
 msgstr ""
 
-#: includes/class-owum-admin.php:844
+#: includes/class-owum-admin.php:865
 msgid "0.7 (stricter)"
 msgstr ""
 
-#: includes/class-owum-admin.php:850
+#: includes/class-owum-admin.php:871
 msgid "Google gives every login a score from 0 (robot) to 1 (human)."
 msgstr ""
 
 #. translators: 1: date and time, 2: error message
-#: includes/class-owum-admin.php:853
+#: includes/class-owum-admin.php:874
 msgid "Last communication failure with Google: %1$s — %2$s. During such failures the login is allowed so access is never locked."
 msgstr ""
 
-#: includes/class-owum-admin.php:855
+#: includes/class-owum-admin.php:876
 msgid "Access recovery (if you cannot log in)"
 msgstr ""
 
 #. translators: %s: wp-config.php
-#: includes/class-owum-admin.php:858
+#: includes/class-owum-admin.php:879
 msgid "Add to %s, above the line \"That's all, stop editing\":"
 msgstr ""
 
-#: includes/class-owum-admin.php:860
+#: includes/class-owum-admin.php:881
 msgid "login back at /wp-login.php"
 msgstr ""
 
-#: includes/class-owum-admin.php:862
+#: includes/class-owum-admin.php:883
 msgid "turns reCAPTCHA off"
 msgstr ""
 
-#: includes/class-owum-admin.php:863
+#: includes/class-owum-admin.php:884
 msgid "Or rename the plugin folder over FTP. Once logged in, fix the settings and remove the lines."
 msgstr ""
 
-#: includes/class-owum-admin.php:879
+#: includes/class-owum-admin.php:900
 msgid "Test and turn on reCAPTCHA"
 msgstr ""
 
-#: includes/class-owum-admin.php:880
+#: includes/class-owum-admin.php:901
 msgid "So that wrong keys never lock you out, reCAPTCHA only starts applying to the login after this test."
 msgstr ""
 
-#: includes/class-owum-admin.php:882
-#: includes/class-owum-admin.php:894
+#: includes/class-owum-admin.php:903
+#: includes/class-owum-admin.php:915
 msgid "Test and turn on"
 msgstr ""
 
 #. translators: %s: "Test and turn on" button label
-#: includes/class-owum-admin.php:884
+#: includes/class-owum-admin.php:905
 msgid "Tick the box below and click %s."
 msgstr ""
 
 #. translators: %s: "Test and turn on" button label
-#: includes/class-owum-admin.php:884
+#: includes/class-owum-admin.php:905
 msgid "Click %s (v3 is invisible)."
 msgstr ""
 
-#: includes/class-owum-admin.php:896
+#: includes/class-owum-admin.php:917
 msgid "If Google's box shows \"Invalid key\" or \"Invalid domain\", check the keys and the registered domains."
 msgstr ""
 
-#: includes/class-owum-admin.php:912
+#: includes/class-owum-admin.php:933
 msgid "The test got no answer from reCAPTCHA. Tick the box (v2) or check whether Google's script loaded on this page."
 msgstr ""
 
-#: includes/class-owum-admin.php:918
+#: includes/class-owum-admin.php:939
 msgid "Test failed:"
 msgstr ""
 
 #. translators: %s: reCAPTCHA version label
-#: includes/class-owum-admin.php:925
+#: includes/class-owum-admin.php:946
 msgid "Test passed: %s turned on for login, lost password and registration."
 msgstr ""
 
-#: includes/class-owum-admin.php:960
+#: includes/class-owum-admin.php:981
 msgid "Download (.txt)"
 msgstr ""
 
-#: includes/class-owum-admin.php:961
+#: includes/class-owum-admin.php:982
 msgid "Sending test email…"
 msgstr ""
 
-#: includes/class-owum-admin.php:961
+#: includes/class-owum-admin.php:982
 msgid "Send test email"
 msgstr ""
 
-#: includes/class-owum-admin.php:963
+#: includes/class-owum-admin.php:984
 msgid "Delete the whole error log?"
 msgstr ""
 
-#: includes/class-owum-admin.php:963
+#: includes/class-owum-admin.php:984
 msgid "Clear log"
 msgstr ""
 
-#: includes/class-owum-admin.php:968
+#: includes/class-owum-admin.php:989
 msgid "Fatal errors (this plugin only), PHP warnings raised by this plugin and failed operations (fixes, emails, vulnerability database, checks). Identical errors are grouped."
 msgstr ""
 
-#: includes/class-owum-admin.php:968
+#: includes/class-owum-admin.php:989
 msgid "Fatal errors of the site, PHP warnings raised by this plugin and failed operations (fixes, emails, vulnerability database, checks). Identical errors are grouped."
 msgstr ""
 
-#: includes/class-owum-admin.php:969
+#: includes/class-owum-admin.php:990
 msgid "Email alerts:"
 msgstr ""
 
-#: includes/class-owum-admin.php:969
+#: includes/class-owum-admin.php:990
 msgid "off"
 msgstr ""
 
-#: includes/class-owum-admin.php:970
+#: includes/class-owum-admin.php:991
 msgid "change"
 msgstr ""
 
-#: includes/class-owum-admin.php:984
+#: includes/class-owum-admin.php:1005
 #: includes/class-owum-errorlog.php:273
 msgid "Level"
 msgstr ""
 
-#: includes/class-owum-admin.php:984
+#: includes/class-owum-admin.php:1005
 #: includes/class-owum-errorlog.php:275
 msgid "Message"
 msgstr ""
 
-#: includes/class-owum-admin.php:984
+#: includes/class-owum-admin.php:1005
 #: includes/class-owum-errorlog.php:274
 msgid "Origin"
 msgstr ""
 
-#: includes/class-owum-admin.php:984
+#: includes/class-owum-admin.php:1005
 msgid "Last time"
 msgstr ""
 
-#: includes/class-owum-admin.php:984
+#: includes/class-owum-admin.php:1005
 msgid "Times"
 msgstr ""
 
-#: includes/class-owum-admin.php:987
+#: includes/class-owum-admin.php:1008
 msgid "No errors recorded."
 msgstr ""
 
 #. translators: %s: date and time
-#: includes/class-owum-admin.php:998
+#: includes/class-owum-admin.php:1019
 msgid "Alert sent on %s"
 msgstr ""
 
-#: includes/class-owum-admin.php:1001
+#: includes/class-owum-admin.php:1022
 #: includes/class-owum-errorlog.php:286
 msgid "Stack trace"
 msgstr ""
 
 #. translators: %s: date and time
-#: includes/class-owum-admin.php:1005
+#: includes/class-owum-admin.php:1026
 msgid "since %s"
 msgstr ""
 
 #. translators: %d: maximum number of entries
-#: includes/class-owum-admin.php:1011
+#: includes/class-owum-admin.php:1032
 msgid "Keeps the %d most recent errors."
 msgstr ""
 
-#: includes/class-owum-admin.php:1019
+#: includes/class-owum-admin.php:1040
 msgid "Error log cleared."
 msgstr ""
 
 #. translators: 1: site address, 2: date and time
-#: includes/class-owum-admin.php:1026
+#: includes/class-owum-admin.php:1047
 msgid "Error log — %1$s — generated on %2$s"
 msgstr ""
 
-#: includes/class-owum-admin.php:1033
+#: includes/class-owum-admin.php:1054
 msgid "errors"
 msgstr ""
 
-#: includes/class-owum-admin.php:1043
+#: includes/class-owum-admin.php:1064
 msgid "No developer email is configured."
 msgstr ""
 
 #. translators: %s: plugin name
-#: includes/class-owum-admin.php:1048
+#: includes/class-owum-admin.php:1069
 msgid "This is a test of the %s error alerts."
 msgstr ""
 
 #. translators: %s: plugin name
-#: includes/class-owum-admin.php:1048
+#: includes/class-owum-admin.php:1069
 #: includes/class-owum-errorlog.php:285
-#: includes/class-owum-report.php:581
+#: includes/class-owum-report.php:619
 msgid "Site"
 msgstr ""
 
-#: includes/class-owum-admin.php:1049
+#: includes/class-owum-admin.php:1070
 msgid "Error alerts test"
 msgstr ""
 
 #. translators: %s: email addresses
-#: includes/class-owum-admin.php:1051
+#: includes/class-owum-admin.php:1072
 msgid "Test email sent to %s."
 msgstr ""
 
 #. translators: %s: email addresses
-#: includes/class-owum-admin.php:1051
+#: includes/class-owum-admin.php:1072
 msgid "The test email could not be sent. See the log below."
 msgstr ""
 
-#: includes/class-owum-admin.php:1084
+#: includes/class-owum-admin.php:1106
 msgid "The previous address was kept."
 msgstr ""
 
-#: includes/class-owum-admin.php:1093
+#: includes/class-owum-admin.php:1115
 msgid "The previous key was kept."
 msgstr ""
 
 #. translators: %s: new login address
-#: includes/class-owum-admin.php:1105
+#: includes/class-owum-admin.php:1127
 msgid "New login address: %s (emailed to the recipients)."
 msgstr ""
 
-#: includes/class-owum-admin.php:1112
+#: includes/class-owum-admin.php:1134
 msgid "The reCAPTCHA keys changed: run the test again to turn it back on."
 msgstr ""
 
@@ -1024,7 +1062,7 @@ msgid "Custom"
 msgstr ""
 
 #: includes/class-owum-collector.php:258
-#: includes/class-owum-report.php:581
+#: includes/class-owum-report.php:619
 msgid "Network (all sites)"
 msgstr ""
 
@@ -1210,453 +1248,472 @@ msgstr ""
 msgid "Monitoring started: %1$d plugins and %2$d themes recorded."
 msgstr ""
 
-#. translators: 1: client / site name, 2: month and year
-#: includes/class-owum-mailer.php:53
+#. translators: 1: client / site name, 2: period (month and year, or dates)
+#: includes/class-owum-mailer.php:168
 msgid "[%1$s] Updates and security report – %2$s"
 msgstr ""
 
-#: includes/class-owum-mailer.php:69
-msgid "Report email"
-msgstr ""
-
-#: includes/class-owum-mailer.php:104
+#: includes/class-owum-mailer.php:219
 msgid "Could not embed the logo in the email"
 msgstr ""
 
+#. translators: 1: start date, 2: end date
+#: includes/class-owum-report.php:60
+msgid "%1$s to %2$s"
+msgstr ""
+
 #. translators: 1: month name, 2: year
-#: includes/class-owum-report.php:46
+#: includes/class-owum-report.php:70
 msgctxt "month name and year"
 msgid "%1$s %2$s"
 msgstr ""
 
-#: includes/class-owum-report.php:96
-#: includes/class-owum-report.php:294
+#: includes/class-owum-report.php:120
+#: includes/class-owum-report.php:318
 msgid "Verified"
 msgstr ""
 
-#: includes/class-owum-report.php:96
-#: includes/class-owum-report.php:324
+#: includes/class-owum-report.php:120
+#: includes/class-owum-report.php:348
 msgid "Being handled"
 msgstr ""
 
-#: includes/class-owum-report.php:164
-#: includes/class-owum-report.php:489
+#: includes/class-owum-report.php:188
+#: includes/class-owum-report.php:527
 msgid "Security fix"
 msgstr ""
 
 #. translators: 1: certificate issuer (e.g. Let's Encrypt), 2: date
-#: includes/class-owum-report.php:177
+#: includes/class-owum-report.php:201
 msgid "%1$s certificate, valid until %2$s, which keeps the connection between the visitor and the site encrypted."
 msgstr ""
 
 #. translators: %s: date
-#: includes/class-owum-report.php:179
+#: includes/class-owum-report.php:203
 msgid "certificate valid until %s, which keeps the connection between the visitor and the site encrypted."
 msgstr ""
 
-#: includes/class-owum-report.php:181
+#: includes/class-owum-report.php:205
 msgid "the certificate in use is valid and keeps the connection between the visitor and the site encrypted."
 msgstr ""
 
 #. translators: %s: date
-#: includes/class-owum-report.php:187
+#: includes/class-owum-report.php:211
 msgid "version with security support until %s, so it keeps receiving fixes."
 msgstr ""
 
-#: includes/class-owum-report.php:188
-#: includes/class-owum-report.php:190
+#: includes/class-owum-report.php:212
+#: includes/class-owum-report.php:214
 msgid "version with security support, so it keeps receiving fixes."
 msgstr ""
 
 #. translators: %s: brand (Ondaweb)
-#: includes/class-owum-report.php:238
+#: includes/class-owum-report.php:262
 msgid "Being handled by the %s team."
 msgstr ""
 
 #. translators: 1: measures confirmed, 2: total measures, 3: brand (Ondaweb)
-#: includes/class-owum-report.php:242
+#: includes/class-owum-report.php:266
 msgid "%1$d of %2$d measures confirmed; the others are being handled by the %3$s team."
 msgstr ""
 
-#: includes/class-owum-report.php:249
+#: includes/class-owum-report.php:273
 msgid "Present in the site's responses."
 msgstr ""
 
 #. translators: %d: HTTP status code
-#: includes/class-owum-report.php:254
+#: includes/class-owum-report.php:278
 msgid "<code>/wp-login.php</code> returns %d"
 msgstr ""
 
-#: includes/class-owum-report.php:257
+#: includes/class-owum-report.php:281
 msgid "reCAPTCHA active on login"
 msgstr ""
 
-#: includes/class-owum-report.php:259
-#: includes/class-owum-report.php:271
-#: includes/class-owum-report.php:273
+#: includes/class-owum-report.php:283
+#: includes/class-owum-report.php:295
+#: includes/class-owum-report.php:297
 msgid "Confirmed in the automatic check."
 msgstr ""
 
-#: includes/class-owum-report.php:261
+#: includes/class-owum-report.php:285
 msgid "Listing blocked for visitors; authors sitemap removed."
 msgstr ""
 
 #. translators: %d: HTTP status code
-#: includes/class-owum-report.php:264
+#: includes/class-owum-report.php:288
 msgid "Returns %d."
 msgstr ""
 
 #. translators: %d: HTTP status code
-#: includes/class-owum-report.php:264
+#: includes/class-owum-report.php:288
 msgid "Blocked."
 msgstr ""
 
-#: includes/class-owum-report.php:266
+#: includes/class-owum-report.php:290
 msgid "No version exposed on the home page."
 msgstr ""
 
 #. translators: %s: number of files
-#: includes/class-owum-report.php:270
+#: includes/class-owum-report.php:294
 msgid "Sensitive files blocked; no PHP file in uploads (%s files checked)."
 msgstr ""
 
-#: includes/class-owum-report.php:275
+#: includes/class-owum-report.php:299
 msgid "Confirmed."
 msgstr ""
 
 #. translators: %d: number of actions
-#: includes/class-owum-report.php:280
+#: includes/class-owum-report.php:304
 msgid "%d action"
 msgid_plural "%d actions"
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of items
-#: includes/class-owum-report.php:294
+#: includes/class-owum-report.php:318
 msgid "%d being handled"
 msgstr ""
 
-#: includes/class-owum-report.php:318
+#: includes/class-owum-report.php:342
 msgid "Implemented actions"
 msgstr ""
 
 #. translators: %s: brand (Ondaweb)
-#: includes/class-owum-report.php:327
+#: includes/class-owum-report.php:351
 msgid "being handled by the %s team."
 msgstr ""
 
-#: includes/class-owum-report.php:332
+#: includes/class-owum-report.php:356
 msgid "Risk reduced"
 msgstr ""
 
-#: includes/class-owum-report.php:334
-#: includes/class-owum-report.php:537
+#: includes/class-owum-report.php:358
+#: includes/class-owum-report.php:575
 msgid "Verified result"
 msgstr ""
 
-#: includes/class-owum-report.php:412
-#: includes/class-owum-report.php:701
+#: includes/class-owum-report.php:440
+#: includes/class-owum-report.php:739
 msgid "WordPress updates and security"
 msgstr ""
 
 #. translators: %s: client name
-#: includes/class-owum-report.php:423
+#: includes/class-owum-report.php:451
 msgid "Client %s"
 msgstr ""
 
 #. translators: 1: report name, 2: site address, 3: date, 4: brand
-#: includes/class-owum-report.php:424
-#: includes/class-owum-report.php:671
-#: includes/class-owum-report.php:700
+#: includes/class-owum-report.php:452
+#: includes/class-owum-report.php:709
+#: includes/class-owum-report.php:738
 msgid "Updates and security report"
 msgstr ""
 
 #. translators: %s: grade (A-E)
-#: includes/class-owum-report.php:431
+#: includes/class-owum-report.php:459
 msgid "Grade %s"
 msgstr ""
 
-#: includes/class-owum-report.php:436
+#: includes/class-owum-report.php:464
 msgid "Period"
 msgstr ""
 
-#: includes/class-owum-report.php:437
+#: includes/class-owum-report.php:465
 msgid "Prepared by"
 msgstr ""
 
-#: includes/class-owum-report.php:438
+#: includes/class-owum-report.php:466
 msgid "Scope"
 msgstr ""
 
-#: includes/class-owum-report.php:438
+#: includes/class-owum-report.php:466
 msgid "WordPress and published site"
 msgstr ""
 
-#: includes/class-owum-report.php:449
+#: includes/class-owum-report.php:477
 msgid "Summary"
 msgstr ""
 
 #. translators: 1: number of tests, 2: score, 3: grade
-#: includes/class-owum-report.php:454
+#: includes/class-owum-report.php:482
 msgid "The automatic security check (%1$d tests) resulted in %2$s"
 msgstr ""
 
 #. translators: 1: score, 2: grade
-#: includes/class-owum-report.php:456
+#: includes/class-owum-report.php:484
 msgid "grade %1$d/100 (%2$s)"
 msgstr ""
 
 #. translators: %d: number of items
-#: includes/class-owum-report.php:459
+#: includes/class-owum-report.php:487
 msgid "with %s being handled by the team."
 msgstr ""
 
 #. translators: %d: number of items
-#: includes/class-owum-report.php:459
+#: includes/class-owum-report.php:487
 msgid "%d item"
 msgid_plural "%d items"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-owum-report.php:460
+#: includes/class-owum-report.php:488
 msgid "with no critical or warning items."
 msgstr ""
 
 #. translators: %s: date
-#: includes/class-owum-report.php:462
+#: includes/class-owum-report.php:490
 msgid "The tests, run on %s directly against the published site, confirmed the protections described in this report."
 msgstr ""
 
-#. translators: 1: number of improvements, 2: month and year
-#: includes/class-owum-report.php:465
+#: includes/class-owum-report.php:495
 msgid "%1$d security improvement was applied in %2$s."
 msgid_plural "%1$d security improvements were applied in %2$s."
 msgstr[0] ""
 msgstr[1] ""
 
-#. translators: 1: month and year, 2: number of updates
-#: includes/class-owum-report.php:469
+#. translators: 1: number of improvements, 2: start date, 3: end date
+#: includes/class-owum-report.php:497
+msgid "%1$d security improvement was applied from %2$s to %3$s."
+msgid_plural "%1$d security improvements were applied from %2$s to %3$s."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/class-owum-report.php:504
 msgid "In %1$s, %2$d update was recorded."
 msgid_plural "In %1$s, %2$d updates were recorded."
 msgstr[0] ""
 msgstr[1] ""
 
+#. translators: 1: start date, 2: end date, 3: number of updates
+#: includes/class-owum-report.php:506
+msgid "From %1$s to %2$s, %3$d update was recorded."
+msgid_plural "From %1$s to %2$s, %3$d updates were recorded."
+msgstr[0] ""
+msgstr[1] ""
+
 #. translators: %s: grade
-#: includes/class-owum-report.php:475
+#: includes/class-owum-report.php:513
 msgid "Grade %s in the automatic check"
 msgstr ""
 
 #. translators: %s: grade
-#: includes/class-owum-report.php:476
+#: includes/class-owum-report.php:514
 msgid "Automatic tests run"
 msgstr ""
 
-#: includes/class-owum-report.php:477
+#: includes/class-owum-report.php:515
 msgid "Critical or warning items"
 msgstr ""
 
-#: includes/class-owum-report.php:478
+#: includes/class-owum-report.php:516
 msgid "Areas with measures implemented and verified"
 msgstr ""
 
 #. translators: 1: number of components (in bold), 2: "Security fix" tag
-#: includes/class-owum-report.php:492
+#: includes/class-owum-report.php:530
 msgid "Known security flaws were found in %1$s installed component. The updates that fix them are marked with %2$s in the tables below and should be prioritized."
 msgid_plural "Known security flaws were found in %1$s installed components. The updates that fix them are marked with %2$s in the tables below and should be prioritized."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-owum-report.php:500
+#: includes/class-owum-report.php:538
 msgid "How the check was done"
 msgstr ""
 
-#: includes/class-owum-report.php:502
+#: includes/class-owum-report.php:540
 msgid "Automatic check"
 msgstr ""
 
 #. translators: 1: number of tests, 2: score, 3: grade
-#: includes/class-owum-report.php:502
+#: includes/class-owum-report.php:540
 msgid "%1$d configuration tests run on the site's WordPress, with a final grade of %2$d/100 (%3$s)."
 msgstr ""
 
 #. translators: 1: number of tests, 2: score, 3: grade
-#: includes/class-owum-report.php:503
+#: includes/class-owum-report.php:541
 msgid "Tests on the published site"
 msgstr ""
 
 #. translators: %s: date
-#: includes/class-owum-report.php:503
+#: includes/class-owum-report.php:541
 msgid "Requests made on %s directly to the published site, the way a visitor or a bot would access it."
 msgstr ""
 
-#: includes/class-owum-report.php:514
+#: includes/class-owum-report.php:552
 msgid "Areas covered"
 msgstr ""
 
 #. translators: 1: number of areas, 2: number of actions
-#: includes/class-owum-report.php:518
+#: includes/class-owum-report.php:556
 msgid "The work was organized in %1$d areas, adding up to %2$d implemented actions. The table below shows what each area covers; the actions, the risk reduced and the verified result are detailed in the next section."
 msgstr ""
 
 #. translators: %s: date
-#: includes/class-owum-report.php:526
+#: includes/class-owum-report.php:564
 msgid "The scope is limited to the WordPress configuration and the behavior of the published site on %s."
 msgstr ""
 
-#: includes/class-owum-report.php:530
+#: includes/class-owum-report.php:568
 msgid "Measures implemented and verified"
 msgstr ""
 
-#: includes/class-owum-report.php:536
+#: includes/class-owum-report.php:574
 msgid "Overview of results"
 msgstr ""
 
-#: includes/class-owum-report.php:537
+#: includes/class-owum-report.php:575
 msgid "Area"
 msgstr ""
 
 #. translators: %s: version number
-#: includes/class-owum-report.php:549
+#: includes/class-owum-report.php:587
 msgid "WordPress — %s available"
 msgstr ""
 
 #. translators: %s: version number
-#: includes/class-owum-report.php:549
+#: includes/class-owum-report.php:587
 msgid "WordPress — latest version"
 msgstr ""
 
 #. translators: %s: version number
-#: includes/class-owum-report.php:550
+#: includes/class-owum-report.php:588
 msgid "Updates recorded in the period"
 msgstr ""
 
 #. translators: %s: brand (Ondaweb)
-#: includes/class-owum-report.php:551
+#: includes/class-owum-report.php:589
 msgid "Pending, to be applied by %s"
 msgstr ""
 
 #. translators: %s: brand (Ondaweb)
-#: includes/class-owum-report.php:552
+#: includes/class-owum-report.php:590
 msgid "Pending, need the client's approval"
 msgstr ""
 
-#: includes/class-owum-report.php:562
+#: includes/class-owum-report.php:600
 msgid "Updates that need the client's approval"
 msgstr ""
 
-#: includes/class-owum-report.php:563
+#: includes/class-owum-report.php:601
 msgid "Paid plugins/themes with a new version. Updating depends on an active license or a purchase/renewal."
 msgstr ""
 
-#: includes/class-owum-report.php:564
+#: includes/class-owum-report.php:602
 msgid "Notes / license"
 msgstr ""
 
-#: includes/class-owum-report.php:566
+#: includes/class-owum-report.php:604
 msgid "No paid updates pending."
 msgstr ""
 
-#: includes/class-owum-report.php:569
+#: includes/class-owum-report.php:607
 msgid "entered manually"
 msgstr ""
 
 #. translators: %s: brand (Ondaweb)
-#: includes/class-owum-report.php:576
+#: includes/class-owum-report.php:614
 msgid "Available updates – applied by %s"
 msgstr ""
 
 #. translators: %s: brand (Ondaweb)
-#: includes/class-owum-report.php:578
+#: includes/class-owum-report.php:616
 msgid "Free plugins and plugins licensed by %s. No action needed from the client."
 msgstr ""
 
-#: includes/class-owum-report.php:584
+#: includes/class-owum-report.php:622
 msgid "Everything is up to date."
 msgstr ""
 
 #. translators: %s: month and year
-#: includes/class-owum-report.php:593
+#: includes/class-owum-report.php:631
 msgid "Updates made in %s"
 msgstr ""
 
-#: includes/class-owum-report.php:594
-#: includes/class-owum-report.php:618
+#. translators: 1: start date, 2: end date
+#: includes/class-owum-report.php:631
+msgid "Updates made from %1$s to %2$s"
+msgstr ""
+
+#. translators: 1: start date, 2: end date
+#: includes/class-owum-report.php:632
+#: includes/class-owum-report.php:656
 #: includes/security/class-owsu-admin.php:506
 msgid "Version"
 msgstr ""
 
-#: includes/class-owum-report.php:596
+#: includes/class-owum-report.php:634
 msgid "No changes recorded in this period."
 msgstr ""
 
-#: includes/class-owum-report.php:605
+#: includes/class-owum-report.php:643
 msgid "Plugin inventory"
 msgstr ""
 
-#: includes/class-owum-report.php:605
+#: includes/class-owum-report.php:643
 msgid "Theme inventory"
 msgstr ""
 
 #. translators: %d: number of items
-#: includes/class-owum-report.php:612
+#: includes/class-owum-report.php:650
 msgid "%d installed in the network."
 msgid_plural "%d installed in the network."
 msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of items
-#: includes/class-owum-report.php:614
+#: includes/class-owum-report.php:652
 msgid "%d installed."
 msgid_plural "%d installed."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/class-owum-report.php:634
+#: includes/class-owum-report.php:672
 msgid "HTTPS certificate"
 msgstr ""
 
 #. translators: %s: certificate issuer
-#: includes/class-owum-report.php:637
+#: includes/class-owum-report.php:675
 msgid "Validity of the %s certificate in use on the site."
 msgstr ""
 
-#: includes/class-owum-report.php:638
+#: includes/class-owum-report.php:676
 msgid "Validity of the certificate in use on the site."
 msgstr ""
 
-#: includes/class-owum-report.php:643
+#: includes/class-owum-report.php:681
 msgid "End of security support for the version in use on the server."
 msgstr ""
 
-#: includes/class-owum-report.php:647
+#: includes/class-owum-report.php:685
 msgid "Reference dates"
 msgstr ""
 
-#: includes/class-owum-report.php:651
+#: includes/class-owum-report.php:689
 msgid "until"
 msgstr ""
 
-#: includes/class-owum-report.php:662
+#: includes/class-owum-report.php:700
 msgid "Note:"
 msgstr ""
 
 #. translators: %s: date
-#: includes/class-owum-report.php:665
+#: includes/class-owum-report.php:703
 msgid "this report describes the state verified on %s. The tests are configuration tests run against the published site; they do not replace a full penetration test."
 msgstr ""
 
 #. translators: %s: date
-#: includes/class-owum-report.php:667
+#: includes/class-owum-report.php:705
 msgid "this report describes the state on %s."
 msgstr ""
 
 #. translators: 1: report name, 2: site address, 3: date, 4: brand
-#: includes/class-owum-report.php:671
+#: includes/class-owum-report.php:709
 msgid "%1$s · %2$s · %3$s · %4$s"
 msgstr ""
 
 #. translators: 1: current page number, 2: total pages — keep the %1$s and %2$s
-#: includes/class-owum-report.php:689
+#: includes/class-owum-report.php:727
 msgid "Page %1$s of %2$s"
 msgstr ""
 
@@ -3674,13 +3731,13 @@ msgid "The downloaded database is empty or in an unexpected format."
 msgstr ""
 
 #. translators: PHP date format: short date with time (see https://www.php.net/manual/datetime.format.php)
-#: ondaweb-update-manager.php:170
+#: ondaweb-update-manager.php:171
 msgctxt "short date with time"
 msgid "m/d/Y g:i a"
 msgstr ""
 
 #. translators: PHP date format: short date (see https://www.php.net/manual/datetime.format.php)
-#: ondaweb-update-manager.php:172
+#: ondaweb-update-manager.php:173
 msgctxt "short date"
 msgid "m/d/Y"
 msgstr ""
