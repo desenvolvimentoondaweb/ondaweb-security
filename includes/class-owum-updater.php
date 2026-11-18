@@ -4,7 +4,7 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Updates of the plugin itself from the releases published on GitHub.
  *
- * Usa o mecanismo oficial do WordPress para plugins de fora do wordpress.org
+ * Uses the official WordPress mechanism for plugins outside wordpress.org
  * ("Update URI" header + update_plugins_github.com filter, WP 5.8+).
  * The update shows up on the Plugins screen like any other and can be automatic.
  */
@@ -73,10 +73,49 @@ class OWUM_Updater {
 				);
 			}
 		}
-		// Falha de rede ou limite da API: tenta de novo em 1 hora, sem travar o painel.
+		// API unavailable (shared hosting often hits GitHub's 60 requests/hour limit per IP):
+		// find the latest release through the public release page, which has no such limit.
+		if ( ! $rel ) {
+			$rel = self::release_from_page();
+			if ( $rel ) {
+				$code = 'page';
+			}
+		}
+		// Network failure: try again in 1 hour, without blocking the dashboard.
 		set_site_transient( self::CACHE, $rel ? $rel : array( 'version' => '' ), $rel ? 6 * HOUR_IN_SECONDS : HOUR_IN_SECONDS );
 		update_site_option( 'owum_gh_check', array( 'time' => current_time( 'mysql' ), 'ok' => (bool) $rel, 'code' => $code ) );
 		return $rel;
+	}
+
+	/**
+	 * Fallback without the GitHub API: github.com/<repo>/releases/latest redirects to the
+	 * latest tag, and the package has a fixed download address for each tag.
+	 *
+	 * @return array|null
+	 */
+	public static function release_from_page() {
+		$res = wp_remote_head(
+			'https://github.com/' . self::REPO . '/releases/latest',
+			array(
+				'timeout'     => 15,
+				'redirection' => 0,
+				'headers'     => array( 'User-Agent' => 'Ondaweb-Security-Updater/' . OWUM_VERSION ),
+			)
+		);
+		if ( is_wp_error( $res ) ) {
+			return null;
+		}
+		$loc = (string) wp_remote_retrieve_header( $res, 'location' );
+		if ( ! preg_match( '#/releases/tag/(v?(\d+\.\d+(?:\.\d+)?))$#', $loc, $m ) ) {
+			return null;
+		}
+		return array(
+			'version'   => $m[2],
+			'package'   => 'https://github.com/' . self::REPO . '/releases/download/' . rawurlencode( $m[1] ) . '/' . self::ASSET,
+			'url'       => esc_url_raw( $loc ),
+			'notes'     => '',
+			'published' => '',
+		);
 	}
 
 	/** Called by WordPress when checking updates of plugins whose "Update URI" is on github.com. */

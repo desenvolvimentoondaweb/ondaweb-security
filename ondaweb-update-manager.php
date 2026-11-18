@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Ondaweb Security Updater
  * Description:       Version inventory (WordPress, plugins and themes), automatic update history, security checks and one-click fixes, known vulnerabilities (Wordfence Intelligence), login protection and a monthly client report by email and PDF. Works on single sites and multisite networks.
- * Version:           1.5.1
+ * Version:           1.5.2
  * Plugin URI:        https://github.com/desenvolvimentoondaweb/ondaweb-security
  * Update URI:        https://github.com/desenvolvimentoondaweb/ondaweb-security
  * Author:            Ondaweb
@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'OWUM_VERSION', '1.5.1' );
+define( 'OWUM_VERSION', '1.5.2' );
 define( 'OWUM_FILE', __FILE__ );
 define( 'OWUM_DIR', plugin_dir_path( __FILE__ ) );
 define( 'OWUM_PRODUCT', 'Ondaweb Security Updater' );

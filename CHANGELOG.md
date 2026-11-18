@@ -1,5 +1,9 @@
 # Histórico de versões
 
+## 1.5.2
+- **Correção:** em alguns servidores (hospedagem compartilhada), a consulta à API do GitHub atingia o limite de 60 consultas por hora por IP e a atualização do plugin não aparecia. Agora, se a API não responder, o plugin encontra a versão nova pela página pública de versões do GitHub, que não tem esse limite.
+- Se mesmo assim não for possível consultar o GitHub, a tela de Atualizações mostra um aviso com o motivo e o link para baixar a versão manualmente.
+
 ## 1.5.1
 - **Novo visual do painel no padrão Ondaweb:** barra com o logo da Ondaweb no topo de todas as telas, botões arredondados (ação principal em laranja), cartões de resumo e nota de segurança no estilo do relatório, tabelas com cabeçalho preto e cantos arredondados, seções de Configurações em cartões e etiquetas de situação nas cores da marca.
 - Barra de progresso da verificação e item do plugin no menu lateral nas cores da Ondaweb.

@@ -294,7 +294,19 @@ class OWUM_Admin {
 			<a class="page-title-action" data-owum-busy="<?php esc_attr_e( 'Checking for updates on WordPress.org, GitHub and paid plugins…', 'ondaweb-security' ); ?>" href="<?php echo esc_url( self::action_url( 'owum_refresh' ) ); ?>"><?php esc_html_e( 'Check for updates now', 'ondaweb-security' ); ?></a>
 			<a class="page-title-action" target="_blank" href="<?php echo esc_url( self::action_url( 'owum_report', array( 'month' => current_time( 'Y-m' ) ) ) ); ?>"><?php esc_html_e( 'Report / PDF', 'ondaweb-security' ); ?></a>
 			<hr class="wp-header-end">
-			<?php self::notice(); ?>
+			<?php
+			self::notice();
+			$gh = get_site_option( 'owum_gh_check' );
+			if ( is_array( $gh ) && empty( $gh['ok'] ) ) {
+				echo '<div class="notice notice-warning"><p>' . sprintf(
+					/* translators: 1: date and time, 2: error code, 3: link to the releases page */
+					esc_html__( 'Could not check GitHub for a new version of this plugin on %1$s (%2$s). Click "Check for updates now" again later, or download the latest version from %3$s and install it under Plugins → Add New → Upload Plugin.', 'ondaweb-security' ),
+					esc_html( owum_date( $gh['time'], true ) ),
+					esc_html( $gh['code'] ? 'HTTP ' . $gh['code'] : __( 'no response', 'ondaweb-security' ) ),
+					'<a href="' . esc_url( 'https://github.com/' . OWUM_Updater::REPO . '/releases/latest' ) . '" target="_blank" rel="noopener">GitHub</a>'
+				) . '</p></div>';
+			}
+			?>
 
 			<div class="owum-cards">
 				<div class="owum-card"><div class="l">WordPress</div><div class="v <?php echo $core['available'] ? 'owum-free' : 'owum-ok'; ?>"><?php echo esc_html( $core['installed'] ); ?></div><div class="s"><?php
