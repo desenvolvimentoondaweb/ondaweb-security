@@ -1,5 +1,13 @@
 # Histórico de versões
 
+## 1.5.4
+- **Sites cujo servidor não consegue acessar o próprio site** (firewall, proxy ou página lenta):
+  - aviso no painel de Segurança com o erro exato, o IP do servidor e o que pedir à hospedagem;
+  - botão "Ler os cabeçalhos pelo meu navegador e verificar de novo": a página inicial é lida pelo navegador do administrador e os cabeçalhos de segurança passam a ser verificados mesmo assim (vale por 24 horas);
+  - as correções dos itens que não puderam ser testados podem ser aplicadas mesmo assim.
+- A verificação carrega a página inicial uma única vez (antes eram várias), com tempo limite maior e uma nova tentativa — menos carga e menos chance de disparar o firewall do servidor.
+- Arquivos sensíveis e listagem de usuários não aparecem mais como "OK" quando o teste não pôde ser feito.
+
 ## 1.5.3
 - **Frequência do relatório por e-mail** (Configurações → Relatório):
   - **Semanal:** toda segunda-feira, com a semana anterior (segunda a domingo).

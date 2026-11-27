@@ -1,9 +1,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Ondaweb Security Updater 1.5.2\n"
+"Project-Id-Version: Ondaweb Security Updater 1.5.3\n"
 "Report-Msgid-Bugs-To: https://github.com/desenvolvimentoondaweb/ondaweb-security/issues\n"
-"POT-Creation-Date: 2026-11-18T12:35:24+00:00\n"
+"POT-Creation-Date: 2026-11-27T19:09:02+00:00\n"
 "PO-Revision-Date: 2026-11-12 12:00+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Português do Brasil\n"
@@ -49,7 +49,7 @@ msgstr "Ondaweb"
 msgid "https://ondaweb.com.br"
 msgstr "https://ondaweb.com.br"
 
-#: includes/class-owum-admin.php:29 includes/security/class-owsu-admin.php:23
+#: includes/class-owum-admin.php:29 includes/security/class-owsu-admin.php:24
 msgid "You are not allowed to do this."
 msgstr "Sem permissão."
 
@@ -60,7 +60,7 @@ msgstr "Atualizações"
 
 #: includes/class-owum-admin.php:40 includes/class-owum-admin.php:629
 #: includes/class-owum-logger.php:178
-#: includes/security/class-owsu-admin.php:260
+#: includes/security/class-owsu-admin.php:356
 msgid "Security"
 msgstr "Segurança"
 
@@ -80,7 +80,7 @@ msgstr "Registro de erros"
 
 #. translators: %s: link to the Settings screen
 #: includes/class-owum-admin.php:44 includes/class-owum-admin.php:677
-#: includes/security/class-owsu-admin.php:279
+#: includes/security/class-owsu-admin.php:375
 msgid "Settings"
 msgstr "Configurações"
 
@@ -221,7 +221,9 @@ msgstr ""
 "baixe a versão mais recente no %3$s e instale em Plugins → Adicionar plugin "
 "→ Enviar plugin."
 
+#. translators: 1: error message, 2: date and time
 #: includes/class-owum-admin.php:305
+#: includes/security/class-owsu-admin.php:254
 msgid "no response"
 msgstr "sem resposta"
 
@@ -281,7 +283,7 @@ msgstr "solicitar ao cliente"
 
 #. translators: %s: date and time
 #: includes/class-owum-admin.php:326
-#: includes/security/class-owsu-admin.php:302
+#: includes/security/class-owsu-admin.php:399
 msgid "Last check: %s."
 msgstr "Última verificação: %s."
 
@@ -339,7 +341,7 @@ msgid "Type"
 msgstr "Tipo"
 
 #: includes/class-owum-admin.php:443 includes/class-owum-admin.php:449
-#: includes/security/class-owsu-admin.php:312
+#: includes/security/class-owsu-admin.php:409
 msgid "All"
 msgstr "Todos"
 
@@ -391,7 +393,7 @@ msgstr "Nome"
 
 #: includes/class-owum-admin.php:467 includes/class-owum-logger.php:163
 #: includes/class-owum-report.php:595
-#: includes/security/class-owsu-admin.php:410
+#: includes/security/class-owsu-admin.php:507
 msgid "Installed"
 msgstr "Instalada"
 
@@ -436,7 +438,7 @@ msgid "History month:"
 msgstr "Mês do histórico:"
 
 #: includes/class-owum-admin.php:583
-#: includes/security/class-owsu-admin.php:455
+#: includes/security/class-owsu-admin.php:552
 msgid "Save as PDF / Print"
 msgstr "Salvar como PDF / Imprimir"
 
@@ -478,8 +480,8 @@ msgid "Date"
 msgstr "Data"
 
 #: includes/class-owum-admin.php:635 includes/class-owum-report.php:594
-#: includes/security/class-owsu-admin.php:410
-#: includes/security/class-owsu-admin.php:506
+#: includes/security/class-owsu-admin.php:507
+#: includes/security/class-owsu-admin.php:603
 msgid "Item"
 msgstr "Item"
 
@@ -545,7 +547,7 @@ msgstr "Destinatários"
 msgid "Separate multiple emails with commas."
 msgstr "Separe vários e-mails por vírgula."
 
-#: includes/class-owum-admin.php:690 includes/class-owum-mailer.php:184
+#: includes/class-owum-admin.php:690 includes/class-owum-mailer.php:185
 msgid "Report email"
 msgstr "E-mail do relatório"
 
@@ -765,7 +767,7 @@ msgid "Copy"
 msgstr "Copiar"
 
 #: includes/class-owum-admin.php:815
-#: includes/security/class-owsu-security.php:1163
+#: includes/security/class-owsu-security.php:1268
 msgid "Turned off by the OWSU_LOGIN_SLUG_OFF constant in wp-config.php."
 msgstr "Desligado pela constante OWSU_LOGIN_SLUG_OFF no wp-config.php."
 
@@ -1137,7 +1139,7 @@ msgstr "Inativo"
 
 #. translators: %s: date
 #: includes/class-owum-collector.php:265
-#: includes/security/class-owsu-admin.php:363
+#: includes/security/class-owsu-admin.php:460
 msgid "Active"
 msgstr "Ativo"
 
@@ -1214,8 +1216,8 @@ msgid "Error"
 msgstr "Erro"
 
 #: includes/class-owum-errorlog.php:342
-#: includes/security/class-owsu-admin.php:296
-#: includes/security/class-owsu-security.php:95
+#: includes/security/class-owsu-admin.php:393
+#: includes/security/class-owsu-security.php:96
 msgid "Warning"
 msgstr "Atenção"
 
@@ -1279,12 +1281,12 @@ msgid "Security fix undone"
 msgstr "Correção de segurança desfeita"
 
 #: includes/class-owum-logger.php:176
-#: includes/security/class-owsu-security.php:640
+#: includes/security/class-owsu-security.php:733
 msgid "Plugin"
 msgstr "Plugin"
 
 #: includes/class-owum-logger.php:177
-#: includes/security/class-owsu-security.php:647
+#: includes/security/class-owsu-security.php:740
 msgid "Theme"
 msgstr "Tema"
 
@@ -1310,11 +1312,11 @@ msgid "Monitoring started: %1$d plugins and %2$d themes recorded."
 msgstr "Início do monitoramento: %1$d plugins e %2$d temas registrados."
 
 #. translators: 1: client / site name, 2: period (month and year, or dates)
-#: includes/class-owum-mailer.php:168
+#: includes/class-owum-mailer.php:169
 msgid "[%1$s] Updates and security report – %2$s"
 msgstr "[%1$s] Relatório de atualizações e segurança – %2$s"
 
-#: includes/class-owum-mailer.php:219
+#: includes/class-owum-mailer.php:220
 msgid "Could not embed the logo in the email"
 msgstr "Não foi possível incorporar o logo no e-mail"
 
@@ -1750,7 +1752,7 @@ msgstr "Atualizações realizadas de %1$s a %2$s"
 
 #. translators: 1: start date, 2: end date
 #: includes/class-owum-report.php:632 includes/class-owum-report.php:656
-#: includes/security/class-owsu-admin.php:506
+#: includes/security/class-owsu-admin.php:603
 msgid "Version"
 msgstr "Versão"
 
@@ -1852,13 +1854,13 @@ msgstr "Não foi possível preparar a pasta da atualização."
 msgid "No notes for this version."
 msgstr "Sem notas para esta versão."
 
-#: includes/security/class-owsu-admin.php:42
+#: includes/security/class-owsu-admin.php:43
 msgid "Check finished."
 msgstr "Verificação concluída."
 
-#: includes/security/class-owsu-admin.php:50
-#: includes/security/class-owsu-admin.php:73
-#: includes/security/class-owsu-admin.php:191
+#: includes/security/class-owsu-admin.php:51
+#: includes/security/class-owsu-admin.php:74
+#: includes/security/class-owsu-admin.php:228
 #: includes/security/class-owsu-captcha.php:151
 #: includes/security/class-owsu-captcha.php:182
 #: includes/security/class-owsu-captcha.php:186
@@ -1866,22 +1868,22 @@ msgstr "Verificação concluída."
 msgid "Error:"
 msgstr "Erro:"
 
-#: includes/security/class-owsu-admin.php:52
+#: includes/security/class-owsu-admin.php:53
 msgid "Vulnerability database updated and check finished."
 msgstr "Base de vulnerabilidades atualizada e verificação concluída."
 
-#: includes/security/class-owsu-admin.php:59
-#: includes/security/class-owsu-admin.php:91
-#: includes/security/class-owsu-admin.php:151
+#: includes/security/class-owsu-admin.php:60
+#: includes/security/class-owsu-admin.php:92
+#: includes/security/class-owsu-admin.php:188
 msgid "Unknown check."
 msgstr "Verificação desconhecida."
 
 #. translators: %s: name of the security check
-#: includes/security/class-owsu-admin.php:64
+#: includes/security/class-owsu-admin.php:65
 msgid "Apply fix \"%s\""
 msgstr "Aplicar correção \"%s\""
 
-#: includes/security/class-owsu-admin.php:69
+#: includes/security/class-owsu-admin.php:70
 msgid ""
 "Unexpected error while applying the fix. The details were saved in the Error"
 " log."
@@ -1890,118 +1892,172 @@ msgstr ""
 "erros."
 
 #. translators: %s: name of the security check
-#: includes/security/class-owsu-admin.php:80
+#: includes/security/class-owsu-admin.php:81
 msgid "Fix applied: %s."
 msgstr "Correção aplicada: %s."
 
-#: includes/security/class-owsu-admin.php:82
+#: includes/security/class-owsu-admin.php:83
 msgid "The check still reports a problem — see the item details."
 msgstr "A verificação ainda aponta problema — veja os detalhes do item."
 
 #. translators: %s: name of the security check
-#: includes/security/class-owsu-admin.php:98
+#: includes/security/class-owsu-admin.php:99
 msgid "Undo fix \"%s\""
 msgstr "Desfazer correção \"%s\""
 
-#: includes/security/class-owsu-admin.php:99
+#: includes/security/class-owsu-admin.php:100
 msgid ""
 "Unexpected error while undoing. The details were saved in the Error log."
 msgstr ""
 "Erro inesperado ao desfazer. O detalhe foi salvo no Registro de erros."
 
 #. translators: %s: name of the security check
-#: includes/security/class-owsu-admin.php:103
+#: includes/security/class-owsu-admin.php:104
 msgid "Fix undone: %s."
 msgstr "Correção desfeita: %s."
 
-#: includes/security/class-owsu-admin.php:114
+#: includes/security/class-owsu-admin.php:119
+#: includes/security/class-owsu-admin.php:150
 msgid "Session expired. Reload the page."
 msgstr "Sessão expirada. Recarregue a página."
 
-#: includes/security/class-owsu-admin.php:122
+#. translators: %d: HTTP status code
+#: includes/security/class-owsu-admin.php:141
+msgid "The browser got HTTP %d from the home page."
+msgstr "O navegador recebeu HTTP %d da página inicial."
+
+#: includes/security/class-owsu-admin.php:159
 msgid "Downloading the Wordfence vulnerability database"
 msgstr "Baixando a base de vulnerabilidades da Wordfence"
 
-#: includes/security/class-owsu-admin.php:122
+#: includes/security/class-owsu-admin.php:159
 msgid "May take up to 1 minute"
 msgstr "Pode levar até 1 minuto"
 
-#: includes/security/class-owsu-admin.php:134
+#: includes/security/class-owsu-admin.php:171
 msgid "The check expired. Start again."
 msgstr "A verificação expirou. Comece novamente."
 
-#: includes/security/class-owsu-admin.php:143
+#: includes/security/class-owsu-admin.php:180
 #: includes/security/class-owsu-vulns.php:97
 #: includes/security/class-owsu-vulns.php:103
 msgid "Vulnerability database"
 msgstr "Base de vulnerabilidades"
 
-#: includes/security/class-owsu-admin.php:145
+#: includes/security/class-owsu-admin.php:182
 msgid "Failed"
 msgstr "Falhou"
 
 #. translators: %s: number of records
-#: includes/security/class-owsu-admin.php:148
+#: includes/security/class-owsu-admin.php:185
 msgid "%s records analyzed"
 msgstr "%s registros analisados"
 
 #. translators: 1: name of the security check, 2: reason
-#: includes/security/class-owsu-admin.php:166
+#: includes/security/class-owsu-admin.php:203
 msgid "Check \"%1$s\" did not answer: %2$s"
 msgstr "Verificação \"%1$s\" não respondeu: %2$s"
 
 #. translators: 1: name of the security check, 2: reason
-#: includes/security/class-owsu-admin.php:166
+#: includes/security/class-owsu-admin.php:203
 msgid "Step of the check with progress bar."
 msgstr "Etapa da verificação com barra de progresso."
 
 #. translators: %s: reason
-#: includes/security/class-owsu-admin.php:169
+#: includes/security/class-owsu-admin.php:206
 msgid "Could not check (%s). Details in the Error log."
 msgstr "Não foi possível verificar (%s). Detalhes no Registro de erros."
 
-#: includes/security/class-owsu-admin.php:178
+#: includes/security/class-owsu-admin.php:215
 msgid "Not checked."
 msgstr "Não verificado."
 
 #. translators: 1: grade (A-E), 2: score 0-100
-#: includes/security/class-owsu-admin.php:188
+#: includes/security/class-owsu-admin.php:225
 msgid "Check finished: grade %1$s (%2$d/100)."
 msgstr "Verificação concluída: nota %1$s (%2$d/100)."
 
-#: includes/security/class-owsu-admin.php:196
+#: includes/security/class-owsu-admin.php:233
 msgid "Invalid operation."
 msgstr "Operação inválida."
 
 #. translators: %s: check id
-#: includes/security/class-owsu-admin.php:204
+#: includes/security/class-owsu-admin.php:241
 msgid "Re-check of \"%s\" failed"
 msgstr "Nova verificação de \"%s\" falhou"
 
-#: includes/security/class-owsu-admin.php:215
+#: includes/security/class-owsu-admin.php:252
+msgid "The server could not reach its own site."
+msgstr "O servidor não conseguiu acessar o próprio site."
+
+#. translators: 1: error message, 2: date and time
+#: includes/security/class-owsu-admin.php:254
+msgid "Error: %1$s (%2$s)."
+msgstr "Erro: %1$s (%2$s)."
+
+#: includes/security/class-owsu-admin.php:255
+msgid ""
+"That is why the items marked Informational could not be tested; their fixes "
+"can still be applied."
+msgstr ""
+"Por isso, os itens marcados como Informativo não puderam ser testados; as "
+"correções deles podem ser aplicadas mesmo assim."
+
+#. translators: %s: server IP address
+#: includes/security/class-owsu-admin.php:260
+msgid ""
+"Most common causes: a firewall on the server (Fail2Ban, ModSecurity, "
+"Imunify360) or a proxy such as Cloudflare blocking the server's own IP (%s),"
+" or the home page taking more than 25 seconds to answer. Ask the hosting "
+"company to add this IP to the allow list (whitelist)."
+msgstr ""
+"Causas mais comuns: um firewall no servidor (Fail2Ban, ModSecurity, "
+"Imunify360) ou um proxy como o Cloudflare bloqueando o IP do próprio "
+"servidor (%s), ou a página inicial levando mais de 25 segundos para "
+"responder. Peça à hospedagem para incluir esse IP na lista de permissões "
+"(whitelist)."
+
+#: includes/security/class-owsu-admin.php:264
+msgid "Read the headers through my browser and check again"
+msgstr "Ler os cabeçalhos pelo meu navegador e verificar de novo"
+
+#. translators: %s: date and time
+#: includes/security/class-owsu-admin.php:267
+msgid "Reading made by the browser on %s in use (valid for 24 hours)."
+msgstr "Em uso a leitura feita pelo navegador em %s (vale por 24 horas)."
+
+#: includes/security/class-owsu-admin.php:274
+msgid "Reading the home page…"
+msgstr "Lendo a página inicial…"
+
+#: includes/security/class-owsu-admin.php:275
+msgid "The browser could not read the home page:"
+msgstr "O navegador não conseguiu ler a página inicial:"
+
+#: includes/security/class-owsu-admin.php:311
 msgid "Undoing the fix and testing the site…"
 msgstr "Desfazendo a correção e testando o site…"
 
-#: includes/security/class-owsu-admin.php:215
+#: includes/security/class-owsu-admin.php:311
 msgid "Applying the fix and testing the site…"
 msgstr "Aplicando a correção e testando o site…"
 
 #. translators: %s: "Run check" button label
-#: includes/security/class-owsu-admin.php:262
-#: includes/security/class-owsu-admin.php:283
+#: includes/security/class-owsu-admin.php:358
+#: includes/security/class-owsu-admin.php:380
 msgid "Run check"
 msgstr "Executar verificação"
 
-#: includes/security/class-owsu-admin.php:264
+#: includes/security/class-owsu-admin.php:360
 msgid "Update vulnerability database"
 msgstr "Atualizar base de vulnerabilidades"
 
-#: includes/security/class-owsu-admin.php:267
+#: includes/security/class-owsu-admin.php:363
 msgid "Technical report (internal)"
 msgstr "Relatório técnico (interno)"
 
 #. translators: %s: link to the Settings screen
-#: includes/security/class-owsu-admin.php:279
+#: includes/security/class-owsu-admin.php:375
 msgid ""
 "To check for known vulnerabilities, enter the Wordfence Intelligence API key"
 " in %s."
@@ -2010,96 +2066,96 @@ msgstr ""
 " Intelligence em %s."
 
 #. translators: %s: "Run check" button label
-#: includes/security/class-owsu-admin.php:283
+#: includes/security/class-owsu-admin.php:380
 msgid "No check has been run yet. Click %s (takes a few seconds)."
 msgstr "Nenhuma verificação feita ainda. Clique em %s (leva alguns segundos)."
 
 #. translators: %d: score 0-100
-#: includes/security/class-owsu-admin.php:291
+#: includes/security/class-owsu-admin.php:388
 msgid "Score %d/100"
 msgstr "Nota %d/100"
 
-#: includes/security/class-owsu-admin.php:295
-#: includes/security/class-owsu-security.php:94
+#: includes/security/class-owsu-admin.php:392
+#: includes/security/class-owsu-security.php:95
 msgid "Critical"
 msgstr "Crítico"
 
-#: includes/security/class-owsu-admin.php:298
-#: includes/security/class-owsu-security.php:97
+#: includes/security/class-owsu-admin.php:395
+#: includes/security/class-owsu-security.php:98
 msgid "Informational"
 msgstr "Informativo"
 
 #. translators: %s: date and time
-#: includes/security/class-owsu-admin.php:302
+#: includes/security/class-owsu-admin.php:399
 msgid "The check also runs automatically once a day."
 msgstr "A verificação também roda automaticamente uma vez por dia."
 
 #. translators: %s: date and time, or "not downloaded"
-#: includes/security/class-owsu-admin.php:305
+#: includes/security/class-owsu-admin.php:402
 msgid "Vulnerability database: %s."
 msgstr "Base de vulnerabilidades: %s."
 
 #. translators: %s: date and time, or "not downloaded"
-#: includes/security/class-owsu-admin.php:305
+#: includes/security/class-owsu-admin.php:402
 msgid "not downloaded"
 msgstr "não baixada"
 
 #. translators: %d: count
-#: includes/security/class-owsu-admin.php:313
+#: includes/security/class-owsu-admin.php:410
 msgid "Pending only (%d)"
 msgstr "Somente pendências (%d)"
 
-#: includes/security/class-owsu-admin.php:329
+#: includes/security/class-owsu-admin.php:426
 msgid "Not checked yet."
 msgstr "Ainda não verificado."
 
 #. translators: %d: count
-#: includes/security/class-owsu-admin.php:348
+#: includes/security/class-owsu-admin.php:445
 msgid "%d more"
 msgstr "mais %d"
 
-#: includes/security/class-owsu-admin.php:357
+#: includes/security/class-owsu-admin.php:454
 msgid "How to fix"
 msgstr "Como corrigir"
 
 #. translators: %s: date
-#: includes/security/class-owsu-admin.php:363
+#: includes/security/class-owsu-admin.php:460
 msgid "Applied on %s"
 msgstr "Aplicado em %s"
 
-#: includes/security/class-owsu-admin.php:365
-#: includes/security/class-owsu-admin.php:369
+#: includes/security/class-owsu-admin.php:462
+#: includes/security/class-owsu-admin.php:466
 msgid "Configure"
 msgstr "Configurar"
 
-#: includes/security/class-owsu-admin.php:367
+#: includes/security/class-owsu-admin.php:464
 msgid "Undo"
 msgstr "Desfazer"
 
-#: includes/security/class-owsu-admin.php:367
+#: includes/security/class-owsu-admin.php:464
 msgid "Move the login back to /wp-login.php?"
 msgstr "Voltar o login para /wp-login.php?"
 
-#: includes/security/class-owsu-admin.php:367
+#: includes/security/class-owsu-admin.php:464
 msgid "Undo this fix?"
 msgstr "Desfazer esta correção?"
 
 #. translators: %s: name of the security check
-#: includes/security/class-owsu-admin.php:372
+#: includes/security/class-owsu-admin.php:469
 msgid "Apply fix"
 msgstr "Aplicar correção"
 
 #. translators: %s: name of the security check
-#: includes/security/class-owsu-admin.php:372
+#: includes/security/class-owsu-admin.php:469
 msgid "Apply the fix \"%s\"?"
 msgstr "Aplicar a correção \"%s\"?"
 
 #. translators: %s: name of the security check
-#: includes/security/class-owsu-admin.php:372
+#: includes/security/class-owsu-admin.php:469
 msgid "It can be undone at any time from this panel."
 msgstr "Ela pode ser desfeita a qualquer momento por este painel."
 
-#: includes/security/class-owsu-admin.php:381
+#: includes/security/class-owsu-admin.php:478
 msgid ""
 "Vulnerability data: Wordfence Intelligence (Defiant, Inc.). Applied fixes "
 "are recorded in the History."
@@ -2107,49 +2163,49 @@ msgstr ""
 "Dados de vulnerabilidades: Wordfence Intelligence (Defiant, Inc.). As "
 "correções aplicadas ficam registradas no Histórico."
 
-#: includes/security/class-owsu-admin.php:410
-#: includes/security/class-owsu-admin.php:506
+#: includes/security/class-owsu-admin.php:507
+#: includes/security/class-owsu-admin.php:603
 msgid "Vulnerability"
 msgstr "Vulnerabilidade"
 
-#: includes/security/class-owsu-admin.php:410
+#: includes/security/class-owsu-admin.php:507
 msgid "Severity"
 msgstr "Gravidade"
 
-#: includes/security/class-owsu-admin.php:410
-#: includes/security/class-owsu-admin.php:506
+#: includes/security/class-owsu-admin.php:507
+#: includes/security/class-owsu-admin.php:603
 msgid "Fixed in"
 msgstr "Corrigida em"
 
-#: includes/security/class-owsu-admin.php:417
-#: includes/security/class-owsu-admin.php:508
+#: includes/security/class-owsu-admin.php:514
+#: includes/security/class-owsu-admin.php:605
 msgid "no fix"
 msgstr "sem correção"
 
-#: includes/security/class-owsu-admin.php:431
+#: includes/security/class-owsu-admin.php:528
 msgid "Run a check first."
 msgstr "Execute uma verificação primeiro."
 
-#: includes/security/class-owsu-admin.php:440
+#: includes/security/class-owsu-admin.php:537
 msgid "Technical security report"
 msgstr "Relatório técnico de segurança"
 
-#: includes/security/class-owsu-admin.php:455
+#: includes/security/class-owsu-admin.php:552
 msgid "Internal document — do not forward to the client."
 msgstr "Documento interno — não encaminhar ao cliente."
 
-#: includes/security/class-owsu-admin.php:457
+#: includes/security/class-owsu-admin.php:554
 msgid "CONFIDENTIAL – INTERNAL USE"
 msgstr "CONFIDENCIAL – USO INTERNO"
 
 #. translators: %s: client name
-#: includes/security/class-owsu-admin.php:458
+#: includes/security/class-owsu-admin.php:555
 msgid "Technical security report — %s"
 msgstr "Relatório técnico de segurança — %s"
 
 #. translators: 1: date and time, 2: site address, 3: score, 4: grade, 5:
 #. critical count, 6: warning count, 7: OK count
-#: includes/security/class-owsu-admin.php:463
+#: includes/security/class-owsu-admin.php:560
 msgid ""
 "Check of %1$s · %2$s · Score %3$d/100 (%4$s) · %5$d critical, %6$d warning, "
 "%7$d OK"
@@ -2158,19 +2214,19 @@ msgstr ""
 "atenção, %7$d OK"
 
 #. translators: %s: date
-#: includes/security/class-owsu-admin.php:491
+#: includes/security/class-owsu-admin.php:588
 msgid "fix applied on %s"
 msgstr "correção aplicada em %s"
 
-#: includes/security/class-owsu-admin.php:506
+#: includes/security/class-owsu-admin.php:603
 msgid "Vulnerability details"
 msgstr "Detalhe das vulnerabilidades"
 
-#: includes/security/class-owsu-admin.php:506
+#: includes/security/class-owsu-admin.php:603
 msgid "Recommendation"
 msgstr "Recomendação"
 
-#: includes/security/class-owsu-admin.php:510
+#: includes/security/class-owsu-admin.php:607
 msgid "Source: Wordfence Intelligence (Defiant, Inc.)."
 msgstr "Fonte: Wordfence Intelligence (Defiant, Inc.)."
 
@@ -2300,7 +2356,7 @@ msgstr ""
 "automação contra o endereço padrão de login."
 
 #: includes/security/class-owsu-areas.php:38
-#: includes/security/class-owsu-security.php:351
+#: includes/security/class-owsu-security.php:352
 msgid "Custom login address"
 msgstr "Endereço de login personalizado"
 
@@ -2423,7 +2479,7 @@ msgid "the authors sitemap was removed."
 msgstr "o sitemap de autores foi removido."
 
 #: includes/security/class-owsu-areas.php:61
-#: includes/security/class-owsu-security.php:303
+#: includes/security/class-owsu-security.php:304
 msgid "XML-RPC"
 msgstr "XML-RPC"
 
@@ -2599,7 +2655,7 @@ msgstr ""
 "enviados."
 
 #: includes/security/class-owsu-areas.php:97
-#: includes/security/class-owsu-security.php:85
+#: includes/security/class-owsu-security.php:86
 msgid "WordPress configuration"
 msgstr "Configuração do WordPress"
 
@@ -2697,7 +2753,7 @@ msgstr ""
 "sem suporte."
 
 #: includes/security/class-owsu-areas.php:115
-#: includes/security/class-owsu-security.php:377
+#: includes/security/class-owsu-security.php:378
 msgid "Site on HTTPS"
 msgstr "Site em HTTPS"
 
@@ -2896,31 +2952,31 @@ msgstr "[%s] Endereço de login desativado"
 msgid "[%s] Login address changed"
 msgstr "[%s] Endereço de login alterado"
 
-#: includes/security/class-owsu-security.php:82
+#: includes/security/class-owsu-security.php:83
 msgid "Plugins, themes and vulnerabilities"
 msgstr "Plugins, temas e vulnerabilidades"
 
-#: includes/security/class-owsu-security.php:83
+#: includes/security/class-owsu-security.php:84
 msgid "Security headers (HTTP)"
 msgstr "Cabeçalhos de segurança (HTTP)"
 
-#: includes/security/class-owsu-security.php:84
+#: includes/security/class-owsu-security.php:85
 msgid "Files, folders and permissions"
 msgstr "Arquivos, pastas e permissões"
 
-#: includes/security/class-owsu-security.php:86
+#: includes/security/class-owsu-security.php:87
 msgid "Information exposure"
 msgstr "Exposição de informações"
 
-#: includes/security/class-owsu-security.php:87
+#: includes/security/class-owsu-security.php:88
 msgid "Users and access"
 msgstr "Usuários e acesso"
 
-#: includes/security/class-owsu-security.php:88
+#: includes/security/class-owsu-security.php:89
 msgid "Server, PHP and SSL"
 msgstr "Servidor, PHP e SSL"
 
-#: includes/security/class-owsu-security.php:111
+#: includes/security/class-owsu-security.php:112
 msgid ""
 "<p>On nginx (Plesk: <em>Websites & Domains → (domain) → Hosting & DNS → "
 "Apache & nginx Settings → Additional nginx directives</em>), paste the lines"
@@ -2930,7 +2986,7 @@ msgstr ""
 "e DNS → Configurações do Apache e nginx → Diretivas adicionais do "
 "nginx</em>. Cole as linhas abaixo, salve e rode a verificação de novo.</p>"
 
-#: includes/security/class-owsu-security.php:115
+#: includes/security/class-owsu-security.php:116
 msgid ""
 "<p>Click <strong>Apply fix</strong> to have WordPress itself send the "
 "header. If the site uses page caching (WP Rocket, LiteSpeed, nginx cache), "
@@ -2942,19 +2998,19 @@ msgstr ""
 "cache do nginx), prefira configurar no servidor, porque páginas servidas do "
 "cache não passam pelo PHP.</p>"
 
-#: includes/security/class-owsu-security.php:117
+#: includes/security/class-owsu-security.php:118
 msgid "<p>Apache (.htaccess):</p>"
 msgstr "<p>Apache (.htaccess):</p>"
 
-#: includes/security/class-owsu-security.php:128
+#: includes/security/class-owsu-security.php:129
 msgid "Known vulnerabilities in the installed versions"
 msgstr "Vulnerabilidades conhecidas nas versões instaladas"
 
-#: includes/security/class-owsu-security.php:129
+#: includes/security/class-owsu-security.php:130
 msgid "Known vulnerability check"
 msgstr "Verificação de vulnerabilidades conhecidas"
 
-#: includes/security/class-owsu-security.php:130
+#: includes/security/class-owsu-security.php:131
 msgid ""
 "Matches the installed versions of WordPress, plugins and themes against the "
 "Wordfence Intelligence database."
@@ -2962,7 +3018,7 @@ msgstr ""
 "Cruza as versões instaladas do WordPress, plugins e temas com a base "
 "Wordfence Intelligence."
 
-#: includes/security/class-owsu-security.php:132
+#: includes/security/class-owsu-security.php:133
 msgid ""
 "<p>Update each item to the version listed as fixed. If there is no fix, "
 "deactivate and replace the plugin/theme. Paid plugins: ask the client for "
@@ -2972,15 +3028,15 @@ msgstr ""
 "correção, desative e substitua o plugin/tema. Plugins pagos: solicite a "
 "atualização ao cliente informando que se trata de correção de segurança.</p>"
 
-#: includes/security/class-owsu-security.php:136
+#: includes/security/class-owsu-security.php:137
 msgid "Plugins removed or abandoned on wordpress.org"
 msgstr "Plugins removidos ou abandonados no wordpress.org"
 
-#: includes/security/class-owsu-security.php:137
+#: includes/security/class-owsu-security.php:138
 msgid "Review of unmaintained plugins"
 msgstr "Revisão de plugins sem manutenção"
 
-#: includes/security/class-owsu-security.php:138
+#: includes/security/class-owsu-security.php:139
 msgid ""
 "Plugins closed in the repository often have unfixed flaws; plugins not "
 "updated for more than 2 years are a growing risk."
@@ -2988,7 +3044,7 @@ msgstr ""
 "Plugins fechados no repositório costumam ter falhas sem correção; plugins "
 "sem atualização há mais de 2 anos são um risco crescente."
 
-#: includes/security/class-owsu-security.php:140
+#: includes/security/class-owsu-security.php:141
 msgid ""
 "<p>Replace closed plugins with maintained alternatives. For the ones without"
 " updates, assess whether they are still needed.</p>"
@@ -2996,21 +3052,21 @@ msgstr ""
 "<p>Substitua os plugins fechados por alternativas mantidas. Para os sem "
 "atualização, avalie se ainda são necessários.</p>"
 
-#: includes/security/class-owsu-security.php:144
+#: includes/security/class-owsu-security.php:145
 msgid "Plugins and themes installed but not used"
 msgstr "Plugins e temas instalados mas não usados"
 
-#: includes/security/class-owsu-security.php:145
+#: includes/security/class-owsu-security.php:146
 msgid "Removal of unused components"
 msgstr "Remoção de componentes sem uso"
 
-#: includes/security/class-owsu-security.php:146
+#: includes/security/class-owsu-security.php:147
 msgid ""
 "Even when deactivated, the files remain on the server and can be exploited."
 msgstr ""
 "Mesmo desativados, os arquivos continuam no servidor e podem ser explorados."
 
-#: includes/security/class-owsu-security.php:148
+#: includes/security/class-owsu-security.php:149
 msgid ""
 "<p>Remove them from the Plugins/Themes screen. Keep only one recent default "
 "theme (Twenty...) as a fallback.</p>"
@@ -3018,15 +3074,15 @@ msgstr ""
 "<p>Remova pela tela de Plugins/Temas da rede. Mantenha apenas um tema padrão"
 " (Twenty...) recente como reserva.</p>"
 
-#: includes/security/class-owsu-security.php:152
+#: includes/security/class-owsu-security.php:153
 msgid "HSTS (Strict-Transport-Security)"
 msgstr "HSTS (Strict-Transport-Security)"
 
-#: includes/security/class-owsu-security.php:153
+#: includes/security/class-owsu-security.php:154
 msgid "Browsing always over a secure connection (HTTPS)"
 msgstr "Navegação sempre em conexão segura (HTTPS)"
 
-#: includes/security/class-owsu-security.php:154
+#: includes/security/class-owsu-security.php:155
 msgid ""
 "Forces the browser to use HTTPS, preventing the connection from being "
 "downgraded to HTTP."
@@ -3034,15 +3090,15 @@ msgstr ""
 "Obriga o navegador a usar HTTPS, impedindo que a conexão seja rebaixada para"
 " HTTP."
 
-#: includes/security/class-owsu-security.php:160
+#: includes/security/class-owsu-security.php:161
 msgid "X-Content-Type-Options"
 msgstr "X-Content-Type-Options"
 
-#: includes/security/class-owsu-security.php:161
+#: includes/security/class-owsu-security.php:162
 msgid "Protection against files being misinterpreted"
 msgstr "Proteção contra interpretação indevida de arquivos"
 
-#: includes/security/class-owsu-security.php:162
+#: includes/security/class-owsu-security.php:163
 msgid ""
 "Stops the browser from \"guessing\" the file type and running disguised "
 "content."
@@ -3050,42 +3106,42 @@ msgstr ""
 "Impede o navegador de \"adivinhar\" o tipo de arquivo e executar conteúdo "
 "disfarçado."
 
-#: includes/security/class-owsu-security.php:168
+#: includes/security/class-owsu-security.php:169
 msgid "Clickjacking protection (X-Frame-Options)"
 msgstr "Proteção contra clickjacking (X-Frame-Options)"
 
-#: includes/security/class-owsu-security.php:169
+#: includes/security/class-owsu-security.php:170
 msgid "Protection against the site being shown inside fake pages"
 msgstr "Proteção contra exibição do site dentro de páginas falsas"
 
-#: includes/security/class-owsu-security.php:170
+#: includes/security/class-owsu-security.php:171
 msgid ""
 "Prevents other domains from loading the site in an iframe to trick the user."
 msgstr ""
 "Impede que o site seja carregado em iframe por outros domínios para enganar "
 "o usuário."
 
-#: includes/security/class-owsu-security.php:176
+#: includes/security/class-owsu-security.php:177
 msgid "Referrer-Policy"
 msgstr "Referrer-Policy"
 
-#: includes/security/class-owsu-security.php:177
+#: includes/security/class-owsu-security.php:178
 msgid "Privacy of external links"
 msgstr "Privacidade de links externos"
 
-#: includes/security/class-owsu-security.php:178
+#: includes/security/class-owsu-security.php:179
 msgid "Avoids leaking internal addresses (with parameters) to external sites."
 msgstr "Evita vazar endereços internos (com parâmetros) para sites externos."
 
-#: includes/security/class-owsu-security.php:184
+#: includes/security/class-owsu-security.php:185
 msgid "Permissions-Policy"
 msgstr "Permissions-Policy"
 
-#: includes/security/class-owsu-security.php:185
+#: includes/security/class-owsu-security.php:186
 msgid "Camera and microphone blocked for third-party scripts"
 msgstr "Bloqueio de câmera e microfone por scripts de terceiros"
 
-#: includes/security/class-owsu-security.php:186
+#: includes/security/class-owsu-security.php:187
 msgid ""
 "Restricts sensitive browser features (camera, microphone, payment) that the "
 "site does not use."
@@ -3093,15 +3149,15 @@ msgstr ""
 "Restringe recursos sensíveis do navegador (câmera, microfone, pagamento) que"
 " o site não usa."
 
-#: includes/security/class-owsu-security.php:192
+#: includes/security/class-owsu-security.php:193
 msgid "Content-Security-Policy (basic)"
 msgstr "Content-Security-Policy (básica)"
 
-#: includes/security/class-owsu-security.php:193
+#: includes/security/class-owsu-security.php:194
 msgid "Content security policy"
 msgstr "Política de segurança de conteúdo"
 
-#: includes/security/class-owsu-security.php:194
+#: includes/security/class-owsu-security.php:195
 msgid ""
 "The fix applies a basic, safe policy (forces resources over HTTPS and blocks"
 " external iframes). A full CSP, restricting scripts, needs manual tuning so "
@@ -3111,7 +3167,7 @@ msgstr ""
 "bloqueia iframes externos). Uma CSP completa, que restringe scripts, exige "
 "ajuste manual para não quebrar Elementor e serviços externos."
 
-#: includes/security/class-owsu-security.php:196
+#: includes/security/class-owsu-security.php:197
 msgid ""
 "<p>The automatic fix only applies <code>upgrade-insecure-requests; frame-"
 "ancestors 'self'</code>. For a full policy, start in test mode "
@@ -3123,19 +3179,19 @@ msgstr ""
 " teste (<code>Content-Security-Policy-Report-Only</code>), observe o console"
 " do navegador por alguns dias e só então ative.</p>"
 
-#: includes/security/class-owsu-security.php:200
+#: includes/security/class-owsu-security.php:201
 msgid "Technology exposure (X-Powered-By)"
 msgstr "Exposição de tecnologia (X-Powered-By)"
 
-#: includes/security/class-owsu-security.php:201
+#: includes/security/class-owsu-security.php:202
 msgid "Server technical information hidden"
 msgstr "Ocultação de informações técnicas do servidor"
 
-#: includes/security/class-owsu-security.php:202
+#: includes/security/class-owsu-security.php:203
 msgid "Revealing the PHP/control panel version helps attackers pick exploits."
 msgstr "Informar a versão do PHP/painel ajuda atacantes a escolher exploits."
 
-#: includes/security/class-owsu-security.php:204
+#: includes/security/class-owsu-security.php:205
 msgid ""
 "<p>The plugin removes the header generated by PHP. If it still shows up "
 "(e.g. <code>PleskLin</code>), it comes from the server.</p>"
@@ -3143,7 +3199,7 @@ msgstr ""
 "<p>O plugin remove o cabeçalho gerado pelo PHP. Se continuar aparecendo "
 "(ex.: <code>PleskLin</code>), ele vem do servidor.</p>"
 
-#: includes/security/class-owsu-security.php:205
+#: includes/security/class-owsu-security.php:206
 msgid ""
 "<p>You can also turn off <code>expose_php</code> in the PHP settings of the "
 "domain.</p>"
@@ -3151,15 +3207,15 @@ msgstr ""
 "<p>Também é possível desligar <code>expose_php</code> nas configurações de "
 "PHP do domínio no Plesk.</p>"
 
-#: includes/security/class-owsu-security.php:209
+#: includes/security/class-owsu-security.php:210
 msgid "PHP execution in the uploads folder"
 msgstr "Execução de PHP na pasta de uploads"
 
-#: includes/security/class-owsu-security.php:210
+#: includes/security/class-owsu-security.php:211
 msgid "Script execution blocked in the uploaded files folder"
 msgstr "Bloqueio de execução de scripts na pasta de arquivos enviados"
 
-#: includes/security/class-owsu-security.php:211
+#: includes/security/class-owsu-security.php:212
 msgid ""
 "This is the most common way in: a malicious file uploaded as an \"image\" is"
 " executed on the server."
@@ -3167,7 +3223,7 @@ msgstr ""
 "É a forma mais comum de invasão: um arquivo malicioso enviado como "
 "\"imagem\" é executado no servidor."
 
-#: includes/security/class-owsu-security.php:213
+#: includes/security/class-owsu-security.php:214
 msgid ""
 "<p>The fix writes rules to the <code>.htaccess</code> of the uploads folder "
 "(Apache). With nginx, static files may be served directly; if the check "
@@ -3177,21 +3233,21 @@ msgstr ""
 "(Apache). No Plesk, arquivos estáticos podem ser atendidos direto pelo "
 "nginx; se a verificação continuar falhando após aplicar, adicione:</p>"
 
-#: includes/security/class-owsu-security.php:219
+#: includes/security/class-owsu-security.php:220
 msgid "Directory listing in uploads"
 msgstr "Listagem de diretório em uploads"
 
-#: includes/security/class-owsu-security.php:220
+#: includes/security/class-owsu-security.php:221
 msgid "File listing blocked"
 msgstr "Bloqueio de listagem de arquivos"
 
-#: includes/security/class-owsu-security.php:221
+#: includes/security/class-owsu-security.php:222
 msgid "Without blocking, anyone can browse and download every uploaded file."
 msgstr ""
 "Sem bloqueio, qualquer pessoa pode navegar e baixar todos os arquivos "
 "enviados."
 
-#: includes/security/class-owsu-security.php:223
+#: includes/security/class-owsu-security.php:224
 msgid ""
 "<p>The fix adds <code>Options -Indexes</code> to the uploads "
 "<code>.htaccess</code>. On nginx, listing is controlled by "
@@ -3201,15 +3257,15 @@ msgstr ""
 "<code>.htaccess</code> de uploads. No nginx, a listagem é controlada por "
 "<code>autoindex</code>; verifique se está <code>off</code>:</p>"
 
-#: includes/security/class-owsu-security.php:227
+#: includes/security/class-owsu-security.php:228
 msgid "PHP files inside uploads"
 msgstr "Arquivos PHP dentro de uploads"
 
-#: includes/security/class-owsu-security.php:228
+#: includes/security/class-owsu-security.php:229
 msgid "Scan for suspicious files"
 msgstr "Varredura de arquivos suspeitos"
 
-#: includes/security/class-owsu-security.php:229
+#: includes/security/class-owsu-security.php:230
 msgid ""
 "The uploads folder should not contain scripts. PHP files there are a strong "
 "sign of an intrusion."
@@ -3217,7 +3273,7 @@ msgstr ""
 "A pasta uploads não deveria conter scripts. Arquivos PHP ali são forte "
 "indício de invasão."
 
-#: includes/security/class-owsu-security.php:231
+#: includes/security/class-owsu-security.php:232
 msgid ""
 "<p>Open each listed file with your hosting file manager. If you do not "
 "recognize it, make a copy for analysis and remove it. Then run a full scan "
@@ -3229,15 +3285,15 @@ msgstr ""
 "varredura completa (Wordfence) e troque as senhas de administradores, FTP e "
 "banco de dados.</p>"
 
-#: includes/security/class-owsu-security.php:235
+#: includes/security/class-owsu-security.php:236
 msgid "wp-config.php permissions"
 msgstr "Permissão do wp-config.php"
 
-#: includes/security/class-owsu-security.php:236
+#: includes/security/class-owsu-security.php:237
 msgid "Configuration file protection"
 msgstr "Proteção do arquivo de configuração"
 
-#: includes/security/class-owsu-security.php:237
+#: includes/security/class-owsu-security.php:238
 msgid ""
 "wp-config.php holds the database password and must not be readable by other "
 "users on the server."
@@ -3245,7 +3301,7 @@ msgstr ""
 "O wp-config.php contém a senha do banco de dados e não deve ser legível por "
 "outros usuários do servidor."
 
-#: includes/security/class-owsu-security.php:239
+#: includes/security/class-owsu-security.php:240
 msgid ""
 "<p>Recommended <code>640</code> (or <code>600</code>). In your hosting file "
 "manager: wp-config.php → Change permissions. Over SSH:</p>"
@@ -3253,15 +3309,15 @@ msgstr ""
 "<p>Recomendado <code>640</code> (ou <code>600</code>). No Plesk: Gerenciador"
 " de Arquivos → wp-config.php → Alterar permissões. Por SSH:</p>"
 
-#: includes/security/class-owsu-security.php:243
+#: includes/security/class-owsu-security.php:244
 msgid "Folders and files writable by everyone (777/666)"
 msgstr "Pastas e arquivos com permissão de escrita para todos (777/666)"
 
-#: includes/security/class-owsu-security.php:244
+#: includes/security/class-owsu-security.php:245
 msgid "Folder and file permissions adjusted"
 msgstr "Ajuste de permissões de pastas e arquivos"
 
-#: includes/security/class-owsu-security.php:245
+#: includes/security/class-owsu-security.php:246
 msgid ""
 "World-writable permissions let other processes on the server change the "
 "site."
@@ -3269,7 +3325,7 @@ msgstr ""
 "Permissão de escrita global permite que outros processos do servidor alterem"
 " o site."
 
-#: includes/security/class-owsu-security.php:247
+#: includes/security/class-owsu-security.php:248
 msgid ""
 "<p>Recommended standard: folders <code>755</code>, files <code>644</code>. "
 "Over SSH, in the site folder:</p>"
@@ -3277,15 +3333,15 @@ msgstr ""
 "<p>Padrão recomendado: pastas <code>755</code>, arquivos <code>644</code>. "
 "Por SSH, na pasta do site:</p>"
 
-#: includes/security/class-owsu-security.php:252
+#: includes/security/class-owsu-security.php:253
 msgid "Sensitive files publicly accessible"
 msgstr "Arquivos sensíveis acessíveis publicamente"
 
-#: includes/security/class-owsu-security.php:253
+#: includes/security/class-owsu-security.php:254
 msgid "Access to sensitive files blocked"
 msgstr "Bloqueio de acesso a arquivos sensíveis"
 
-#: includes/security/class-owsu-security.php:254
+#: includes/security/class-owsu-security.php:255
 msgid ""
 "Backups (.sql, .zip), .env, .git and debug.log can expose passwords and "
 "data. readme.html and license.txt reveal the WordPress version."
@@ -3293,7 +3349,7 @@ msgstr ""
 "Backups (.sql, .zip), .env, .git e debug.log podem expor senhas e dados. "
 "readme.html e license.txt revelam a versão do WordPress."
 
-#: includes/security/class-owsu-security.php:256
+#: includes/security/class-owsu-security.php:257
 msgid ""
 "<p>The fix blocks these files through <code>.htaccess</code>. Backups and "
 "copies in the site root should be <strong>removed or moved</strong> out of "
@@ -3304,15 +3360,15 @@ msgstr ""
 "fora da pasta pública. Se o bloqueio não funcionar (nginx servindo "
 "direto):</p>"
 
-#: includes/security/class-owsu-security.php:262
+#: includes/security/class-owsu-security.php:263
 msgid "Dashboard file editor"
 msgstr "Editor de arquivos do painel"
 
-#: includes/security/class-owsu-security.php:263
+#: includes/security/class-owsu-security.php:264
 msgid "Dashboard code editor disabled"
 msgstr "Desativação do editor de código do painel"
 
-#: includes/security/class-owsu-security.php:264
+#: includes/security/class-owsu-security.php:265
 msgid ""
 "If an administrator account is compromised, the editor allows malicious code"
 " to be inserted straight into plugins and themes."
@@ -3320,7 +3376,7 @@ msgstr ""
 "Se uma conta de administrador for comprometida, o editor permite inserir "
 "código malicioso direto nos plugins e temas."
 
-#: includes/security/class-owsu-security.php:266
+#: includes/security/class-owsu-security.php:267
 msgid ""
 "<p>The fix blocks the editor through the plugin. Permanent alternative in "
 "<code>wp-config.php</code>:</p>"
@@ -3328,20 +3384,20 @@ msgstr ""
 "<p>A correção bloqueia o editor pelo plugin. Alternativa definitiva no "
 "<code>wp-config.php</code>:</p>"
 
-#: includes/security/class-owsu-security.php:270
+#: includes/security/class-owsu-security.php:271
 msgid "Debug mode / error display"
 msgstr "Modo de depuração / exibição de erros"
 
-#: includes/security/class-owsu-security.php:271
+#: includes/security/class-owsu-security.php:272
 msgid "Technical error messages hidden"
 msgstr "Ocultação de mensagens de erro técnicas"
 
-#: includes/security/class-owsu-security.php:272
+#: includes/security/class-owsu-security.php:273
 msgid "Errors shown on screen reveal server paths and internal details."
 msgstr ""
 "Erros exibidos na tela revelam caminhos do servidor e detalhes internos."
 
-#: includes/security/class-owsu-security.php:274
+#: includes/security/class-owsu-security.php:275
 msgid ""
 "<p>The fix hides errors on screen. Ideally, adjust the production <code>wp-"
 "config.php</code>:</p>"
@@ -3349,20 +3405,20 @@ msgstr ""
 "<p>A correção oculta os erros na tela. O ideal é ajustar o <code>wp-"
 "config.php</code> de produção:</p>"
 
-#: includes/security/class-owsu-security.php:279
+#: includes/security/class-owsu-security.php:280
 msgid "Security keys (salts) in wp-config"
 msgstr "Chaves de segurança (salts) do wp-config"
 
-#: includes/security/class-owsu-security.php:280
+#: includes/security/class-owsu-security.php:281
 msgid "Session security keys"
 msgstr "Chaves de segurança das sessões"
 
-#: includes/security/class-owsu-security.php:281
+#: includes/security/class-owsu-security.php:282
 msgid "Missing or default keys make it easier to forge login sessions."
 msgstr ""
 "Chaves ausentes ou padrão facilitam a falsificação de sessões de login."
 
-#: includes/security/class-owsu-security.php:283
+#: includes/security/class-owsu-security.php:284
 msgid ""
 "<p>Generate new keys at <a href=\"https://api.wordpress.org/secret-"
 "key/1.1/salt/\" target=\"_blank\" rel=\"noopener\">api.wordpress.org/secret-"
@@ -3374,32 +3430,32 @@ msgstr ""
 "key/1.1/salt</a> e substitua o bloco correspondente no <code>wp-"
 "config.php</code>. Todos os usuários precisarão fazer login novamente.</p>"
 
-#: includes/security/class-owsu-security.php:287
+#: includes/security/class-owsu-security.php:288
 msgid "Admin dashboard over HTTPS only"
 msgstr "Painel administrativo somente em HTTPS"
 
-#: includes/security/class-owsu-security.php:288
+#: includes/security/class-owsu-security.php:289
 msgid "Dashboard access over a secure connection only"
 msgstr "Acesso ao painel apenas por conexão segura"
 
-#: includes/security/class-owsu-security.php:289
+#: includes/security/class-owsu-security.php:290
 msgid "Ensures dashboard passwords and cookies never travel unencrypted."
 msgstr ""
 "Garante que senhas e cookies do painel nunca trafeguem sem criptografia."
 
-#: includes/security/class-owsu-security.php:291
+#: includes/security/class-owsu-security.php:292
 msgid "<p>Alternative in <code>wp-config.php</code>:</p>"
 msgstr "<p>Alternativa no <code>wp-config.php</code>:</p>"
 
-#: includes/security/class-owsu-security.php:295
+#: includes/security/class-owsu-security.php:296
 msgid "WordPress automatic security updates"
 msgstr "Atualizações automáticas de segurança do WordPress"
 
-#: includes/security/class-owsu-security.php:296
+#: includes/security/class-owsu-security.php:297
 msgid "Automatic security updates"
 msgstr "Atualizações automáticas de segurança"
 
-#: includes/security/class-owsu-security.php:297
+#: includes/security/class-owsu-security.php:298
 msgid ""
 "Maintenance releases (e.g. 6.8.1 → 6.8.2) carry urgent fixes and should be "
 "applied automatically."
@@ -3407,7 +3463,7 @@ msgstr ""
 "As versões de correção (ex.: 6.8.1 → 6.8.2) trazem correções urgentes e "
 "devem ser aplicadas automaticamente."
 
-#: includes/security/class-owsu-security.php:299
+#: includes/security/class-owsu-security.php:300
 msgid ""
 "<p>Remove the <code>AUTOMATIC_UPDATER_DISABLED</code> and "
 "<code>WP_AUTO_UPDATE_CORE = false</code> lines from <code>wp-"
@@ -3417,11 +3473,11 @@ msgstr ""
 "<code>AUTOMATIC_UPDATER_DISABLED</code> e <code>WP_AUTO_UPDATE_CORE = "
 "false</code>, ou use:</p>"
 
-#: includes/security/class-owsu-security.php:304
+#: includes/security/class-owsu-security.php:305
 msgid "Legacy interface used in password attacks disabled"
 msgstr "Desativação de interface antiga usada em ataques de senha"
 
-#: includes/security/class-owsu-security.php:305
+#: includes/security/class-owsu-security.php:306
 msgid ""
 "xmlrpc.php lets attackers try hundreds of passwords in a single request. It "
 "is only needed for Jetpack or the old WordPress app."
@@ -3429,7 +3485,7 @@ msgstr ""
 "O xmlrpc.php permite testar centenas de senhas em uma única requisição. Só é"
 " necessário para Jetpack ou o app antigo do WordPress."
 
-#: includes/security/class-owsu-security.php:307
+#: includes/security/class-owsu-security.php:308
 msgid ""
 "<p>The fix disables XML-RPC through the plugin. Do not apply it if the site "
 "uses Jetpack or publishing from the old mobile app.</p>"
@@ -3437,15 +3493,15 @@ msgstr ""
 "<p>A correção desativa o XML-RPC pelo plugin. Não aplique se o site usa "
 "Jetpack ou publicação pelo aplicativo móvel antigo.</p>"
 
-#: includes/security/class-owsu-security.php:311
+#: includes/security/class-owsu-security.php:312
 msgid "Public user listing"
 msgstr "Listagem pública de usuários"
 
-#: includes/security/class-owsu-security.php:312
+#: includes/security/class-owsu-security.php:313
 msgid "Usernames hidden"
 msgstr "Ocultação dos nomes de usuário"
 
-#: includes/security/class-owsu-security.php:313
+#: includes/security/class-owsu-security.php:314
 msgid ""
 "The REST API and the ?author= parameter reveal user logins, half the way to "
 "a password attack."
@@ -3453,7 +3509,7 @@ msgstr ""
 "A API REST e o parâmetro ?author= revelam os logins dos usuários, metade do "
 "caminho para um ataque de senha."
 
-#: includes/security/class-owsu-security.php:315
+#: includes/security/class-owsu-security.php:316
 msgid ""
 "<p>The fix blocks the user listing in the API for logged-out visitors, the "
 "?author= redirect and the users sitemap. The editor and the dashboard keep "
@@ -3463,21 +3519,21 @@ msgstr ""
 "logados, o redirecionamento ?author= e o sitemap de usuários. O editor e o "
 "painel continuam funcionando normalmente.</p>"
 
-#: includes/security/class-owsu-security.php:319
+#: includes/security/class-owsu-security.php:320
 msgid "WordPress version in the page source"
 msgstr "Versão do WordPress no código-fonte"
 
-#: includes/security/class-owsu-security.php:320
+#: includes/security/class-owsu-security.php:321
 msgid "WordPress version hidden"
 msgstr "Ocultação da versão do WordPress"
 
-#: includes/security/class-owsu-security.php:321
+#: includes/security/class-owsu-security.php:322
 msgid "The \"generator\" tag tells any visitor the exact WordPress version."
 msgstr ""
 "A tag \"generator\" informa a versão exata do WordPress a qualquer "
 "visitante."
 
-#: includes/security/class-owsu-security.php:323
+#: includes/security/class-owsu-security.php:324
 msgid ""
 "<p>The fix removes the tag. Plugins such as Elementor may add their own tag;"
 " turn it off in the plugin settings, if available.</p>"
@@ -3485,19 +3541,19 @@ msgstr ""
 "<p>A correção remove a tag. Plugins como o Elementor podem adicionar a "
 "própria tag; desative nas configurações do plugin, se existir.</p>"
 
-#: includes/security/class-owsu-security.php:327
+#: includes/security/class-owsu-security.php:328
 msgid "User with the \"admin\" login"
 msgstr "Usuário com login \"admin\""
 
-#: includes/security/class-owsu-security.php:328
+#: includes/security/class-owsu-security.php:329
 msgid "Review of predictable usernames"
 msgstr "Revisão de nomes de usuário previsíveis"
 
-#: includes/security/class-owsu-security.php:329
+#: includes/security/class-owsu-security.php:330
 msgid "\"admin\" is the first login tried in automated attacks."
 msgstr "\"admin\" é o primeiro login testado em ataques automatizados."
 
-#: includes/security/class-owsu-security.php:331
+#: includes/security/class-owsu-security.php:332
 msgid ""
 "<p>Create a new administrator with a different login, log in with it, and "
 "delete the \"admin\" user, attributing its content to the new user.</p>"
@@ -3505,15 +3561,15 @@ msgstr ""
 "<p>Crie um novo administrador com outro login, entre com ele, e exclua o "
 "usuário \"admin\" atribuindo o conteúdo ao novo usuário.</p>"
 
-#: includes/security/class-owsu-security.php:335
+#: includes/security/class-owsu-security.php:336
 msgid "Administrators and last login"
 msgstr "Administradores e último acesso"
 
-#: includes/security/class-owsu-security.php:336
+#: includes/security/class-owsu-security.php:337
 msgid "Review of administrative accounts"
 msgstr "Revisão de contas administrativas"
 
-#: includes/security/class-owsu-security.php:337
+#: includes/security/class-owsu-security.php:338
 msgid ""
 "Every administrative account is a way in. Unused accounts should be removed "
 "or downgraded."
@@ -3521,7 +3577,7 @@ msgstr ""
 "Cada conta administrativa é uma porta de entrada. Contas sem uso devem ser "
 "removidas ou rebaixadas."
 
-#: includes/security/class-owsu-security.php:339
+#: includes/security/class-owsu-security.php:340
 msgid ""
 "<p>Review the list. The last login is recorded by the plugin since it was "
 "installed. Downgrade or remove accounts of people who no longer need "
@@ -3531,19 +3587,19 @@ msgstr ""
 "instalação. Rebaixe ou remova contas de pessoas que não precisam mais de "
 "acesso.</p>"
 
-#: includes/security/class-owsu-security.php:343
+#: includes/security/class-owsu-security.php:344
 msgid "Two-factor authentication (2FA)"
 msgstr "Autenticação em dois fatores (2FA)"
 
-#: includes/security/class-owsu-security.php:344
+#: includes/security/class-owsu-security.php:345
 msgid "Login with two-step verification"
 msgstr "Login com verificação em duas etapas"
 
-#: includes/security/class-owsu-security.php:345
+#: includes/security/class-owsu-security.php:346
 msgid "With 2FA, a leaked password is not enough to break into the dashboard."
 msgstr "Com 2FA, uma senha vazada não basta para invadir o painel."
 
-#: includes/security/class-owsu-security.php:347
+#: includes/security/class-owsu-security.php:348
 msgid ""
 "<p>Recommended: <strong>Wordfence</strong> (free, includes 2FA and firewall)"
 " or the <strong>Two-Factor</strong> plugin. Enable it at least for "
@@ -3553,11 +3609,11 @@ msgstr ""
 " ou o plugin <strong>Two-Factor</strong>. Ative ao menos para "
 "administradores.</p>"
 
-#: includes/security/class-owsu-security.php:352
+#: includes/security/class-owsu-security.php:353
 msgid "Custom dashboard access address"
 msgstr "Endereço de acesso ao painel personalizado"
 
-#: includes/security/class-owsu-security.php:353
+#: includes/security/class-owsu-security.php:354
 msgid ""
 "Bots attack /wp-login.php and /wp-admin on every WordPress site. With a "
 "custom address, those attacks never reach the login form."
@@ -3565,7 +3621,7 @@ msgstr ""
 "Robôs atacam o /wp-login.php e o /wp-admin de todos os sites WordPress. Com "
 "um endereço próprio, esses ataques nem chegam ao formulário de login."
 
-#: includes/security/class-owsu-security.php:356
+#: includes/security/class-owsu-security.php:357
 msgid ""
 "<p>In <strong>Settings → Login protection</strong>, enter the address you "
 "want (e.g. <code>restricted-access</code>) and save. It replaces the WPS "
@@ -3575,12 +3631,12 @@ msgstr ""
 " desejado (ex.: <code>acesso-restrito</code>) e salve. Substitui o plugin "
 "WPS Hide Login, que pode ser desativado depois.</p>"
 
-#: includes/security/class-owsu-security.php:360
 #: includes/security/class-owsu-security.php:361
+#: includes/security/class-owsu-security.php:362
 msgid "Anti-bot check on login (reCAPTCHA)"
 msgstr "Verificação anti-robô no login (reCAPTCHA)"
 
-#: includes/security/class-owsu-security.php:362
+#: includes/security/class-owsu-security.php:363
 msgid ""
 "Stops bots from trying passwords and sending \"lost password\" requests in "
 "bulk."
@@ -3588,7 +3644,7 @@ msgstr ""
 "Impede que robôs testem senhas e enviem pedidos de \"esqueci a senha\" em "
 "massa."
 
-#: includes/security/class-owsu-security.php:365
+#: includes/security/class-owsu-security.php:366
 msgid ""
 "<p>In <strong>Settings → Login protection</strong>, choose v2 or v3, paste "
 "the keys generated at <a "
@@ -3602,19 +3658,19 @@ msgstr ""
 "rel=\"noopener\">google.com/recaptcha/admin</a>, salve e faça o teste para "
 "ativar.</p>"
 
-#: includes/security/class-owsu-security.php:369
+#: includes/security/class-owsu-security.php:370
 msgid "Login attempt limit"
 msgstr "Limite de tentativas de login"
 
-#: includes/security/class-owsu-security.php:370
+#: includes/security/class-owsu-security.php:371
 msgid "Protection against repeated password attempts"
 msgstr "Proteção contra tentativas repetidas de senha"
 
-#: includes/security/class-owsu-security.php:371
+#: includes/security/class-owsu-security.php:372
 msgid "Without a limit, bots can try passwords indefinitely."
 msgstr "Sem limite, robôs podem testar senhas indefinidamente."
 
-#: includes/security/class-owsu-security.php:373
+#: includes/security/class-owsu-security.php:374
 msgid ""
 "<p><strong>Wordfence</strong> already covers this. Lightweight alternative: "
 "<strong>Limit Login Attempts Reloaded</strong>. On the server, "
@@ -3626,15 +3682,15 @@ msgstr ""
 "ativar o <em>Fail2Ban</em> com o filtro do WordPress (WordPress "
 "Toolkit).</p>"
 
-#: includes/security/class-owsu-security.php:378
+#: includes/security/class-owsu-security.php:379
 msgid "Secure connection (HTTPS)"
 msgstr "Conexão segura (HTTPS)"
 
-#: includes/security/class-owsu-security.php:379
+#: includes/security/class-owsu-security.php:380
 msgid "Without HTTPS, passwords and form data travel unencrypted."
 msgstr "Sem HTTPS, senhas e dados de formulários trafegam sem criptografia."
 
-#: includes/security/class-owsu-security.php:381
+#: includes/security/class-owsu-security.php:382
 msgid ""
 "<p>Issue a certificate (e.g. Let's Encrypt in your hosting panel) and change"
 " the site address to https (Settings → General, or Network → Sites).</p>"
@@ -3642,15 +3698,15 @@ msgstr ""
 "<p>Emita um certificado (Plesk → SSL/TLS → Let's Encrypt) e altere o "
 "endereço do site para https em Rede → Sites.</p>"
 
-#: includes/security/class-owsu-security.php:385
+#: includes/security/class-owsu-security.php:386
 msgid "SSL certificate validity"
 msgstr "Validade do certificado SSL"
 
-#: includes/security/class-owsu-security.php:386
+#: includes/security/class-owsu-security.php:387
 msgid "Security certificate validity"
 msgstr "Validade do certificado de segurança"
 
-#: includes/security/class-owsu-security.php:387
+#: includes/security/class-owsu-security.php:388
 msgid ""
 "An expired certificate takes the site down and shows security warnings to "
 "visitors."
@@ -3658,7 +3714,7 @@ msgstr ""
 "Um certificado vencido derruba o acesso e exibe alertas de segurança aos "
 "visitantes."
 
-#: includes/security/class-owsu-security.php:389
+#: includes/security/class-owsu-security.php:390
 msgid ""
 "<p>In your hosting panel (Plesk: <em>SSL/TLS Certificates</em>), check that "
 "automatic renewal (Let's Encrypt) is active and renew manually if "
@@ -3668,21 +3724,21 @@ msgstr ""
 "automática (Let's Encrypt) está ativa e renove manualmente se "
 "necessário.</p>"
 
-#: includes/security/class-owsu-security.php:393
+#: includes/security/class-owsu-security.php:394
 msgid "PHP version"
 msgstr "Versão do PHP"
 
-#: includes/security/class-owsu-security.php:394
+#: includes/security/class-owsu-security.php:395
 msgid "PHP version with security support"
 msgstr "Versão do PHP com suporte de segurança"
 
-#: includes/security/class-owsu-security.php:395
+#: includes/security/class-owsu-security.php:396
 msgid "PHP versions out of their support period receive no security fixes."
 msgstr ""
 "Versões do PHP fora do período de suporte não recebem correções de "
 "segurança."
 
-#: includes/security/class-owsu-security.php:397
+#: includes/security/class-owsu-security.php:398
 msgid ""
 "<p>In your hosting panel (Plesk: <em>Websites & Domains → (domain) → PHP "
 "Settings</em>), choose the latest supported version (8.3 or 8.4). Test first"
@@ -3693,23 +3749,30 @@ msgstr ""
 "ambiente de homologação ou com backup, principalmente os plugins pagos.</p>"
 
 #. translators: %s: check id
-#: includes/security/class-owsu-security.php:443
+#: includes/security/class-owsu-security.php:445
 msgid "Check \"%s\" did not finish"
 msgstr "Verificação \"%s\" não concluída"
 
 #. translators: %s: check id
-#: includes/security/class-owsu-security.php:444
+#: includes/security/class-owsu-security.php:446
 msgid "Could not check:"
 msgstr "Não foi possível verificar:"
 
-#: includes/security/class-owsu-security.php:559
+#: includes/security/class-owsu-security.php:619
+msgid ""
+"(read by your browser, because the server could not reach its own site)"
+msgstr ""
+"(lido pelo seu navegador, porque o servidor não conseguiu acessar o próprio "
+"site)"
+
+#: includes/security/class-owsu-security.php:652
 msgid ""
 "Set the Wordfence Intelligence API key in Settings to enable this check."
 msgstr ""
 "Configure a chave da API Wordfence Intelligence em Configurações para ativar"
 " esta verificação."
 
-#: includes/security/class-owsu-security.php:562
+#: includes/security/class-owsu-security.php:655
 msgid ""
 "The vulnerability database has not been downloaded yet. Click \"Update "
 "vulnerability database\"."
@@ -3717,88 +3780,96 @@ msgstr ""
 "A base de vulnerabilidades ainda não foi baixada. Clique em \"Atualizar base"
 " de vulnerabilidades\"."
 
-#: includes/security/class-owsu-security.php:567
+#: includes/security/class-owsu-security.php:660
 msgid "unrated"
 msgstr "sem classificação"
 
 #. translators: %s: version
-#: includes/security/class-owsu-security.php:568
+#: includes/security/class-owsu-security.php:661
 msgid "fixed in %s"
 msgstr "corrigido em %s"
 
 #. translators: %s: version
-#: includes/security/class-owsu-security.php:568
+#: includes/security/class-owsu-security.php:661
 msgid "no fix available"
 msgstr "sem correção disponível"
 
-#: includes/security/class-owsu-security.php:576
+#: includes/security/class-owsu-security.php:669
 msgid "The last update attempt failed:"
 msgstr "Última tentativa de atualização falhou:"
 
 #. translators: %s: date of the database
-#: includes/security/class-owsu-security.php:581
+#: includes/security/class-owsu-security.php:674
 msgid "No known vulnerabilities in the installed versions (database of %s)."
 msgstr ""
 "Nenhuma vulnerabilidade conhecida nas versões instaladas (base de %s)."
 
 #. translators: 1: count, 2: date of the database
-#: includes/security/class-owsu-security.php:583
+#: includes/security/class-owsu-security.php:676
 msgid ""
 "%1$d known vulnerability(ies) in the installed versions (database of %2$s)."
 msgstr ""
 "%1$d vulnerabilidade(s) conhecida(s) nas versões instaladas (base de %2$s)."
 
-#: includes/security/class-owsu-security.php:616
+#: includes/security/class-owsu-security.php:709
 msgid "removed from wordpress.org (closed)"
 msgstr "removido do wordpress.org (fechado)"
 
 #. translators: %s: month and year
-#: includes/security/class-owsu-security.php:621
+#: includes/security/class-owsu-security.php:714
 msgid "not updated since %s"
 msgstr "sem atualização desde %s"
 
 #. translators: PHP date format: month and year
-#: includes/security/class-owsu-security.php:621
+#: includes/security/class-owsu-security.php:714
 msgctxt "month and year"
 msgid "m/Y"
 msgstr "m/Y"
 
-#: includes/security/class-owsu-security.php:626
+#: includes/security/class-owsu-security.php:719
 msgid "Could not reach wordpress.org from the server."
 msgstr "Não foi possível consultar o wordpress.org a partir do servidor."
 
-#: includes/security/class-owsu-security.php:629
+#: includes/security/class-owsu-security.php:722
 msgid "No closed or abandoned plugin found."
 msgstr "Nenhum plugin fechado ou abandonado encontrado."
 
 #. translators: %d: count
-#: includes/security/class-owsu-security.php:631
+#: includes/security/class-owsu-security.php:724
 msgid "%d plugin(s) need attention."
 msgstr "%d plugin(s) exigem atenção."
 
-#: includes/security/class-owsu-security.php:651
+#: includes/security/class-owsu-security.php:744
 msgid "All installed plugins and themes are in use."
 msgstr "Todos os plugins e temas instalados estão em uso."
 
 #. translators: %d: count
-#: includes/security/class-owsu-security.php:653
+#: includes/security/class-owsu-security.php:746
 msgid "%d installed item(s) not used on any site."
 msgstr "%d item(ns) instalado(s) sem uso em nenhum site."
 
-#: includes/security/class-owsu-security.php:663
-#: includes/security/class-owsu-security.php:712
+#: includes/security/class-owsu-security.php:756
+#: includes/security/class-owsu-security.php:811
 msgid "Could not open the home page to read the headers."
 msgstr "Não foi possível acessar a página inicial para ler os cabeçalhos."
 
-#: includes/security/class-owsu-security.php:666
+#: includes/security/class-owsu-security.php:759
 msgid "Enabled by the plugin"
 msgstr "Ativado pelo plugin"
 
-#: includes/security/class-owsu-security.php:666
+#: includes/security/class-owsu-security.php:759
 msgid "Present"
 msgstr "Presente"
 
-#: includes/security/class-owsu-security.php:669
+#: includes/security/class-owsu-security.php:766
+msgid ""
+"Enabled by the plugin. To confirm, read the headers through your browser "
+"again."
+msgstr ""
+"Ativado pelo plugin. Para confirmar, leia os cabeçalhos pelo navegador de "
+"novo."
+
+#: includes/security/class-owsu-security.php:768
 msgid ""
 "Fix active, but the header does not show on the home page (probably page "
 "cache). Configure it on the server."
@@ -3807,36 +3878,36 @@ msgstr ""
 "cache de página). Configure no servidor."
 
 #. translators: %s: header name
-#: includes/security/class-owsu-security.php:671
+#: includes/security/class-owsu-security.php:770
 msgid "Header %s missing."
 msgstr "Cabeçalho %s ausente."
 
-#: includes/security/class-owsu-security.php:676
-#: includes/security/class-owsu-security.php:978
-#: includes/security/class-owsu-security.php:1230
+#: includes/security/class-owsu-security.php:775
+#: includes/security/class-owsu-security.php:1080
+#: includes/security/class-owsu-security.php:1335
 msgid "Not applicable: the site is not on HTTPS."
 msgstr "Não se aplica: o site não está em HTTPS."
 
-#: includes/security/class-owsu-security.php:688
+#: includes/security/class-owsu-security.php:787
 msgid ""
 "Protected by the frame-ancestors directive of the Content-Security-Policy."
 msgstr "Protegido pela diretiva frame-ancestors da Content-Security-Policy."
 
-#: includes/security/class-owsu-security.php:704
+#: includes/security/class-owsu-security.php:803
 msgid "No Content-Security-Policy defined."
 msgstr "Nenhuma Content-Security-Policy definida."
 
 #. translators: %s: value of the Server header
-#: includes/security/class-owsu-security.php:715
+#: includes/security/class-owsu-security.php:814
 msgid "The Server header also reveals a version: %s."
 msgstr "O cabeçalho Server também informa versão: %s."
 
-#: includes/security/class-owsu-security.php:717
+#: includes/security/class-owsu-security.php:816
 msgid "X-Powered-By not exposed."
 msgstr "X-Powered-By não exposto."
 
 #. translators: %s: header and value
-#: includes/security/class-owsu-security.php:720
+#: includes/security/class-owsu-security.php:819
 msgid ""
 "The plugin already removes the PHP header, but the server still sends: %s. "
 "See \"How to fix\"."
@@ -3845,23 +3916,23 @@ msgstr ""
 "\"Como corrigir\"."
 
 #. translators: %s: header and value
-#: includes/security/class-owsu-security.php:722
+#: includes/security/class-owsu-security.php:821
 msgid "Exposed: %s."
 msgstr "Exposto: %s."
 
-#: includes/security/class-owsu-security.php:734
+#: includes/security/class-owsu-security.php:833
 msgid "Could not create the test file in the uploads folder."
 msgstr "Não foi possível criar o arquivo de teste na pasta uploads."
 
-#: includes/security/class-owsu-security.php:739
+#: includes/security/class-owsu-security.php:838
 msgid "The server did not answer the test (local request blocked)."
 msgstr "O servidor não respondeu ao teste (requisição local bloqueada)."
 
-#: includes/security/class-owsu-security.php:743
+#: includes/security/class-owsu-security.php:842
 msgid "A PHP file uploaded to uploads is executed by the server."
 msgstr "Um arquivo PHP enviado para uploads é executado pelo servidor."
 
-#: includes/security/class-owsu-security.php:745
+#: includes/security/class-owsu-security.php:844
 msgid ""
 "The .htaccess rule has already been applied, but the server ignores it "
 "(nginx/PHP-FPM directly). Apply the nginx directive shown in \"How to fix\"."
@@ -3870,104 +3941,109 @@ msgstr ""
 "FPM direto). Aplique a diretiva do nginx indicada em \"Como corrigir\"."
 
 #. translators: %d: HTTP status code
-#: includes/security/class-owsu-security.php:749
+#: includes/security/class-owsu-security.php:848
 msgid "PHP is not executed in uploads (HTTP response %d)."
 msgstr "PHP não é executado em uploads (resposta HTTP %d)."
 
 #. translators: %d: HTTP status code
-#: includes/security/class-owsu-security.php:749
+#: includes/security/class-owsu-security.php:848
 msgid "Rule applied by the plugin."
 msgstr "Regra aplicada pelo plugin."
 
-#: includes/security/class-owsu-security.php:756
+#: includes/security/class-owsu-security.php:855
 msgid "The server did not answer the test."
 msgstr "O servidor não respondeu ao teste."
 
-#: includes/security/class-owsu-security.php:760
+#: includes/security/class-owsu-security.php:859
 msgid "The uploads folder lists every file when opened in the browser."
 msgstr ""
 "A pasta uploads lista todos os arquivos ao ser acessada pelo navegador."
 
-#: includes/security/class-owsu-security.php:760
+#: includes/security/class-owsu-security.php:859
 msgid "The .htaccess rule is applied, but the server ignores it."
 msgstr "A regra .htaccess está aplicada, mas o servidor não a respeita."
 
-#: includes/security/class-owsu-security.php:762
+#: includes/security/class-owsu-security.php:861
 msgid "Directory listing blocked."
 msgstr "Listagem de diretório bloqueada."
 
-#: includes/security/class-owsu-security.php:771
+#: includes/security/class-owsu-security.php:870
 msgid "Uploads folder not found."
 msgstr "Pasta uploads não encontrada."
 
-#: includes/security/class-owsu-security.php:776
+#: includes/security/class-owsu-security.php:875
 msgid "scan stopped by time/quantity limit"
 msgstr "varredura interrompida por limite de tempo/quantidade"
 
-#: includes/security/class-owsu-security.php:791
+#: includes/security/class-owsu-security.php:890
 msgid "list limited to 100 files"
 msgstr "lista limitada a 100 arquivos"
 
 #. translators: %s: number of files
-#: includes/security/class-owsu-security.php:796
+#: includes/security/class-owsu-security.php:895
 msgid "No PHP file found in uploads (%s files checked)."
 msgstr "Nenhum arquivo PHP encontrado em uploads (%s arquivos verificados)."
 
-#: includes/security/class-owsu-security.php:798
+#: includes/security/class-owsu-security.php:897
 msgid "PHP files found in the uploads folder. Check them immediately."
 msgstr "Arquivos PHP encontrados na pasta uploads. Verifique imediatamente."
 
-#: includes/security/class-owsu-security.php:822
+#: includes/security/class-owsu-security.php:921
 msgid "wp-config.php not found."
 msgstr "wp-config.php não localizado."
 
 #. translators: %s: file permission, e.g. 0644
-#: includes/security/class-owsu-security.php:826
+#: includes/security/class-owsu-security.php:925
 msgid "Current permission: %s."
 msgstr "Permissão atual: %s."
 
-#: includes/security/class-owsu-security.php:828
+#: includes/security/class-owsu-security.php:927
 msgid "The file can be changed by other users."
 msgstr "O arquivo pode ser alterado por outros usuários."
 
-#: includes/security/class-owsu-security.php:831
+#: includes/security/class-owsu-security.php:930
 msgid "Readable by any user on the server; 640 recommended."
 msgstr "Legível por qualquer usuário do servidor; recomendado 640."
 
-#: includes/security/class-owsu-security.php:831
+#: includes/security/class-owsu-security.php:930
 msgid "(The plugin cannot fix it: PHP does not own the file.)"
 msgstr "(O plugin não pode corrigir: o PHP não é o dono do arquivo.)"
 
-#: includes/security/class-owsu-security.php:863
+#: includes/security/class-owsu-security.php:962
 msgid "No folder or file writable by everyone."
 msgstr "Nenhuma pasta ou arquivo com escrita liberada para todos."
 
 #. translators: %d: count
-#: includes/security/class-owsu-security.php:869
+#: includes/security/class-owsu-security.php:968
 msgid "%d item(s) writable by everyone."
 msgstr "%d item(ns) com permissão de escrita para todos."
 
-#: includes/security/class-owsu-security.php:909
+#: includes/security/class-owsu-security.php:1004
+msgid "The server could not reach its own site to test the files."
+msgstr ""
+"O servidor não conseguiu acessar o próprio site para testar os arquivos."
+
+#: includes/security/class-owsu-security.php:1011
 msgid "publicly accessible"
 msgstr "acessível publicamente"
 
-#: includes/security/class-owsu-security.php:916
+#: includes/security/class-owsu-security.php:1018
 msgid "blocked, but removing/moving the file is recommended"
 msgstr "bloqueado, mas recomenda-se remover/mover o arquivo"
 
-#: includes/security/class-owsu-security.php:923
+#: includes/security/class-owsu-security.php:1025
 msgid "No sensitive file accessible."
 msgstr "Nenhum arquivo sensível acessível."
 
-#: includes/security/class-owsu-security.php:923
+#: includes/security/class-owsu-security.php:1025
 msgid "Block applied by the plugin."
 msgstr "Bloqueio aplicado pelo plugin."
 
-#: includes/security/class-owsu-security.php:925
+#: includes/security/class-owsu-security.php:1027
 msgid "Sensitive files found."
 msgstr "Arquivos sensíveis encontrados."
 
-#: includes/security/class-owsu-security.php:927
+#: includes/security/class-owsu-security.php:1029
 msgid ""
 "The .htaccess block is applied, but the server delivers these files directly"
 " (nginx). See \"How to fix\"."
@@ -3975,29 +4051,29 @@ msgstr ""
 "O bloqueio .htaccess está aplicado, mas o servidor entrega estes arquivos "
 "diretamente (nginx). Veja \"Como corrigir\"."
 
-#: includes/security/class-owsu-security.php:938
+#: includes/security/class-owsu-security.php:1040
 msgid "Disabled in wp-config.php (DISALLOW_FILE_EDIT)."
 msgstr "Desativado no wp-config.php (DISALLOW_FILE_EDIT)."
 
 #. translators: %d: HTTP status code
-#: includes/security/class-owsu-security.php:941
-#: includes/security/class-owsu-security.php:1021
+#: includes/security/class-owsu-security.php:1043
+#: includes/security/class-owsu-security.php:1123
 msgid "Disabled by the plugin."
 msgstr "Desativado pelo plugin."
 
-#: includes/security/class-owsu-security.php:943
+#: includes/security/class-owsu-security.php:1045
 msgid "Administrators can edit plugin and theme code from the dashboard."
 msgstr "Administradores podem editar o código de plugins e temas pelo painel."
 
-#: includes/security/class-owsu-security.php:953
+#: includes/security/class-owsu-security.php:1055
 msgid "PHP errors are displayed on screen to visitors."
 msgstr "Erros do PHP são exibidos na tela para os visitantes."
 
-#: includes/security/class-owsu-security.php:953
+#: includes/security/class-owsu-security.php:1055
 msgid "WP_DEBUG is on."
 msgstr "WP_DEBUG está ativo."
 
-#: includes/security/class-owsu-security.php:956
+#: includes/security/class-owsu-security.php:1058
 msgid ""
 "WP_DEBUG is on in production (errors hidden by the plugin). Turn it off in "
 "wp-config.php."
@@ -4005,183 +4081,184 @@ msgstr ""
 "WP_DEBUG está ativo em produção (erros ocultos pelo plugin). Desative no wp-"
 "config.php."
 
-#: includes/security/class-owsu-security.php:956
+#: includes/security/class-owsu-security.php:1058
 msgid ""
 "WP_DEBUG is on in production (errors hidden). Turn it off in wp-config.php."
 msgstr ""
 "WP_DEBUG está ativo em produção (erros ocultos). Desative no wp-config.php."
 
-#: includes/security/class-owsu-security.php:958
+#: includes/security/class-owsu-security.php:1060
 msgid "Errors are not displayed to visitors."
 msgstr "Erros não são exibidos aos visitantes."
 
-#: includes/security/class-owsu-security.php:958
+#: includes/security/class-owsu-security.php:1060
 msgid "(reinforced by the plugin)"
 msgstr "(reforçado pelo plugin)"
 
-#: includes/security/class-owsu-security.php:965
+#: includes/security/class-owsu-security.php:1067
 msgid "not defined"
 msgstr "não definida"
 
-#: includes/security/class-owsu-security.php:967
+#: includes/security/class-owsu-security.php:1069
 msgid "default or weak"
 msgstr "padrão ou fraca"
 
-#: includes/security/class-owsu-security.php:971
+#: includes/security/class-owsu-security.php:1073
 msgid "All 8 keys are defined and strong."
 msgstr "As 8 chaves estão definidas e são fortes."
 
-#: includes/security/class-owsu-security.php:973
+#: includes/security/class-owsu-security.php:1075
 msgid "Missing or weak security keys in wp-config.php."
 msgstr "Chaves de segurança ausentes ou fracas no wp-config.php."
 
-#: includes/security/class-owsu-security.php:981
+#: includes/security/class-owsu-security.php:1083
 msgid "FORCE_SSL_ADMIN on in wp-config.php."
 msgstr "FORCE_SSL_ADMIN ativo no wp-config.php."
 
-#: includes/security/class-owsu-security.php:984
+#: includes/security/class-owsu-security.php:1086
 msgid "Dashboard forced to HTTPS by the plugin."
 msgstr "Painel forçado em HTTPS pelo plugin."
 
-#: includes/security/class-owsu-security.php:986
+#: includes/security/class-owsu-security.php:1088
 msgid "The dashboard can be accessed over HTTP."
 msgstr "O painel pode ser acessado por HTTP."
 
-#: includes/security/class-owsu-security.php:991
+#: includes/security/class-owsu-security.php:1093
 msgid "All automatic updates are disabled (AUTOMATIC_UPDATER_DISABLED)."
 msgstr ""
 "Todas as atualizações automáticas estão desativadas "
 "(AUTOMATIC_UPDATER_DISABLED)."
 
-#: includes/security/class-owsu-security.php:994
+#: includes/security/class-owsu-security.php:1096
 msgid ""
 "WordPress automatic security updates disabled (WP_AUTO_UPDATE_CORE = false)."
 msgstr ""
 "Atualizações automáticas de segurança do WordPress desativadas "
 "(WP_AUTO_UPDATE_CORE = false)."
 
-#: includes/security/class-owsu-security.php:996
+#: includes/security/class-owsu-security.php:1098
 msgid "WordPress security updates are applied automatically."
 msgstr "Atualizações de segurança do WordPress são aplicadas automaticamente."
 
-#: includes/security/class-owsu-security.php:1015
+#: includes/security/class-owsu-security.php:1117
 msgid "Could not test xmlrpc.php."
 msgstr "Não foi possível testar o xmlrpc.php."
 
-#: includes/security/class-owsu-security.php:1019
+#: includes/security/class-owsu-security.php:1121
 msgid "XML-RPC active and accepting login methods."
 msgstr "XML-RPC ativo e aceitando métodos de login."
 
-#: includes/security/class-owsu-security.php:1019
+#: includes/security/class-owsu-security.php:1121
 msgid "Note: Jetpack is active and depends on XML-RPC."
 msgstr "Atenção: o Jetpack está ativo e depende do XML-RPC."
 
 #. translators: %d: HTTP status code
-#: includes/security/class-owsu-security.php:1021
+#: includes/security/class-owsu-security.php:1123
 msgid "XML-RPC blocked (HTTP %d)."
 msgstr "XML-RPC bloqueado (HTTP %d)."
 
-#: includes/security/class-owsu-security.php:1033
+#: includes/security/class-owsu-security.php:1128
+#: includes/security/class-owsu-security.php:1151
+msgid "Could not test."
+msgstr "Não foi possível testar."
+
+#: includes/security/class-owsu-security.php:1138
 msgid "REST API reveals the user:"
 msgstr "API REST revela o usuário:"
 
 #. translators: %s: URL path
-#: includes/security/class-owsu-security.php:1042
+#: includes/security/class-owsu-security.php:1147
 msgid "?author=1 redirects to %s"
 msgstr "?author=1 redireciona para %s"
 
-#: includes/security/class-owsu-security.php:1046
-msgid "Could not test."
-msgstr "Não foi possível testar."
-
-#: includes/security/class-owsu-security.php:1049
+#: includes/security/class-owsu-security.php:1154
 msgid "Usernames are not publicly revealed."
 msgstr "Os nomes de usuário não são revelados publicamente."
 
-#: includes/security/class-owsu-security.php:1049
+#: includes/security/class-owsu-security.php:1154
 msgid "Blocked by the plugin."
 msgstr "Bloqueado pelo plugin."
 
-#: includes/security/class-owsu-security.php:1051
+#: includes/security/class-owsu-security.php:1156
 msgid "User logins can be discovered by any visitor."
 msgstr "Logins de usuários podem ser descobertos por qualquer visitante."
 
-#: includes/security/class-owsu-security.php:1057
+#: includes/security/class-owsu-security.php:1162
 msgid "Could not open the home page."
 msgstr "Não foi possível acessar a página inicial."
 
 #. translators: %s: generator tag content
-#: includes/security/class-owsu-security.php:1060
+#: includes/security/class-owsu-security.php:1165
 msgid "The home page states: %s."
 msgstr "A página inicial informa: %s."
 
-#: includes/security/class-owsu-security.php:1062
+#: includes/security/class-owsu-security.php:1167
 msgid "The WordPress version does not show in the page source."
 msgstr "A versão do WordPress não aparece no código da página."
 
-#: includes/security/class-owsu-security.php:1078
+#: includes/security/class-owsu-security.php:1183
 msgid "No administrator with a predictable login."
 msgstr "Nenhum administrador com login previsível."
 
 #. translators: %s: list of logins
-#: includes/security/class-owsu-security.php:1080
+#: includes/security/class-owsu-security.php:1185
 msgid "Administrator with a predictable login: %s."
 msgstr "Administrador com login previsível: %s."
 
-#: includes/security/class-owsu-security.php:1100
+#: includes/security/class-owsu-security.php:1205
 msgid "Main site administrator"
 msgstr "Administrador do site principal"
 
-#: includes/security/class-owsu-security.php:1100
+#: includes/security/class-owsu-security.php:1205
 msgid "Administrator"
 msgstr "Administrador"
 
 #. translators: %s: date
-#: includes/security/class-owsu-security.php:1109
+#: includes/security/class-owsu-security.php:1214
 msgid "last login %s"
 msgstr "último acesso %s"
 
-#: includes/security/class-owsu-security.php:1112
+#: includes/security/class-owsu-security.php:1217
 msgid "(more than 6 months)"
 msgstr "(mais de 6 meses)"
 
 #. translators: %s: date
-#: includes/security/class-owsu-security.php:1115
+#: includes/security/class-owsu-security.php:1220
 msgid "no login since %s"
 msgstr "sem acesso desde %s"
 
 #. translators: %s: date
-#: includes/security/class-owsu-security.php:1115
+#: includes/security/class-owsu-security.php:1220
 msgid "last login not recorded yet"
 msgstr "último acesso ainda não registrado"
 
 #. translators: 1: number of accounts, 2: number of unused accounts
-#: includes/security/class-owsu-security.php:1124
+#: includes/security/class-owsu-security.php:1229
 msgid "%1$d administrative account(s); %2$d unused for more than 6 months."
 msgstr "%1$d conta(s) administrativa(s); %2$d sem uso há mais de 6 meses."
 
 #. translators: %d: number of accounts
-#: includes/security/class-owsu-security.php:1127
+#: includes/security/class-owsu-security.php:1232
 msgid "%d administrative accounts. Check whether all of them are needed."
 msgstr "%d contas administrativas. Revise se todas são necessárias."
 
 #. translators: %d: number of accounts
-#: includes/security/class-owsu-security.php:1129
+#: includes/security/class-owsu-security.php:1234
 msgid "%d administrative account(s)."
 msgstr "%d conta(s) administrativa(s)."
 
 #. translators: %s: plugin list
-#: includes/security/class-owsu-security.php:1151
+#: includes/security/class-owsu-security.php:1256
 msgid ""
 "Plugin with 2FA active: %s. Make sure the administrators have turned 2FA on."
 msgstr ""
 "Plugin com 2FA ativo: %s. Confirme que os administradores ativaram o 2FA."
 
-#: includes/security/class-owsu-security.php:1153
+#: includes/security/class-owsu-security.php:1258
 msgid "No two-factor authentication plugin active."
 msgstr "Nenhum plugin de autenticação em dois fatores ativo."
 
-#: includes/security/class-owsu-security.php:1158
+#: includes/security/class-owsu-security.php:1263
 msgid ""
 "Login address changed by the WPS Hide Login plugin. This plugin can replace "
 "it (see Settings → Login protection)."
@@ -4189,19 +4266,19 @@ msgstr ""
 "Endereço de login alterado pelo plugin WPS Hide Login. Este plugin pode "
 "substituí-lo (veja Configurações → Proteção do login)."
 
-#: includes/security/class-owsu-security.php:1165
+#: includes/security/class-owsu-security.php:1270
 msgid "The login uses the default address /wp-login.php."
 msgstr "O login usa o endereço padrão /wp-login.php."
 
 #. translators: %s: login path
-#: includes/security/class-owsu-security.php:1172
+#: includes/security/class-owsu-security.php:1277
 msgid "Address set (%s), but it could not be tested from the server."
 msgstr ""
 "Endereço configurado (%s), mas não foi possível testá-lo a partir do "
 "servidor."
 
 #. translators: %d: HTTP status code
-#: includes/security/class-owsu-security.php:1176
+#: includes/security/class-owsu-security.php:1281
 msgid ""
 "The new address did not show the login form (HTTP %d). Check that permalinks"
 " are enabled."
@@ -4209,21 +4286,21 @@ msgstr ""
 "O novo endereço não exibiu o formulário de login (HTTP %d). Verifique se os "
 "links permanentes estão ativos."
 
-#: includes/security/class-owsu-security.php:1179
+#: includes/security/class-owsu-security.php:1284
 msgid "/wp-login.php still shows the login form."
 msgstr "/wp-login.php continua exibindo o formulário de login."
 
-#: includes/security/class-owsu-security.php:1182
+#: includes/security/class-owsu-security.php:1287
 msgid "/wp-admin redirects to the new address and reveals it."
 msgstr "/wp-admin redireciona para o novo endereço e o revela."
 
 #. translators: %s: login path
-#: includes/security/class-owsu-security.php:1185
+#: includes/security/class-owsu-security.php:1290
 msgid "Address set (%s), but there are problems."
 msgstr "Endereço configurado (%s), mas há falhas."
 
 #. translators: %s: login path
-#: includes/security/class-owsu-security.php:1187
+#: includes/security/class-owsu-security.php:1292
 msgid ""
 "Login at %s; /wp-login.php and /wp-admin do not reveal the form to visitors."
 msgstr ""
@@ -4231,17 +4308,17 @@ msgstr ""
 "visitantes."
 
 #. translators: %s: reCAPTCHA version
-#: includes/security/class-owsu-security.php:1192
+#: includes/security/class-owsu-security.php:1297
 msgid "%s active on login, lost password and registration."
 msgstr "%s ativo no login, senha perdida e cadastro."
 
-#: includes/security/class-owsu-security.php:1195
+#: includes/security/class-owsu-security.php:1300
 msgid ""
 "reCAPTCHA turned off by the OWSU_RECAPTCHA_OFF constant in wp-config.php."
 msgstr ""
 "reCAPTCHA desligado pela constante OWSU_RECAPTCHA_OFF no wp-config.php."
 
-#: includes/security/class-owsu-security.php:1198
+#: includes/security/class-owsu-security.php:1303
 msgid ""
 "reCAPTCHA configured but not tested yet. Run the test in Settings to "
 "activate it."
@@ -4250,20 +4327,20 @@ msgstr ""
 "para ativá-lo."
 
 #. translators: %s: plugin list
-#: includes/security/class-owsu-security.php:1203
+#: includes/security/class-owsu-security.php:1308
 msgid "Anti-bot protection provided by: %s."
 msgstr "Proteção anti-robô fornecida por: %s."
 
-#: includes/security/class-owsu-security.php:1205
+#: includes/security/class-owsu-security.php:1310
 msgid "The login form has no anti-bot check."
 msgstr "O formulário de login não tem verificação anti-robô."
 
 #. translators: %s: plugin list
-#: includes/security/class-owsu-security.php:1212
+#: includes/security/class-owsu-security.php:1317
 msgid "Login protection active through: %s."
 msgstr "Proteção de login ativa via: %s."
 
-#: includes/security/class-owsu-security.php:1214
+#: includes/security/class-owsu-security.php:1319
 msgid ""
 "No plugin limits login attempts (the server may still have Fail2Ban; check "
 "your hosting panel)."
@@ -4271,96 +4348,96 @@ msgstr ""
 "Nenhum plugin limita tentativas de login (o servidor ainda pode ter "
 "Fail2Ban; verifique no Plesk)."
 
-#: includes/security/class-owsu-security.php:1223
+#: includes/security/class-owsu-security.php:1328
 msgid "The main site uses HTTPS."
 msgstr "O site principal usa HTTPS."
 
-#: includes/security/class-owsu-security.php:1225
+#: includes/security/class-owsu-security.php:1330
 msgid "The site address is set without HTTPS."
 msgstr "O endereço do site está configurado sem HTTPS."
 
-#: includes/security/class-owsu-security.php:1233
+#: includes/security/class-owsu-security.php:1338
 msgid "OpenSSL extension unavailable in PHP."
 msgstr "Extensão OpenSSL indisponível no PHP."
 
 #. translators: 1: host and port, 2: error message
-#: includes/security/class-owsu-security.php:1249
+#: includes/security/class-owsu-security.php:1354
 msgid "Could not connect to %1$s (%2$s)."
 msgstr "Não foi possível conectar em %1$s (%2$s)."
 
-#: includes/security/class-owsu-security.php:1255
+#: includes/security/class-owsu-security.php:1360
 msgid "Could not read the certificate."
 msgstr "Não foi possível ler o certificado."
 
 #. translators: 1: date, 2: certificate issuer
-#: includes/security/class-owsu-security.php:1261
+#: includes/security/class-owsu-security.php:1366
 msgid "Valid until %1$s (issued by %2$s)."
 msgstr "Válido até %1$s (emitido por %2$s)."
 
 #. translators: %s: date
-#: includes/security/class-owsu-security.php:1261
+#: includes/security/class-owsu-security.php:1366
 msgid "Valid until %s."
 msgstr "Válido até %s."
 
-#: includes/security/class-owsu-security.php:1263
+#: includes/security/class-owsu-security.php:1368
 msgid "Certificate EXPIRED."
 msgstr "Certificado VENCIDO."
 
 #. translators: %d: number of days
-#: includes/security/class-owsu-security.php:1266
+#: includes/security/class-owsu-security.php:1371
 msgid "Expires in %d day(s)."
 msgstr "Vence em %d dia(s)."
 
 #. translators: %d: number of days
-#: includes/security/class-owsu-security.php:1269
+#: includes/security/class-owsu-security.php:1374
 msgid "Expires in %d days. Confirm that automatic renewal is on."
 msgstr "Vence em %d dias. Confirme a renovação automática."
 
 #. translators: %d: number of days
-#: includes/security/class-owsu-security.php:1271
+#: includes/security/class-owsu-security.php:1376
 msgid "%d days left."
 msgstr "Faltam %d dias."
 
 #. translators: %s: database server version
-#: includes/security/class-owsu-security.php:1287
+#: includes/security/class-owsu-security.php:1392
 msgid "Database: %s."
 msgstr "Banco de dados: %s."
 
 #. translators: %s: PHP version
-#: includes/security/class-owsu-security.php:1290
+#: includes/security/class-owsu-security.php:1395
 msgid "PHP %s has been unsupported for years."
 msgstr "PHP %s está sem suporte há anos."
 
 #. translators: 1: PHP version, 2: date
-#: includes/security/class-owsu-security.php:1296
+#: includes/security/class-owsu-security.php:1401
 msgid "PHP %1$s — security support ended on %2$s."
 msgstr "PHP %1$s — suporte de segurança encerrado em %2$s."
 
 #. translators: 1: PHP version, 2: date
-#: includes/security/class-owsu-security.php:1296
+#: includes/security/class-owsu-security.php:1401
 msgid "PHP %1$s — security support until %2$s."
 msgstr "PHP %1$s — suporte de segurança até %2$s."
 
-#: includes/security/class-owsu-security.php:1301
+#: includes/security/class-owsu-security.php:1406
 msgid "Plan the upgrade."
 msgstr "Planeje a atualização."
 
-#: includes/security/class-owsu-security.php:1316
+#: includes/security/class-owsu-security.php:1421
 msgid "This check has no automatic fix."
 msgstr "Esta verificação não tem correção automática."
 
-#: includes/security/class-owsu-security.php:1323
+#: includes/security/class-owsu-security.php:1428
 msgid ""
 "PHP does not own wp-config.php; change the permission through your hosting "
 "panel or SSH."
 msgstr ""
 "O PHP não é o dono do wp-config.php; altere a permissão pelo Plesk ou SSH."
 
-#: includes/security/class-owsu-security.php:1328
+#: includes/security/class-owsu-security.php:1433
 msgid "Could not change the permission."
 msgstr "Não foi possível alterar a permissão."
 
-#: includes/security/class-owsu-security.php:1339
+#: includes/security/class-owsu-security.php:1444
 msgid ""
 "No permission could be changed (PHP does not own the files). Use the command"
 " shown in \"How to fix\"."
@@ -4368,7 +4445,7 @@ msgstr ""
 "Nenhuma permissão pôde ser alterada (o PHP não é dono dos arquivos). Use o "
 "comando indicado em \"Como corrigir\"."
 
-#: includes/security/class-owsu-security.php:1354
+#: includes/security/class-owsu-security.php:1459
 msgid ""
 "The server rejected the .htaccess rule (error 500). The fix was reverted "
 "automatically; use the instructions in \"How to fix\"."
@@ -4376,7 +4453,7 @@ msgstr ""
 "O servidor rejeitou a regra .htaccess (erro 500). A correção foi revertida "
 "automaticamente; use as instruções de \"Como corrigir\"."
 
-#: includes/security/class-owsu-security.php:1487
+#: includes/security/class-owsu-security.php:1593
 msgid ""
 "Could not write the .htaccess file (no write permission). Use the "
 "instructions in \"How to fix\"."

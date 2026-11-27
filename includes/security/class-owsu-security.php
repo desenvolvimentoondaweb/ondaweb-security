@@ -10,6 +10,7 @@ class OWSU_Security {
 
 	private static $http = array();
 	private static $nc   = null;
+	private static $snap = null;
 
 	/* ------------------------------------------------------------------ */
 	/* State                                                               */
@@ -419,6 +420,7 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 	public static function run_all() {
 		self::$http = array();
 		self::$nc   = null;
+		self::clear_snapshot();
 		@set_time_limit( 300 ); // phpcs:ignore
 		$results = array();
 		foreach ( self::definitions() as $id => $def ) {
@@ -450,10 +452,17 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 		self::$nc   = null;
 	}
 
+	/** Forgets the cached home page reading (start of a check, after a fix). */
+	public static function clear_snapshot() {
+		self::$snap = null;
+		delete_site_transient( 'owsu_home_snap' );
+	}
+
 	/** Re-runs a single check (after apply/undo). */
 	public static function run_one( $id ) {
 		self::$http = array();
 		self::$nc   = null;
+		self::clear_snapshot();
 		$scan       = self::last_scan();
 		if ( ! $scan ) {
 			return self::run_all();
@@ -524,20 +533,104 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 		return self::$http[ $key ];
 	}
 
-	private static function home_res() {
-		if ( null === self::$nc ) {
-			self::$nc = (string) time();
+	/**
+	 * Reading of the home page shared by all the checks of a run (kept for 2 minutes, so the
+	 * step-by-step check loads the page once instead of once per header — heavy sites and
+	 * servers with request-rate firewalls otherwise time out or block the server itself).
+	 * When the server cannot reach its own site, a reading made by the administrator's
+	 * browser (see OWSU_Admin::ajax_browser_snap) is used instead.
+	 *
+	 * @return array ok, src (server|browser), code, headers [lowercase name => value], generator, error
+	 */
+	public static function home_snapshot() {
+		if ( null !== self::$snap ) {
+			return self::$snap;
 		}
-		return self::http( add_query_arg( 'owsu_nc', self::$nc, self::home() ) );
+		$cached = get_site_transient( 'owsu_home_snap' );
+		if ( is_array( $cached ) ) {
+			self::$snap = $cached;
+			return $cached;
+		}
+		$url  = add_query_arg( 'owsu_nc', (string) time(), self::home() );
+		$args = array(
+			'timeout'     => 25,
+			'sslverify'   => false,
+			'redirection' => 3,
+			'user-agent'  => OWUM_PRODUCT . ' Check',
+			'headers'     => array( 'Cache-Control' => 'no-cache' ),
+		);
+		$res = wp_remote_get( $url, $args );
+		if ( is_wp_error( $res ) ) {
+			sleep( 2 );
+			$res = wp_remote_get( $url, $args ); // one retry: a slow first load (cold cache) is common
+		}
+		$snap = array( 'ok' => false, 'src' => 'server', 'code' => 0, 'headers' => array(), 'generator' => '', 'error' => '' );
+		if ( is_wp_error( $res ) ) {
+			$snap['error'] = $res->get_error_message();
+		} else {
+			$snap['code'] = (int) wp_remote_retrieve_response_code( $res );
+			$hd  = wp_remote_retrieve_headers( $res );
+			$all = is_object( $hd ) && method_exists( $hd, 'getAll' ) ? $hd->getAll() : (array) $hd;
+			foreach ( $all as $k => $v ) {
+				$snap['headers'][ strtolower( $k ) ] = is_array( $v ) ? implode( ', ', $v ) : (string) $v;
+			}
+			if ( preg_match( '/<meta[^>]+name=["\']generator["\'][^>]+content=["\'](WordPress[^"\']*)/i', wp_remote_retrieve_body( $res ), $m ) ) {
+				$snap['generator'] = $m[1];
+			}
+			$snap['ok'] = $snap['code'] >= 200 && $snap['code'] < 400;
+			if ( ! $snap['ok'] ) {
+				$snap['error'] = 'HTTP ' . $snap['code'];
+			}
+		}
+		update_site_option(
+			'owsu_loopback',
+			array(
+				'time'  => current_time( 'mysql' ),
+				'ok'    => $snap['ok'],
+				'error' => $snap['error'],
+				'ip'    => ! empty( $_SERVER['SERVER_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_ADDR'] ) ) : (string) gethostbyname( (string) wp_parse_url( self::home(), PHP_URL_HOST ) ),
+			)
+		);
+		if ( ! $snap['ok'] ) {
+			$b = get_site_transient( 'owsu_browser_snap' );
+			if ( is_array( $b ) && ! empty( $b['ok'] ) ) {
+				$b['src']   = 'browser';
+				$b['error'] = $snap['error'];
+				$snap       = $b;
+			}
+		}
+		set_site_transient( 'owsu_home_snap', $snap, 2 * MINUTE_IN_SECONDS );
+		self::$snap = $snap;
+		return $snap;
 	}
 
+	/** Header of the home page; null when the page could not be read. */
 	private static function header_value( $name ) {
-		$r = self::home_res();
-		if ( ! $r ) {
+		$s = self::home_snapshot();
+		if ( empty( $s['ok'] ) ) {
 			return null;
 		}
-		$h = wp_remote_retrieve_header( $r, $name );
-		return is_array( $h ) ? implode( ', ', $h ) : (string) $h;
+		return isset( $s['headers'][ $name ] ) ? $s['headers'][ $name ] : '';
+	}
+
+	/** " (read by your browser)" when the reading came from the browser. */
+	private static function via() {
+		$s = self::home_snapshot();
+		return 'browser' === $s['src'] ? ' ' . __( '(read by your browser, because the server could not reach its own site)', 'ondaweb-security' ) : '';
+	}
+
+	/** Can the server reach its own site? (the browser reading does not count for file tests) */
+	private static function loopback_ok() {
+		self::home_snapshot();
+		$l = get_site_option( 'owsu_loopback' );
+		return is_array( $l ) && ! empty( $l['ok'] );
+	}
+
+	/** Result for a check that needs the site to call itself and could not. */
+	private static function no_loopback( $msg ) {
+		$l = get_site_option( 'owsu_loopback' );
+		$e = is_array( $l ) && ! empty( $l['error'] ) ? ' (' . $l['error'] . ')' : '';
+		return self::r( 'info', $msg . $e, array(), array( 'loopback' => 1 ) );
 	}
 
 	private static function accessible( $url ) {
@@ -660,15 +753,21 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 	private static function header_check( $id, $name ) {
 		$v = self::header_value( $name );
 		if ( null === $v ) {
-			return self::r( 'info', __( 'Could not open the home page to read the headers.', 'ondaweb-security' ) );
+			return self::no_loopback( __( 'Could not open the home page to read the headers.', 'ondaweb-security' ) );
 		}
 		if ( '' !== $v ) {
-			return self::r( 'ok', ( self::is_on( $id ) ? __( 'Enabled by the plugin', 'ondaweb-security' ) : __( 'Present', 'ondaweb-security' ) ) . ' — ' . $name . ': ' . $v );
+			return self::r( 'ok', ( self::is_on( $id ) ? __( 'Enabled by the plugin', 'ondaweb-security' ) : __( 'Present', 'ondaweb-security' ) ) . ' — ' . $name . ': ' . $v . self::via() );
 		}
 		if ( self::is_on( $id ) ) {
-			return self::r( 'warn', __( 'Fix active, but the header does not show on the home page (probably page cache). Configure it on the server.', 'ondaweb-security' ) );
+			$snap  = self::home_snapshot();
+			$fixes = self::fixes();
+			// Browser reading taken before the fix was applied: it cannot show the new header yet.
+			if ( 'browser' === $snap['src'] && ! empty( $snap['time'] ) && ! empty( $fixes[ $id ]['when'] ) && $fixes[ $id ]['when'] >= $snap['time'] ) {
+				return self::r( 'ok', __( 'Enabled by the plugin. To confirm, read the headers through your browser again.', 'ondaweb-security' ) );
+			}
+			return self::r( 'warn', __( 'Fix active, but the header does not show on the home page (probably page cache). Configure it on the server.', 'ondaweb-security' ) . self::via() );
 		}
-		return self::r( 'warn', sprintf( /* translators: %s: header name */ __( 'Header %s missing.', 'ondaweb-security' ), $name ) );
+		return self::r( 'warn', sprintf( /* translators: %s: header name */ __( 'Header %s missing.', 'ondaweb-security' ), $name ) . self::via() );
 	}
 
 	private static function check_hdr_hsts() {
@@ -709,7 +808,7 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 	private static function check_hdr_powered() {
 		$v = self::header_value( 'x-powered-by' );
 		if ( null === $v ) {
-			return self::r( 'info', __( 'Could not open the home page to read the headers.', 'ondaweb-security' ) );
+			return self::no_loopback( __( 'Could not open the home page to read the headers.', 'ondaweb-security' ) );
 		}
 		$server = self::header_value( 'server' );
 		$extra  = ( $server && preg_match( '/\d/', $server ) ) ? ' ' . sprintf( /* translators: %s: value of the Server header */ __( 'The Server header also reveals a version: %s.', 'ondaweb-security' ), $server ) : '';
@@ -736,7 +835,7 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 		$r = self::http( $u['url'] . '/' . $name, array( 'redirection' => 0 ) );
 		@unlink( $file ); // phpcs:ignore
 		if ( ! $r ) {
-			return self::r( 'info', __( 'The server did not answer the test (local request blocked).', 'ondaweb-security' ) );
+			return self::no_loopback( __( 'The server did not answer the test (local request blocked).', 'ondaweb-security' ) );
 		}
 		$code = (int) wp_remote_retrieve_response_code( $r );
 		if ( false !== strpos( wp_remote_retrieve_body( $r ), 'OWSU-EXEC-OK' ) ) {
@@ -753,7 +852,7 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 		$u = self::uploads();
 		$r = self::http( $u['url'] . '/', array( 'redirection' => 0 ) );
 		if ( ! $r ) {
-			return self::r( 'info', __( 'The server did not answer the test.', 'ondaweb-security' ) );
+			return self::no_loopback( __( 'The server did not answer the test.', 'ondaweb-security' ) );
 		}
 		$body = wp_remote_retrieve_body( $r );
 		if ( 200 === (int) wp_remote_retrieve_response_code( $r ) && preg_match( '/<title>\s*Index of|Directory listing for/i', $body ) ) {
@@ -901,6 +1000,9 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 	}
 
 	private static function check_exposed_files() {
+		if ( ! self::loopback_ok() ) {
+			return self::no_loopback( __( 'The server could not reach its own site to test the files.', 'ondaweb-security' ) );
+		}
 		$items = array();
 		$worst = 'ok';
 		foreach ( self::sensitive_candidates() as $path => $c ) {
@@ -1012,7 +1114,7 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 		);
 		$jetpack = self::plugin_active( array( 'jetpack' ) );
 		if ( ! $r ) {
-			return self::r( 'info', __( 'Could not test xmlrpc.php.', 'ondaweb-security' ) );
+			return self::no_loopback( __( 'Could not test xmlrpc.php.', 'ondaweb-security' ) );
 		}
 		$body = wp_remote_retrieve_body( $r );
 		if ( false !== strpos( $body, 'system.multicall' ) || false !== strpos( $body, 'wp.getUsersBlogs' ) ) {
@@ -1022,6 +1124,9 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 	}
 
 	private static function check_user_enum() {
+		if ( ! self::loopback_ok() ) {
+			return self::no_loopback( __( 'Could not test.', 'ondaweb-security' ) );
+		}
 		$found = array();
 		$url   = is_multisite() ? get_rest_url( get_main_site_id(), 'wp/v2/users' ) : get_rest_url( null, 'wp/v2/users' );
 		$r     = self::http( $url, array( 'redirection' => 0 ) );
@@ -1043,7 +1148,7 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 			}
 		}
 		if ( ! $r && ! $r2 ) {
-			return self::r( 'info', __( 'Could not test.', 'ondaweb-security' ) );
+			return self::no_loopback( __( 'Could not test.', 'ondaweb-security' ) );
 		}
 		if ( ! $found ) {
 			return self::r( 'ok', __( 'Usernames are not publicly revealed.', 'ondaweb-security' ) . ( self::is_on( 'user_enum' ) ? ' ' . __( 'Blocked by the plugin.', 'ondaweb-security' ) : '' ) );
@@ -1052,14 +1157,14 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 	}
 
 	private static function check_generator() {
-		$r = self::home_res();
-		if ( ! $r ) {
-			return self::r( 'info', __( 'Could not open the home page.', 'ondaweb-security' ) );
+		$s = self::home_snapshot();
+		if ( empty( $s['ok'] ) ) {
+			return self::no_loopback( __( 'Could not open the home page.', 'ondaweb-security' ) );
 		}
-		if ( preg_match( '/<meta[^>]+name=["\']generator["\'][^>]+content=["\'](WordPress[^"\']*)/i', wp_remote_retrieve_body( $r ), $m ) ) {
-			return self::r( 'warn', sprintf( /* translators: %s: generator tag content */ __( 'The home page states: %s.', 'ondaweb-security' ), $m[1] ) );
+		if ( '' !== $s['generator'] ) {
+			return self::r( 'warn', sprintf( /* translators: %s: generator tag content */ __( 'The home page states: %s.', 'ondaweb-security' ), $s['generator'] ) . self::via() );
 		}
-		return self::r( 'ok', __( 'The WordPress version does not show in the page source.', 'ondaweb-security' ) );
+		return self::r( 'ok', __( 'The WordPress version does not show in the page source.', 'ondaweb-security' ) . self::via() );
 	}
 
 	/* ------------------------------------------------------------------ */
@@ -1367,6 +1472,7 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 	/** After changing .htaccess: do the home page and an uploads file still answer without a 5xx error? */
 	private static function site_healthy() {
 		self::$http = array();
+		self::clear_snapshot();
 		$u    = self::uploads();
 		$name = 'owsu-probe-' . wp_generate_password( 8, false, false ) . '.txt';
 		$made = false !== @file_put_contents( $u['dir'] . '/' . $name, 'ok' ); // phpcs:ignore

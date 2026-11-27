@@ -11,6 +11,7 @@ class OWSU_Admin {
 			add_action( 'admin_post_' . $a, array( __CLASS__, $a ) );
 		}
 		add_action( 'wp_ajax_owsu_scan_step', array( __CLASS__, 'ajax_step' ) );
+		add_action( 'wp_ajax_owsu_browser_snap', array( __CLASS__, 'ajax_browser_snap' ) );
 	}
 
 	private static function url( $args = array() ) {
@@ -109,6 +110,41 @@ class OWSU_Admin {
 		return 'owsu_scan_tmp_' . get_current_user_id();
 	}
 
+	/**
+	 * Reading of the home page made by the administrator's browser, used when the server
+	 * cannot reach its own site (firewall, proxy, timeout). Valid for 24 hours.
+	 */
+	public static function ajax_browser_snap() {
+		if ( ! current_user_can( owum_cap() ) || ! check_ajax_referer( 'owsu_scan_step', 'nonce', false ) ) {
+			wp_send_json_error( array( 'msg' => __( 'Session expired. Reload the page.', 'ondaweb-security' ) ), 403 );
+		}
+		$code    = isset( $_POST['code'] ) ? (int) $_POST['code'] : 0; // phpcs:ignore
+		$raw     = isset( $_POST['headers'] ) ? json_decode( wp_unslash( $_POST['headers'] ), true ) : array(); // phpcs:ignore
+		$headers = array();
+		foreach ( (array) $raw as $k => $v ) {
+			$k = strtolower( (string) $k );
+			if ( count( $headers ) < 60 && preg_match( '/^[a-z0-9-]{1,64}$/', $k ) && is_scalar( $v ) ) {
+				$headers[ $k ] = substr( sanitize_text_field( (string) $v ), 0, 2000 );
+			}
+		}
+		$snap = array(
+			'ok'        => $code >= 200 && $code < 400,
+			'src'       => 'browser',
+			'code'      => $code,
+			'headers'   => $headers,
+			'generator' => isset( $_POST['generator'] ) ? substr( sanitize_text_field( wp_unslash( $_POST['generator'] ) ), 0, 120 ) : '', // phpcs:ignore
+			'error'     => '',
+			'time'      => current_time( 'mysql' ),
+		);
+		if ( ! $snap['ok'] ) {
+			/* translators: %d: HTTP status code */
+			wp_send_json_error( array( 'msg' => sprintf( __( 'The browser got HTTP %d from the home page.', 'ondaweb-security' ), $code ) ), 400 );
+		}
+		set_site_transient( 'owsu_browser_snap', $snap, DAY_IN_SECONDS );
+		OWSU_Security::clear_snapshot();
+		wp_send_json_success();
+	}
+
 	public static function ajax_step() {
 		if ( ! current_user_can( owum_cap() ) || ! check_ajax_referer( 'owsu_scan_step', 'nonce', false ) ) {
 			wp_send_json_error( array( 'msg' => __( 'Session expired. Reload the page.', 'ondaweb-security' ) ), 403 );
@@ -117,6 +153,7 @@ class OWSU_Admin {
 		$op = isset( $_POST['op'] ) ? sanitize_key( $_POST['op'] ) : ''; // phpcs:ignore
 
 		if ( 'start' === $op ) {
+			OWSU_Security::clear_snapshot();
 			$steps = array();
 			if ( ! empty( $_POST['vuln'] ) && OWSU_Vulns::key() ) { // phpcs:ignore
 				$steps[] = array( 'id' => '__vuln', 'label' => __( 'Downloading the Wordfence vulnerability database', 'ondaweb-security' ), 'group' => __( 'May take up to 1 minute', 'ondaweb-security' ), 'slow' => 1 );
@@ -205,6 +242,65 @@ class OWSU_Admin {
 		}
 	}
 
+	/** Explains why checks could not run when the server cannot reach its own site. */
+	private static function loopback_notice( $scan ) {
+		$l = get_site_option( 'owsu_loopback' );
+		if ( ! $scan || ! is_array( $l ) || ! empty( $l['ok'] ) ) {
+			return;
+		}
+		$b = get_site_transient( 'owsu_browser_snap' );
+		echo '<div class="notice notice-warning"><p><strong>' . esc_html__( 'The server could not reach its own site.', 'ondaweb-security' ) . '</strong> ';
+		/* translators: 1: error message, 2: date and time */
+		echo esc_html( sprintf( __( 'Error: %1$s (%2$s).', 'ondaweb-security' ), $l['error'] ? $l['error'] : __( 'no response', 'ondaweb-security' ), owum_date( $l['time'], true ) ) ) . ' ';
+		esc_html_e( 'That is why the items marked Informational could not be tested; their fixes can still be applied.', 'ondaweb-security' );
+		echo '</p><p>';
+		echo esc_html(
+			sprintf(
+				/* translators: %s: server IP address */
+				__( 'Most common causes: a firewall on the server (Fail2Ban, ModSecurity, Imunify360) or a proxy such as Cloudflare blocking the server\'s own IP (%s), or the home page taking more than 25 seconds to answer. Ask the hosting company to add this IP to the allow list (whitelist).', 'ondaweb-security' ),
+				$l['ip'] ? $l['ip'] : '?'
+			)
+		);
+		echo '</p><p><button type="button" class="button button-primary" id="owsu-browser-snap">' . esc_html__( 'Read the headers through my browser and check again', 'ondaweb-security' ) . '</button> <span id="owsu-browser-msg" class="description"></span>';
+		if ( is_array( $b ) && ! empty( $b['time'] ) ) {
+			/* translators: %s: date and time */
+			echo '<br><span class="description">' . esc_html( sprintf( __( 'Reading made by the browser on %s in use (valid for 24 hours).', 'ondaweb-security' ), owum_date( $b['time'], true ) ) ) . '</span>';
+		}
+		echo '</p></div>';
+		$cfg = array(
+			'home'  => add_query_arg( 'owsu_nc', '', OWSU_Security::home() ),
+			'ajax'  => admin_url( 'admin-ajax.php' ),
+			'nonce' => wp_create_nonce( 'owsu_scan_step' ),
+			'busy'  => __( 'Reading the home page…', 'ondaweb-security' ),
+			'fail'  => __( 'The browser could not read the home page:', 'ondaweb-security' ),
+		);
+		?>
+		<script>
+		(function () {
+			var C = <?php echo wp_json_encode( $cfg ); ?>, btn = document.getElementById('owsu-browser-snap'), msg = document.getElementById('owsu-browser-msg');
+			if (!btn) { return; }
+			btn.addEventListener('click', async function () {
+				btn.disabled = true; msg.textContent = C.busy;
+				try {
+					var r = await fetch(C.home + Date.now(), { credentials: 'omit', cache: 'no-store' });
+					var h = {}; r.headers.forEach(function (v, k) { h[k] = v; });
+					var t = await r.text(), m = t.match(/<meta[^>]+name=["']generator["'][^>]+content=["'](WordPress[^"']*)/i);
+					var fd = new FormData();
+					fd.append('action', 'owsu_browser_snap'); fd.append('nonce', C.nonce); fd.append('code', r.status);
+					fd.append('headers', JSON.stringify(h)); fd.append('generator', m ? m[1] : '');
+					var a = await fetch(C.ajax, { method: 'POST', body: fd, credentials: 'same-origin' }), j = await a.json();
+					if (!j.success) { throw new Error((j.data && j.data.msg) || a.status); }
+					var run = document.querySelector('a[data-owsu-scan="0"]');
+					if (run) { run.click(); } else { location.reload(); }
+				} catch (e) {
+					msg.textContent = C.fail + ' ' + e.message; btn.disabled = false;
+				}
+			});
+		})();
+		</script>
+		<?php
+	}
+
 	/* Page ------------------------------------------------------------------ */
 
 	private static function badge( $status ) {
@@ -278,6 +374,7 @@ class OWSU_Admin {
 				/* translators: %s: link to the Settings screen */
 				echo '<div class="notice notice-info"><p>' . sprintf( esc_html__( 'To check for known vulnerabilities, enter the Wordfence Intelligence API key in %s.', 'ondaweb-security' ), '<a href="' . esc_url( add_query_arg( 'page', 'owum-settings', is_multisite() ? network_admin_url( 'admin.php' ) : admin_url( 'admin.php' ) ) ) . '">' . esc_html__( 'Settings', 'ondaweb-security' ) . '</a>' ) . '</p></div>';
 			}
+			self::loopback_notice( $scan );
 			if ( ! $scan ) {
 				/* translators: %s: "Run check" button label */
 				echo '<p>' . sprintf( esc_html__( 'No check has been run yet. Click %s (takes a few seconds).', 'ondaweb-security' ), '<strong>' . esc_html__( 'Run check', 'ondaweb-security' ) . '</strong>' ) . '</p></div>';
@@ -367,7 +464,7 @@ class OWSU_Admin {
 									echo self::action_form( 'owsu_undo', $id, __( 'Undo', 'ondaweb-security' ), '', 'login_url' === $id ? __( 'Move the login back to /wp-login.php?', 'ondaweb-security' ) : __( 'Undo this fix?', 'ondaweb-security' ) ); // phpcs:ignore
 								} elseif ( ! empty( $d['config'] ) && in_array( $r['status'], array( 'crit', 'warn' ), true ) ) {
 									echo '<a class="button button-primary" href="' . esc_url( add_query_arg( 'page', 'owum-settings', is_multisite() ? network_admin_url( 'admin.php' ) : admin_url( 'admin.php' ) ) . '#owum-login' ) . '">' . esc_html__( 'Configure', 'ondaweb-security' ) . '</a>';
-								} elseif ( $d['fix'] && in_array( $r['status'], array( 'crit', 'warn' ), true ) ) {
+								} elseif ( $d['fix'] && ( in_array( $r['status'], array( 'crit', 'warn' ), true ) || ( 'info' === $r['status'] && ! empty( $r['data']['loopback'] ) ) ) ) {
 									/* translators: %s: name of the security check */
 									echo self::action_form( 'owsu_apply', $id, __( 'Apply fix', 'ondaweb-security' ), 'button-primary', sprintf( __( 'Apply the fix "%s"?', 'ondaweb-security' ), $d['title'] ) . "\n\n" . __( 'It can be undone at any time from this panel.', 'ondaweb-security' ) ); // phpcs:ignore
 								}
