@@ -10,6 +10,12 @@ class OWSU_Hardening {
 	public static function init() {
 		add_action( 'wp_login', array( __CLASS__, 'track_login' ), 10, 2 );
 
+		// Server that cannot reach its own public address (NAT): WordPress' own calls to the
+		// site (WP-Cron, Site Health) go to the local address found by the security check.
+		if ( get_site_option( 'owsu_loopback_via' ) ) {
+			add_action( 'http_api_curl', array( __CLASS__, 'local_route' ), 98, 3 );
+		}
+
 		$fixes = OWSU_Security::fixes();
 		$on    = function ( $id ) use ( $fixes ) {
 			return ! empty( $fixes[ $id ]['on'] );
@@ -78,6 +84,18 @@ class OWSU_Hardening {
 		if ( OWSU_Security::is_on( 'hdr_powered' ) ) {
 			header_remove( 'X-Powered-By' );
 		}
+	}
+
+	public static function local_route( $handle, $r, $url ) {
+		$ip   = (string) get_site_option( 'owsu_loopback_via' );
+		$host = (string) wp_parse_url( $url, PHP_URL_HOST );
+		$own  = array_unique( array( (string) wp_parse_url( network_home_url(), PHP_URL_HOST ), (string) wp_parse_url( home_url(), PHP_URL_HOST ) ) );
+		if ( ! $ip || ! defined( 'CURLOPT_RESOLVE' ) || ! in_array( $host, $own, true ) ) {
+			return;
+		}
+		$port = (int) wp_parse_url( $url, PHP_URL_PORT );
+		$port = $port ? $port : ( 0 === strpos( $url, 'https:' ) ? 443 : 80 );
+		curl_setopt( $handle, CURLOPT_RESOLVE, array( $host . ':' . $port . ':' . $ip ) ); // phpcs:ignore
 	}
 
 	public static function deny_file_edit( $caps, $cap ) {

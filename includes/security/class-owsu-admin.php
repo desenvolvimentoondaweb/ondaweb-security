@@ -245,6 +245,16 @@ class OWSU_Admin {
 	/** Explains why checks could not run when the server cannot reach its own site. */
 	private static function loopback_notice( $scan ) {
 		$l = get_site_option( 'owsu_loopback' );
+		if ( $scan && is_array( $l ) && ! empty( $l['ok'] ) && ! empty( $l['via'] ) ) {
+			echo '<div class="notice notice-info"><p>' . esc_html(
+				sprintf(
+					/* translators: %s: local IP address */
+					__( 'This server cannot reach its own public address (common behind NAT), so the plugin reaches the site through the local address %s. The checks and WordPress\' own scheduled tasks (WP-Cron) work normally this way.', 'ondaweb-security' ),
+					$l['via']
+				)
+			) . '</p></div>';
+			return;
+		}
 		if ( ! $scan || ! is_array( $l ) || ! empty( $l['ok'] ) ) {
 			return;
 		}
@@ -261,6 +271,15 @@ class OWSU_Admin {
 				$l['ip'] ? $l['ip'] : '?'
 			)
 		);
+		if ( ! empty( $l['ip'] ) && preg_match( '/^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/', $l['ip'] ) ) {
+			echo '</p><p>' . esc_html(
+				sprintf(
+					/* translators: %s: private IP address */
+					__( 'The server uses a private address (%s): it is behind NAT, and the router may not let it reach its own public address. The hosting company can fix this by pointing the site domain to 127.0.0.1 in the server hosts file, or by enabling NAT loopback (hairpin) on the router.', 'ondaweb-security' ),
+					$l['ip']
+				)
+			);
+		}
 		echo '</p><p><button type="button" class="button button-primary" id="owsu-browser-snap">' . esc_html__( 'Read the headers through my browser and check again', 'ondaweb-security' ) . '</button> <span id="owsu-browser-msg" class="description"></span>';
 		if ( is_array( $b ) && ! empty( $b['time'] ) ) {
 			/* translators: %s: date and time */

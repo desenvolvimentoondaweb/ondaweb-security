@@ -421,6 +421,7 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 		self::$http = array();
 		self::$nc   = null;
 		self::clear_snapshot();
+		delete_site_option( 'owsu_loopback_via' ); // detected again on every full check
 		@set_time_limit( 300 ); // phpcs:ignore
 		$results = array();
 		foreach ( self::definitions() as $id => $def ) {
@@ -450,6 +451,64 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 	public static function reset_http() {
 		self::$http = array();
 		self::$nc   = null;
+	}
+
+	/* ------------------------------------------------------------------ */
+	/* Requests from the site to itself                                    */
+	/* ------------------------------------------------------------------ */
+
+	/** Local addresses the web server may answer on, for servers that cannot reach their own public IP. */
+	private static function local_ips() {
+		$ips = array( '127.0.0.1' );
+		if ( ! empty( $_SERVER['SERVER_ADDR'] ) ) {
+			$ips[] = sanitize_text_field( wp_unslash( $_SERVER['SERVER_ADDR'] ) );
+		}
+		return array_values( array_unique( array_filter( $ips ) ) );
+	}
+
+	/** Same request, with the site's host name pointed at $ip (keeps the name, the certificate and the Host header). */
+	private static function request_via( $url, $args, $ip ) {
+		$host = (string) wp_parse_url( $url, PHP_URL_HOST );
+		$port = (int) wp_parse_url( $url, PHP_URL_PORT );
+		$port = $port ? $port : ( 0 === strpos( $url, 'https:' ) ? 443 : 80 );
+		$hook = function ( $handle ) use ( $host, $port, $ip ) {
+			if ( defined( 'CURLOPT_RESOLVE' ) ) {
+				curl_setopt( $handle, CURLOPT_RESOLVE, array( $host . ':' . $port . ':' . $ip ) ); // phpcs:ignore
+			}
+		};
+		add_action( 'http_api_curl', $hook, 99 );
+		$res = wp_remote_request( $url, $args );
+		remove_action( 'http_api_curl', $hook, 99 );
+		return $res;
+	}
+
+	/**
+	 * Request from the site to itself. Servers behind NAT (private IP such as 192.168.x.x)
+	 * often cannot reach their own public address ("connection timeout"); in that case the
+	 * request is sent straight to the local address and the working one is remembered.
+	 */
+	public static function self_request( $url, $args = array() ) {
+		$args = wp_parse_args( $args, array( 'method' => 'GET' ) );
+		$via  = (string) get_site_option( 'owsu_loopback_via' );
+		if ( $via ) {
+			$res = self::request_via( $url, $args, $via );
+			if ( ! is_wp_error( $res ) ) {
+				return $res;
+			}
+			delete_site_option( 'owsu_loopback_via' );
+		}
+		$res = wp_remote_request( $url, $args );
+		if ( ! is_wp_error( $res ) || ! defined( 'CURLOPT_RESOLVE' ) ) {
+			return $res;
+		}
+		foreach ( self::local_ips() as $ip ) {
+			$try = self::request_via( $url, array_merge( $args, array( 'timeout' => min( 25, isset( $args['timeout'] ) ? (int) $args['timeout'] : 10 ) ) ), $ip );
+			if ( ! is_wp_error( $try ) ) {
+				update_site_option( 'owsu_loopback_via', $ip );
+				return $try;
+			}
+		}
+		return $res;
 	}
 
 	/** Forgets the cached home page reading (start of a check, after a fix). */
@@ -528,7 +587,7 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 				'headers'     => array( 'Cache-Control' => 'no-cache' ),
 			)
 		);
-		$res               = wp_remote_request( $url, $args );
+		$res               = self::self_request( $url, $args );
 		self::$http[ $key ] = is_wp_error( $res ) ? null : $res;
 		return self::$http[ $key ];
 	}
@@ -559,10 +618,10 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 			'user-agent'  => OWUM_PRODUCT . ' Check',
 			'headers'     => array( 'Cache-Control' => 'no-cache' ),
 		);
-		$res = wp_remote_get( $url, $args );
-		if ( is_wp_error( $res ) ) {
+		$res = self::self_request( $url, $args );
+		if ( is_wp_error( $res ) && false === stripos( $res->get_error_message(), 'connect' ) ) {
 			sleep( 2 );
-			$res = wp_remote_get( $url, $args ); // one retry: a slow first load (cold cache) is common
+			$res = self::self_request( $url, $args ); // one retry: a slow first load (cold cache) is common
 		}
 		$snap = array( 'ok' => false, 'src' => 'server', 'code' => 0, 'headers' => array(), 'generator' => '', 'error' => '' );
 		if ( is_wp_error( $res ) ) {
@@ -588,6 +647,7 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 				'time'  => current_time( 'mysql' ),
 				'ok'    => $snap['ok'],
 				'error' => $snap['error'],
+				'via'   => (string) get_site_option( 'owsu_loopback_via' ),
 				'ip'    => ! empty( $_SERVER['SERVER_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['SERVER_ADDR'] ) ) : (string) gethostbyname( (string) wp_parse_url( self::home(), PHP_URL_HOST ) ),
 			)
 		);
@@ -1482,7 +1542,7 @@ define( \'WP_DEBUG_DISPLAY\', false );' ),
 			$urls[] = $u['url'] . '/' . $name;
 		}
 		foreach ( $urls as $url ) {
-			$r = wp_remote_get( $url, array( 'timeout' => 15, 'sslverify' => false, 'redirection' => 2 ) );
+			$r = self::self_request( $url, array( 'timeout' => 15, 'sslverify' => false, 'redirection' => 2 ) );
 			if ( ! is_wp_error( $r ) && (int) wp_remote_retrieve_response_code( $r ) >= 500 ) {
 				$ok = false;
 			}

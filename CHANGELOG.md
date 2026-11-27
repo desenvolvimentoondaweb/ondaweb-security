@@ -1,5 +1,10 @@
 # Histórico de versões
 
+## 1.5.5
+- **Servidores atrás de NAT** (IP interno como 192.168.x.x), que não alcançam o próprio endereço público ("Connection timeout"): o plugin passa a acessar o site direto pelo endereço local (127.0.0.1 ou o IP do servidor), mantendo o domínio e o certificado. As verificações de segurança voltam a funcionar sem depender do navegador.
+- O mesmo desvio vale para as chamadas do próprio WordPress ao site, como o WP-Cron (rotina diária, envio dos relatórios) e a Saúde do site.
+- O painel de Segurança informa quando esse desvio está em uso e, se nem assim o servidor alcançar o site, explica o que a hospedagem precisa ajustar (arquivo hosts ou NAT loopback).
+
 ## 1.5.4
 - **Sites cujo servidor não consegue acessar o próprio site** (firewall, proxy ou página lenta):
   - aviso no painel de Segurança com o erro exato, o IP do servidor e o que pedir à hospedagem;
